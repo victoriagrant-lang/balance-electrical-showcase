@@ -1,6 +1,6 @@
 const SUPABASE_URL =
-  import.meta.env.VITE_SUPABASE_URL || "https://qfrmbugbutkjnltnnasf.supabase.co";
-const STORAGE_BUCKET = import.meta.env.VITE_SUPABASE_STORAGE_BUCKET || "balance-photos";
+  import.meta.env.VITE_SUPABASE_URL || "https://nrhfbcqmfsezlkxnzshq.supabase.co";
+const STORAGE_BUCKET = import.meta.env.VITE_SUPABASE_STORAGE_BUCKET || "Website Photos";
 const BASE = `${SUPABASE_URL}/storage/v1/object/public/${encodeURIComponent(STORAGE_BUCKET)}/`;
 
 const enc = (n: string) => BASE + encodeURIComponent(n);
