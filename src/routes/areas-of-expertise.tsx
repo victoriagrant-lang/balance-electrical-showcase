@@ -69,7 +69,7 @@ const sections: Area[] = [
     num: "01",
     heading: "Homes & renovations",
     service: "Renovation or addition",
-    img: { src: photos.img0004, alt: "Kitchen lighting in a Taupō home", credit: "Residential" },
+    img: shot("rainbow-reno", "02-kitchen"),
     intro:
       "Make your home work better, room by room. We plan and install lighting, power and wiring around the way you live, whether you’re renovating, extending or updating an existing space.",
     bullets: [
@@ -105,7 +105,7 @@ const sections: Area[] = [
     num: "03",
     heading: "Air-Conditioning",
     service: "Air-Conditioning",
-    img: shot("rainbow-reno", "02-kitchen", "100% 50%"),
+    img: shot("the-bach", "01-kitchen"),
     intro:
       "Keep your home or workplace comfortable throughout the seasons. We help you select an air-conditioning system suited to the space, then take care of supply, installation and commissioning — from a single room to a complete ducted system.",
     bullets: [
@@ -154,7 +154,7 @@ const sections: Area[] = [
     num: "06",
     heading: "New builds",
     service: "New residential build",
-    img: shot("kinloch-project", "03-entry-at-dusk"),
+    img: shot("sparrowhawk", "06"),
     intro:
       "Plan your electrical installation while your home is taking shape. We work with you, your builder and your design team to coordinate power, lighting and controls, from the initial layout through to the finished installation.",
     bullets: [
