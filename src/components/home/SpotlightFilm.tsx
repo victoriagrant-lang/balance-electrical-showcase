@@ -42,7 +42,7 @@ export function SpotlightFilm({ host }: { host: RefObject<HTMLElement | null> })
 
       const x = event.clientX - rect.left;
       const y = event.clientY - rect.top;
-      const size = Math.min(520, Math.max(320, rect.width * 0.34));
+      const size = Math.min(280, Math.max(180, rect.width * 0.16));
       const clip = `circle(${size}px at ${x}px ${y}px)`;
       reveal.style.clipPath = clip;
       reveal.style.webkitClipPath = clip;
