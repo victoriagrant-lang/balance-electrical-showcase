@@ -44,12 +44,18 @@ export const SERVICES: Service[] = [
       "Schemes are planned around the way each space is used, from task lighting over a kitchen island to soft, low-level light for late evenings, and coordinated with the architect, builder and joiner so fittings, drivers and cabling disappear into the build.",
     ],
     includes: [
-      "Lighting plans and fitting selection from the drawings",
-      "Concealed LED coves, channels and joinery lighting",
-      "Linear and feature pendant lighting",
-      "Recessed downlights coordinated with ceiling lines",
-      "Exterior, soffit, deck, step and landscape lighting",
-      "Scene-based control and smart-home integration",
+      "Full residential lighting design",
+      "Lighting layouts and fitting selection",
+      "Architectural and decorative lighting",
+      "Concealed LED and linear lighting",
+      "Joinery-integrated lighting",
+      "Kitchen, bathroom and task lighting",
+      "Feature pendants and statement fittings",
+      "Exterior, deck and landscape lighting",
+      "Lighting scenes and dimming control",
+      "Coordination with architects, designers and joiners",
+      "Smart-home lighting integration",
+      "Final aiming, setup and commissioning",
     ],
     faqs: [
       {
@@ -66,7 +72,7 @@ export const SERVICES: Service[] = [
       },
     ],
     projects: ["courtyard-house", "fold-house", "lake-house", "cedar-gables"],
-    image: img("fold-house", "07"),
+    image: img("fold-house", "10"),
   },
   {
     slug: "new-build-electrician-taupo",
@@ -81,12 +87,16 @@ export const SERVICES: Service[] = [
       "Because lighting, climate, solar, EV charging and smart-home control are planned together from the start, cabling and equipment can be hidden in the build — and the finished home works as one system.",
     ],
     includes: [
-      "Electrical design and pricing from the plans",
-      "Pre-wiring and first fix during framing",
-      "Switchboard design and installation",
-      "Final fit-off, testing and certification",
-      "Lighting, climate, solar and EV charger integration",
-      "Coordination with the builder and every other trade",
+      "Complete electrical design and installation",
+      "Architectural lighting design and specification",
+      "Smart-home and automation integration",
+      "Ducted and integrated air-conditioning systems",
+      "Switchboard, power and data infrastructure",
+      "Exterior, landscape and feature lighting",
+      "Solar, battery and EV-ready provisions",
+      "Coordination with builders, architects, joiners and other trades",
+      "Pre-wiring and first-fix planning before linings",
+      "Final fit-off, testing and commissioning",
     ],
     faqs: [
       {
@@ -103,11 +113,11 @@ export const SERVICES: Service[] = [
       },
     ],
     projects: ["hillside-house", "cedar-gables", "courtyard-house", "behind-the-walls"],
-    image: img("hillside-house", "01-exterior-at-dusk"),
+    image: img("cedar-gables", "03-pavilions-at-dusk"),
   },
   {
     slug: "renovation-electrician-taupo",
-    name: "Renovations",
+    name: "Renovations & upgrades",
     h1: "Renovation electrician in Taupō",
     metaTitle: "Renovation Electrician Taupō | Rewires & Switchboard Upgrades | Balance Electrical",
     metaDescription:
@@ -118,12 +128,16 @@ export const SERVICES: Service[] = [
       "It's also the moment to rethink lighting and climate: concealed LED in new joinery, a heat pump or ducted system, and the capacity for solar or EV charging later.",
     ],
     includes: [
-      "Partial and full rewires",
-      "Additional circuits and room additions",
-      "Switchboard upgrades with modern safety switches",
-      "New lighting schemes and joinery lighting",
-      "Heat pump and ducted system installation",
-      "Kitchen, bathroom and outdoor living upgrades",
+      "Full electrical upgrades for renovations and extensions",
+      "Rewiring and additional circuits",
+      "Switchboard upgrades and safety improvements",
+      "Architectural lighting design",
+      "Kitchen, bathroom and joinery-integrated lighting",
+      "Exterior, deck and landscape lighting",
+      "High-wall and ducted air-conditioning upgrades",
+      "Smart-home and automation additions",
+      "Power, data and EV-ready provisions",
+      "Final testing, fit-off and commissioning",
     ],
     faqs: [
       {
@@ -136,7 +150,7 @@ export const SERVICES: Service[] = [
       },
     ],
     projects: ["the-arches", "walnut-house"],
-    image: img("behind-the-walls", "03-cable-drops"),
+    image: img("the-arches", "01-lounge"),
   },
   {
     slug: "commercial-electrician-taupo",
@@ -291,23 +305,28 @@ export const SERVICES: Service[] = [
   },
   {
     slug: "smart-home-automation-taupo",
-    name: "Smart home",
+    name: "Smart home & automation",
     h1: "Smart home & automation in Taupō",
     metaTitle: "Smart Home Electrician Taupō | Lighting & Climate Control | Balance Electrical",
     metaDescription:
       "Smart-home integration in Taupō — lighting scenes, heating and cooling and selected power brought together in one simple control system, planned into new builds and renovations.",
-    contactService: "Something else",
+    contactService: "Smart home & automation",
     intro: [
       "Smart-home control brings lighting, heating and cooling and selected electrical functions together, so the home moves easily between everyday, entertaining and evening settings.",
       "The technology is planned in from the wiring stage and kept largely out of sight — fewer switches on the walls, clear scenes for each room, and climate that responds to the way you live. It's how Balance's own showhome, Cedar Gables, and Black Ridge House are run.",
     ],
     includes: [
-      "Lighting scenes and centralised control",
-      "Heating and cooling integration",
-      "Selected power and electrical functions",
-      "Keypads, app and voice control",
-      "Pre-wiring for automation in new builds",
-      "Commissioning and handover",
+      "Smart-home system design and integration",
+      "Lighting control and scene setting",
+      "Climate control integration",
+      "Automated schedules and routines",
+      "Centralised control of selected electrical systems",
+      "App and wall-control integration",
+      "Smart-home pre-wiring for new builds",
+      "Integration with lighting, air conditioning and selected blinds or devices",
+      "Future-ready electrical infrastructure",
+      "Coordination with builders, designers and joiners",
+      "System setup, testing and handover",
     ],
     faqs: [
       {
@@ -320,7 +339,10 @@ export const SERVICES: Service[] = [
       },
     ],
     projects: ["cedar-gables", "black-ridge-house"],
-    image: img("cedar-gables", "12"),
+    image: {
+      src: serviceImage("smart-home") ?? img("cedar-gables", "12").src,
+      alt: "Smart-home control modules and circuit protection, neatly wired in a joinery-housed cabinet",
+    },
   },
 ];
 

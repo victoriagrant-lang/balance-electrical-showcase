@@ -19,34 +19,46 @@ function art(name: ServiceArt, alt: string, fallback: Card): Card {
   return src ? { src, alt, focus: "50% 50%" } : fallback;
 }
 
+// Same order as the Expertise page.
 const SERVICES = [
+  {
+    title: "New builds",
+    page: "new-build-electrician-taupo",
+    service: "New residential build",
+    card: fromPhoto(getPhoto("cedar-gables", "03-pavilions-at-dusk"), "40% 50%"),
+    copy: "Electrical, lighting, climate and automation planned alongside your build — from first fix through to final commissioning, so every detail feels part of the architecture.",
+  },
+  {
+    title: "Renovations & upgrades",
+    page: "renovation-electrician-taupo",
+    service: "Renovation or addition",
+    card: fromPhoto(getPhoto("the-arches", "01-lounge")),
+    copy: "A chance to rethink how a home works, not just how it looks. Lighting, power and climate upgrades coordinated around the new layout, joinery and finishes.",
+  },
   {
     title: "Lighting design",
     page: "lighting-design-taupo",
     service: "Lighting design",
     card: fromPhoto(getPhoto("fold-house", "07")),
-    copy: "Lighting that brings out the best in your home. We plan fittings, placement and controls around your architecture, your interiors and the way you use each room.",
+    copy: "Task, ambient, feature and exterior lighting combined into one considered scheme — every fitting selected and positioned to work with the home, not compete with it.",
   },
   {
-    title: "New builds",
-    page: "new-build-electrician-taupo",
-    service: "New residential build",
-    card: fromPhoto(getPhoto("cedar-gables", "06"), "62% 50%"),
-    copy: "Complete electrical installations, planned alongside your build. We work with you and your project team to get the details right, from power points and switchboards to lighting and the final fit-off.",
+    title: "Smart home & automation",
+    page: "smart-home-automation-taupo",
+    service: "Smart home & automation",
+    card: art(
+      "smart-home",
+      "Smart-home control modules, neatly wired in a joinery-housed cabinet",
+      fromPhoto(getPhoto("black-ridge-house", "04-kitchen-to-living")),
+    ),
+    copy: "Lighting, climate, selected power and automation brought together into one simple control platform — planned around how the home is actually used.",
   },
   {
-    title: "Renovations",
-    page: "renovation-electrician-taupo",
-    service: "Renovation or addition",
-    card: fromPhoto(getPhoto("the-arches", "02-kitchen")),
-    copy: "Electrical upgrades that make your home work better. From rewiring and switchboard replacements to new lighting and additional power points, we help bring your plans together.",
-  },
-  {
-    title: "Commercial",
-    page: "commercial-electrician-taupo",
-    service: "Commercial fit-out",
-    card: fromPhoto(getPhoto("beechtree-studio", "02-entry-at-dusk")),
-    copy: "Practical electrical solutions for workplaces and commercial spaces. Our services include office and retail fit-outs, three-phase power, emergency lighting and compliance testing.",
+    title: "Air conditioning",
+    page: "air-conditioning-heating-taupo",
+    service: "Air conditioning & heating",
+    card: fromPhoto(getPhoto("walnut-house", "01-kitchen")),
+    copy: "Heat pumps and ducted central heating and cooling, designed into the home — linear grilles in ceilings and custom grilles in the joinery, so nothing hangs on show.",
   },
   {
     title: "Solar & battery",
@@ -56,11 +68,11 @@ const SERVICES = [
     copy: "Make more of the energy your property can generate. We help with solar electrical installation, grid connection and battery storage options suited to your property and energy use.",
   },
   {
-    title: "Air conditioning & heating",
-    page: "air-conditioning-heating-taupo",
-    service: "Air conditioning & heating",
-    card: fromPhoto(getPhoto("walnut-house", "01-kitchen")),
-    copy: "Heat pumps and ducted central heating and cooling, designed into the home — linear grilles in ceilings and custom grilles in the joinery, so nothing hangs on show.",
+    title: "Commercial electrical",
+    page: "commercial-electrician-taupo",
+    service: "Commercial fit-out",
+    card: fromPhoto(getPhoto("beechtree-studio", "02-entry-at-dusk")),
+    copy: "Practical electrical solutions for workplaces and commercial spaces. Our services include office and retail fit-outs, three-phase power, emergency lighting and compliance testing.",
   },
   {
     title: "EV charging",
@@ -137,7 +149,8 @@ export function Circuits() {
 
   return (
     <section ref={root} aria-labelledby="circuits-title" className="relative">
-      <div data-pin className="flex min-h-[100svh] flex-col justify-center py-24 md:py-12">
+      {/* Sized to its content (not a full-screen panel) so no dead stone sits above it. */}
+      <div data-pin className="flex flex-col py-20 md:py-14">
         <div className="mx-auto flex w-full max-w-[1440px] items-end justify-between gap-8 px-5 md:px-10">
           <div>
             <p className="eyebrow text-ink-soft">What we do</p>

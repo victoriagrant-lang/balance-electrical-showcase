@@ -21,7 +21,7 @@ export const Route = createFileRoute("/areas-of-expertise")({
       {
         name: "description",
         content:
-          "Electrical services in Taupō for homes and businesses. Explore lighting, new builds, renovations, heat pumps and ducted heating and cooling, solar, EV charging and smart homes.",
+          "One team from planning and first fix through to final fit-off and commissioning. New builds, renovations, lighting design, smart homes, air conditioning, solar, commercial, EV charging and maintenance in Taupō.",
       },
       { name: "robots", content: "index, follow, max-image-preview:large" },
       { name: "geo.region", content: "NZ-WKO" },
@@ -48,9 +48,13 @@ type Area = {
   heading: string;
   service: string;
   img: { src: string; alt: string; credit: string; focus?: string };
-  intro: string;
+  /** The opening line, set larger than the rest of the introduction. */
+  lead: string;
+  intro: string[];
   bullets: string[];
   closing?: string;
+  /** Three-beat line that closes the section. */
+  tagline: string;
   /** Service pages that go deeper on this area. */
   pages: string[];
   /** Portfolio chapters where this work can be seen. */
@@ -62,58 +66,138 @@ function shot(slug: string, name: string, focus?: string): Area["img"] {
   return { src: p.lg, alt: `${p.title}, ${p.project}`, credit: p.project, focus };
 }
 
-function withArt(name: ServiceArt, alt: string, fallback: Area["img"]): Area["img"] {
+function withArt(
+  name: ServiceArt,
+  alt: string,
+  fallback: Area["img"],
+  credit: string,
+): Area["img"] {
   const src = serviceImage(name);
-  return src ? { src, alt, credit: alt } : fallback;
+  return src ? { src, alt, credit } : fallback;
 }
 
 const sections: Area[] = [
   {
     num: "01",
-    pages: ["lighting-design-taupo", "renovation-electrician-taupo"],
-    heading: "Homes & renovations",
-    service: "Renovation or addition",
-    img: shot("the-arches", "02-kitchen"),
-    intro:
-      "Make your home work better, room by room. We plan and install lighting, power and wiring around the way you live, whether you’re renovating, extending or updating an existing space.",
-    bullets: [
-      "Complete electrical installations for new homes",
-      "Rewiring, additional circuits and wiring for extensions",
-      "Switchboard upgrades and safety switches",
-      "Interior, exterior and garden lighting design and installation",
-      "Swimming pool and spa wiring",
-      "Network and data cabling for home offices and media rooms",
-      "General maintenance, fault finding, and repairs",
+    pages: ["new-build-electrician-taupo"],
+    heading: "New builds",
+    service: "New residential build",
+    img: shot("cedar-gables", "03-pavilions-at-dusk", "40% 50%"),
+    lead: "A well-designed electrical system should feel like part of the architecture, not something added at the end.",
+    intro: [
+      "We work alongside homeowners, builders, architects and designers from the early stages of a new build to coordinate lighting, power, climate, automation and future-ready infrastructure. From first fix through to final commissioning, every detail is considered around the way the home will look, feel and function.",
     ],
-    projects: ["courtyard-house", "fold-house", "black-gable-house", "the-arches"],
+    bullets: [
+      "Complete electrical design and installation",
+      "Architectural lighting design and specification",
+      "Smart-home and automation integration",
+      "Ducted and integrated air-conditioning systems",
+      "Switchboard, power and data infrastructure",
+      "Exterior, landscape and feature lighting",
+      "Solar, battery and EV-ready provisions",
+      "Coordination with builders, architects, joiners and other trades",
+      "Pre-wiring and first-fix planning before linings",
+      "Final fit-off, testing and commissioning",
+    ],
+    tagline: "Designed early. Integrated properly. Finished cleanly.",
+    projects: ["cedar-gables", "courtyard-house", "hillside-house", "behind-the-walls"],
   },
   {
     num: "02",
-    pages: ["commercial-electrician-taupo"],
-    heading: "Commercial",
-    service: "Commercial fit-out",
-    img: shot("beechtree-studio", "01-front-at-dusk"),
-    intro:
-      "Electrical installations planned around your business, your premises and the people working there. From offices and retail spaces to workshops, we coordinate power, lighting and cabling with the wider fit-out. Our work includes Beechtree Studio’s two-storey headquarters.",
-    bullets: [
-      "New office and retail fit-outs",
-      "Warehouse and workshop electrical installations",
-      "Three-phase power installations",
-      "Switchboards, distribution cabling and cable containment",
-      "Exit and emergency lighting — supply, install, and compliance testing",
-      "Electrical fault finding and repairs",
-      "Data and voice cabling installations",
+    pages: ["renovation-electrician-taupo"],
+    heading: "Renovations & upgrades",
+    service: "Renovation or addition",
+    img: shot("the-arches", "01-lounge"),
+    lead: "Renovations are the opportunity to rethink how a home works — not just how it looks.",
+    intro: [
+      "We coordinate lighting, power, climate and electrical upgrades around the new layout, joinery and finishes, making sure the services feel integrated into the renovation rather than added on afterwards.",
+      "From a single-room update to a full-home transformation, we can work alongside your builder and designer from planning through to final fit-off.",
     ],
-    projects: ["beechtree-studio"],
+    bullets: [
+      "Full electrical upgrades for renovations and extensions",
+      "Rewiring and additional circuits",
+      "Switchboard upgrades and safety improvements",
+      "Architectural lighting design",
+      "Kitchen, bathroom and joinery-integrated lighting",
+      "Exterior, deck and landscape lighting",
+      "High-wall and ducted air-conditioning upgrades",
+      "Smart-home and automation additions",
+      "Power, data and EV-ready provisions",
+      "Final testing, fit-off and commissioning",
+    ],
+    tagline: "Reworked with purpose. Finished with detail.",
+    projects: ["the-arches", "walnut-house"],
   },
   {
     num: "03",
+    pages: ["lighting-design-taupo"],
+    heading: "Lighting design",
+    service: "Lighting design",
+    img: shot("fold-house", "10"),
+    lead: "Good lighting should do more than illuminate a space — it should shape how the home feels.",
+    intro: [
+      "We design lighting around the architecture, materials and way each space is used, combining task, ambient, feature and exterior lighting into one considered scheme.",
+      "From concealed LED and joinery-integrated lighting to pendants, landscape lighting and after-dark exterior effects, every fitting is selected and positioned to work with the home rather than compete with it.",
+    ],
+    bullets: [
+      "Full residential lighting design",
+      "Lighting layouts and fitting selection",
+      "Architectural and decorative lighting",
+      "Concealed LED and linear lighting",
+      "Joinery-integrated lighting",
+      "Kitchen, bathroom and task lighting",
+      "Feature pendants and statement fittings",
+      "Exterior, deck and landscape lighting",
+      "Lighting scenes and dimming control",
+      "Coordination with architects, designers and joiners",
+      "Smart-home lighting integration",
+      "Final aiming, setup and commissioning",
+    ],
+    tagline: "Light where it matters. Detail where it counts.",
+    projects: ["fold-house", "courtyard-house", "lake-house", "beechtree-studio"],
+  },
+  {
+    num: "04",
+    pages: ["smart-home-automation-taupo"],
+    heading: "Smart home & automation",
+    service: "Smart home & automation",
+    img: withArt(
+      "smart-home",
+      "Smart-home control modules and circuit protection, neatly wired in a joinery-housed cabinet",
+      shot("black-ridge-house", "04-kitchen-to-living"),
+      "Automation control cabinet",
+    ),
+    lead: "Technology should make a home easier to live in — not more complicated.",
+    intro: [
+      "We design and integrate smart-home systems that bring lighting, climate, selected power and automation together into one simple control platform. The system is planned around how the home is actually used, with scenes and controls that feel intuitive from day one.",
+      "Whether it’s a full new-build automation system or selected smart features added during a renovation, we coordinate the technology with the electrical, lighting and air-conditioning so everything works together cleanly.",
+    ],
+    bullets: [
+      "Smart-home system design and integration",
+      "Lighting control and scene setting",
+      "Climate control integration",
+      "Automated schedules and routines",
+      "Centralised control of selected electrical systems",
+      "App and wall-control integration",
+      "Smart-home pre-wiring for new builds",
+      "Integration with lighting, air conditioning and selected blinds or devices",
+      "Future-ready electrical infrastructure",
+      "Coordination with builders, designers and joiners",
+      "System setup, testing and handover",
+    ],
+    tagline: "Smarter control. Simpler living.",
+    projects: ["black-ridge-house", "cedar-gables"],
+  },
+  {
+    num: "05",
     pages: ["air-conditioning-heating-taupo"],
-    heading: "Air conditioning & heating",
+    heading: "Air conditioning",
     service: "Air conditioning & heating",
     img: shot("walnut-house", "01-kitchen"),
-    intro:
-      "Heating and cooling, designed into the home rather than hung on the wall. We supply and install high-wall and floor-mounted heat pumps, ducted central heating and cooling, and multi-zone systems — then integrate them into the design, with linear grilles set into ceilings and bulkheads and custom grilles or heat pumps built into the joinery.",
+    lead: "Heating and cooling should be felt, not seen.",
+    intro: [
+      "We supply and install high-wall and floor-mounted heat pumps, ducted central heating and cooling, and multi-zone systems — then integrate them into the design, with linear grilles set into ceilings and bulkheads and custom grilles or heat pumps built into the joinery.",
+    ],
     bullets: [
       "High-wall and floor-mounted heat pumps",
       "Ducted central heating and cooling for the whole home",
@@ -123,69 +207,19 @@ const sections: Area[] = [
       "Servicing and maintenance",
       "All major brands supplied and installed",
     ],
-    projects: ["walnut-house", "cedar-gables", "lake-house", "cedar-cube-house"],
-  },
-  {
-    num: "04",
-    pages: ["ev-charger-installation-taupo"],
-    heading: "EV charger installation",
-    service: "EV charging",
-    img: withArt(
-      "ev-charging",
-      "Wall-mounted EV charger beside a lit garage at dusk",
-      shot("black-gable-house", "02-driveway-at-dusk", "72% 50%"),
-    ),
-    intro:
-      "Make charging part of your everyday routine. We assess your electrical supply, charger location and usage needs, then install a dedicated charging point for your home or business.",
-    bullets: [
-      "Dedicated home EV chargers",
-      "Commercial charging points for businesses and rental properties",
-      "Electrical supply and load management assessment",
-      "Installation, testing and electrical certification",
-    ],
-  },
-  {
-    num: "05",
-    pages: [],
-    heading: "Maintenance & repairs",
-    service: "Something else",
-    img: shot("beechtree-studio", "09-switchboard"),
-    intro:
-      "Get faults investigated and everyday electrical problems sorted. We provide maintenance and repairs for homes and businesses across Taupō, with a clear explanation of the issue and the work required.",
-    bullets: [
-      "Fault finding and diagnosis",
-      "Safety switch installation and testing",
-      "Landlord electrical inspections",
-      "Power point and lighting additions",
-      "General repairs and callouts",
-    ],
+    tagline: "Comfort designed in. Equipment kept out of sight.",
+    projects: ["walnut-house", "cedar-cube-house", "lake-house", "black-ridge-house"],
   },
   {
     num: "06",
-    pages: ["new-build-electrician-taupo", "smart-home-automation-taupo"],
-    heading: "New builds",
-    service: "New residential build",
-    img: shot("cedar-gables", "06"),
-    intro:
-      "Plan your electrical installation while your home is taking shape. We work with you, your builder and your design team to coordinate power, lighting and controls, from the initial layout through to the finished installation.",
-    bullets: [
-      "Full new build electrical design and installation",
-      "Pre-wiring before wall linings and final installation of fittings",
-      "Switchboard design and installation",
-      "Exterior and landscape lighting",
-      "Smart home pre-wiring and automation-ready installations",
-      "Coordination with your builder and other trades",
-    ],
-    projects: ["courtyard-house", "cedar-gables", "hillside-house", "behind-the-walls"],
-  },
-  {
-    num: "07",
     pages: ["solar-installation-taupo"],
-    heading: "Solar & battery storage",
+    heading: "Solar & battery",
     service: "Solar & battery storage",
     img: shot("twin-pavilions", "01-array"),
-    intro:
-      "Plan solar and battery storage around your property and the way you use electricity. Balance Electrical handles the electrical installation, including inverter wiring, switchboard requirements and the grid connection process.",
+    lead: "Make more of the energy your property can generate.",
+    intro: [
+      "We plan solar and battery storage around your property and the way you use electricity, and handle the electrical installation — including inverter wiring, switchboard requirements and the grid connection process.",
+    ],
     bullets: [
       "Residential solar panel system wiring and installation",
       "Battery storage installation and integration",
@@ -197,7 +231,73 @@ const sections: Area[] = [
     ],
     closing:
       "We can work alongside your chosen solar supplier or discuss local supplier options. We’ll clarify the electrical scope and connection requirements before the installation begins.",
+    tagline: "Generate it. Store it. Use it well.",
     projects: ["twin-pavilions"],
+  },
+  {
+    num: "07",
+    pages: ["commercial-electrician-taupo"],
+    heading: "Commercial electrical",
+    service: "Commercial fit-out",
+    img: shot("beechtree-studio", "01-front-at-dusk"),
+    lead: "Electrical installations planned around your business, your premises and the people working there.",
+    intro: [
+      "From offices and retail spaces to workshops, we coordinate power, lighting and cabling with the wider fit-out. Our work includes Beechtree Studio’s two-storey headquarters.",
+    ],
+    bullets: [
+      "New office and retail fit-outs",
+      "Warehouse and workshop electrical installations",
+      "Three-phase power installations",
+      "Switchboards, distribution cabling and cable containment",
+      "Exit and emergency lighting — supply, install, and compliance testing",
+      "Electrical fault finding and repairs",
+      "Data and voice cabling installations",
+    ],
+    tagline: "Built to work hard. Finished to a standard.",
+    projects: ["beechtree-studio"],
+  },
+  {
+    num: "08",
+    pages: ["ev-charger-installation-taupo"],
+    heading: "EV charging",
+    service: "EV charging",
+    img: withArt(
+      "ev-charging",
+      "Wall-mounted EV charger beside a lit garage at dusk",
+      shot("black-gable-house", "02-driveway-at-dusk", "72% 50%"),
+      "EV charging",
+    ),
+    lead: "Make charging part of your everyday routine.",
+    intro: [
+      "We assess your electrical supply, charger location and usage needs, then install a dedicated charging point for your home or business — with load management where your supply needs it.",
+    ],
+    bullets: [
+      "Dedicated home EV chargers",
+      "Commercial charging points for businesses and rental properties",
+      "Electrical supply and load management assessment",
+      "EV-ready provisions for new builds and renovations",
+      "Installation, testing and electrical certification",
+    ],
+    tagline: "Plugged in overnight. Ready every morning.",
+  },
+  {
+    num: "09",
+    pages: [],
+    heading: "Maintenance & repairs",
+    service: "Maintenance & repairs",
+    img: shot("beechtree-studio", "09-switchboard"),
+    lead: "Get faults investigated and everyday electrical problems sorted.",
+    intro: [
+      "We provide maintenance and repairs for homes and businesses across Taupō, with a clear explanation of the issue and the work required.",
+    ],
+    bullets: [
+      "Fault finding and diagnosis",
+      "Safety switch installation and testing",
+      "Landlord electrical inspections",
+      "Power point and lighting additions",
+      "General repairs and callouts",
+    ],
+    tagline: "Diagnosed clearly. Repaired properly.",
   },
 ];
 
@@ -241,18 +341,18 @@ function AreasOfExpertise() {
           Electrical expertise. From start to finish.
         </SplitReveal>
         <Reveal delay={0.5} className="mt-10 grid gap-8 md:grid-cols-12 md:items-end">
-          <p className="max-w-xl text-[1.05rem] leading-relaxed text-ink-soft md:col-span-6">
-            Electrical services for homes and businesses across Taupō. Explore how we can help with
-            your build, renovation or upgrade, and see examples of our work.
+          <p className="max-w-md font-display text-[clamp(1.35rem,2vw,1.8rem)] leading-snug text-ink md:col-span-5">
+            One team from planning and first fix through to final fit-off and commissioning.
           </p>
-          <div className="flex flex-wrap gap-2 md:col-span-6 md:justify-end">
+          {/* One swipeable row on phones; wraps on larger screens. */}
+          <div className="no-scrollbar -mx-5 flex gap-2 overflow-x-auto px-5 md:col-span-7 md:mx-0 md:flex-wrap md:justify-end md:overflow-visible md:px-0">
             {sections.map((s, i) => (
               <button
                 key={s.num}
                 type="button"
                 onClick={() => jump(i)}
                 aria-label={`View ${s.heading}`}
-                className="eyebrow min-h-10 rounded-full border border-ink/20 px-4 text-[10px] transition-colors hover:border-ink hover:bg-ink hover:text-stone-pale"
+                className="eyebrow min-h-10 shrink-0 whitespace-nowrap rounded-full border border-ink/20 px-4 text-[10px] transition-colors hover:border-ink hover:bg-ink hover:text-stone-pale"
               >
                 {s.heading}
               </button>
@@ -317,7 +417,14 @@ function AreasOfExpertise() {
                   <h2 className="display-caps mt-4 text-[clamp(1.9rem,3.2vw,3rem)] leading-[1.05] tracking-[0.1em]!">
                     {s.heading}
                   </h2>
-                  <p className="mt-6 text-[1.05rem] leading-relaxed text-ink-soft">{s.intro}</p>
+                  <p className="mt-6 font-display text-[clamp(1.3rem,1.8vw,1.65rem)] leading-snug text-ink">
+                    {s.lead}
+                  </p>
+                  {s.intro.map((para) => (
+                    <p key={para} className="mt-5 text-[1.05rem] leading-relaxed text-ink-soft">
+                      {para}
+                    </p>
+                  ))}
                   <ul className="mt-8 space-y-3">
                     {s.bullets.map((b) => (
                       <li key={b} className="flex items-start gap-4 leading-relaxed">
@@ -327,6 +434,13 @@ function AreasOfExpertise() {
                     ))}
                   </ul>
                   {s.closing && <p className="mt-8 leading-relaxed text-ink-soft">{s.closing}</p>}
+                  <p className="display-caps mt-10 border-l border-ink/30 pl-5 text-[clamp(1.05rem,1.4vw,1.3rem)] leading-[1.55] tracking-[0.14em]!">
+                    {s.tagline.split(/(?<=\.)\s+/).map((beat) => (
+                      <span key={beat} className="block">
+                        {beat}
+                      </span>
+                    ))}
+                  </p>
                   {s.projects && (
                     <div className="mt-10 border-t border-ink/15 pt-6">
                       <p className="eyebrow text-[10px] text-ink-soft">Related projects</p>
