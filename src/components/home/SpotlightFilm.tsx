@@ -22,8 +22,8 @@ export function SpotlightFilm({ host }: { host: RefObject<HTMLElement | null> })
     );
     if (!media.matches) return;
 
-    const setX = gsap.quickTo(reveal, "--spot-x", { duration: 0.7, ease: "power3.out" });
-    const setY = gsap.quickTo(reveal, "--spot-y", { duration: 0.7, ease: "power3.out" });
+    const setX = gsap.quickTo(reveal, "--spot-x", { duration: 0.35, ease: "power3.out" });
+    const setY = gsap.quickTo(reveal, "--spot-y", { duration: 0.35, ease: "power3.out" });
     const setSize = gsap.quickTo(reveal, "--spot-size", { duration: 0.8, ease: "power3.out" });
     const centre = () => {
       setX(section.clientWidth * 0.72);
@@ -35,11 +35,20 @@ export function SpotlightFilm({ host }: { host: RefObject<HTMLElement | null> })
 
     const move = (event: PointerEvent) => {
       const rect = section.getBoundingClientRect();
-      setX(event.clientX - rect.left);
-      setY(event.clientY - rect.top);
-      setSize(Math.min(460, Math.max(280, section.clientWidth * 0.3)));
+      const x = event.clientX - rect.left;
+      const y = event.clientY - rect.top;
+      const size = Math.min(520, Math.max(320, section.clientWidth * 0.34));
+      setX(x);
+      setY(y);
+      setSize(size);
+      reveal.style.setProperty("--spot-x", `${x}px`);
+      reveal.style.setProperty("--spot-y", `${y}px`);
+      reveal.style.setProperty("--spot-size", `${size}px`);
     };
-    const leave = () => setSize(0);
+    const leave = () => {
+      setSize(0);
+      reveal.style.setProperty("--spot-size", "0px");
+    };
 
     section.addEventListener("pointermove", move, { passive: true });
     section.addEventListener("pointerleave", leave);
@@ -71,6 +80,7 @@ export function SpotlightFilm({ host }: { host: RefObject<HTMLElement | null> })
         className="absolute inset-0 overflow-hidden"
         style={{
           ...revealStyle,
+          clipPath: "circle(var(--spot-size) at var(--spot-x) var(--spot-y))",
           maskImage:
             "radial-gradient(circle var(--spot-size) at var(--spot-x) var(--spot-y), black 0%, black 62%, transparent 100%)",
           WebkitMaskImage:
