@@ -201,11 +201,17 @@ function Enquiries() {
                       .join(" · ")}
                   </p>
                   <div className="mt-4 flex flex-wrap gap-x-6 gap-y-2 text-sm">
-                    <a href={`mailto:${r.email}`} className="beam-link inline-flex items-center gap-2">
+                    <a
+                      href={`mailto:${r.email}`}
+                      className="beam-link inline-flex items-center gap-2"
+                    >
                       <Mail className="size-4" /> {r.email}
                     </a>
                     {r.phone && (
-                      <a href={`tel:${r.phone}`} className="beam-link inline-flex items-center gap-2">
+                      <a
+                        href={`tel:${r.phone}`}
+                        className="beam-link inline-flex items-center gap-2"
+                      >
                         <Phone className="size-4" /> {r.phone}
                       </a>
                     )}

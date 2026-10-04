@@ -10,6 +10,7 @@ import { gsap, prefersReducedMotion, useGSAP } from "@/lib/gsap";
 import { onIntroDone } from "@/lib/intro";
 import { EwrbLogo } from "@/components/EwrbLogo";
 import { PORTFOLIO } from "@/lib/portfolio";
+import { GoogleReviewsBadge, Testimonials } from "@/components/Reviews";
 
 export const Route = createFileRoute("/about")({
   head: () => ({
@@ -82,8 +83,8 @@ function About() {
                 need, explain the options and coordinate the work with your wider project.
               </p>
               <p className="md:col-span-2">
-                Her work ranges from Cedar Gables — Balance’s own showhome in Kinloch — and the
-                Gold Award-winning Courtyard House to Beechtree Studio’s two-storey headquarters,
+                Her work ranges from Cedar Gables — Balance’s own showhome in Kinloch — and the Gold
+                Award-winning Courtyard House to Beechtree Studio’s two-storey headquarters,
                 alongside solar, heat pumps and ducted climate systems, smart-home control and pool
                 wiring. Across every project the focus is the same: electrical work planned around
                 the property and the people who use it.
@@ -104,20 +105,23 @@ function About() {
                 </span>
               </a>
               <Link
-                to="/portfolio"
-                hash="courtyard-house"
+                to="/portfolio/$slug"
+                params={{ slug: "courtyard-house" }}
                 className="group inline-flex max-w-md items-center gap-4 border border-ink/20 px-5 py-4 transition-[border-color,box-shadow] duration-500 hover:border-ink/50 hover:shadow-[0_20px_50px_-30px_rgb(28_26_24/0.6)]"
               >
                 <Award className="size-8 shrink-0" strokeWidth={1.1} />
                 <span className="text-sm leading-snug">
-                  Electrician on Courtyard House — Gold Award, Master Builders House of the
-                  Year 2025, Bay of Plenty & Central Plateau
+                  Electrician on Courtyard House — Gold Award, Master Builders House of the Year
+                  2025, Bay of Plenty & Central Plateau
                 </span>
               </Link>
+              <GoogleReviewsBadge />
             </Reveal>
           </div>
         </div>
       </section>
+
+      <Testimonials />
 
       <Values />
 
@@ -216,7 +220,7 @@ function AboutHero() {
             </p>
             <p className="mt-6 max-w-xl text-[1.05rem] leading-relaxed text-ink-soft">
               The person behind Balance Electrical — and your point of contact for electrical work,
-              lighting and air-conditioning across Taupō and the surrounding district.
+              lighting, heating and cooling and solar across Taupō and the surrounding district.
             </p>
           </Reveal>
         </div>
@@ -343,12 +347,7 @@ function Values() {
   );
 }
 
-const RECENT = [
-  "courtyard-house",
-  "beechtree-studio",
-  "cedar-gables",
-  "glass-pavilion",
-];
+const RECENT = ["courtyard-house", "beechtree-studio", "cedar-gables", "glass-pavilion"];
 
 /** Four chapters from the portfolio, so the story ends on the work itself. */
 function RecentWork() {

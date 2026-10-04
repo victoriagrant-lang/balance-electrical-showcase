@@ -75,7 +75,7 @@ export function Hero() {
           data-hero-fade
           className="flex flex-wrap items-center justify-between gap-3 text-ink-soft"
         >
-          <p className="eyebrow">Electrical · Lighting · Air-Conditioning · Solar</p>
+          <p className="eyebrow">Electrical · Lighting · Climate · Solar</p>
           <p className="eyebrow">Taupō and the surrounding district</p>
         </div>
 

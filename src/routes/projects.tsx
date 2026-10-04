@@ -18,7 +18,7 @@ export const Route = createFileRoute("/projects")({
       {
         name: "description",
         content:
-          "Explore Balance Electrical’s gallery of lighting, electrical installations, solar and air-conditioning. Browse photographs by type of work or view projects after dark.",
+          "Explore Balance Electrical’s gallery of lighting, electrical installations, solar and integrated climate systems. Browse photographs by type of work or view projects after dark.",
       },
       { name: "robots", content: "index, follow, max-image-preview:large" },
       { name: "geo.region", content: "NZ-WKO" },
@@ -79,9 +79,10 @@ const ORDER = [
   "Renovation",
   "Commercial",
   "Solar",
-  "Air-Conditioning",
+  "Climate",
+  "Smart home",
   "Pool",
-  "Pre-wiring",
+  "First fix",
 ];
 function Gallery() {
   const [portfolio, setPortfolio] = useState(PORTFOLIO);

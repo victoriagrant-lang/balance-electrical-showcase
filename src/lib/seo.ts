@@ -1,6 +1,7 @@
 import { AREAS } from "@/lib/areas";
 import { CONTACT } from "@/lib/contact";
 import { PORTFOLIO } from "@/lib/portfolio";
+import { REVIEWS } from "@/lib/reviews";
 import { SERVICES, type Faq } from "@/lib/services";
 
 /*
@@ -101,6 +102,18 @@ export function siteGraph() {
             },
           })),
         },
+        ...(REVIEWS.length
+          ? {
+              review: REVIEWS.map((r) => ({
+                "@type": "Review",
+                reviewBody: r.quote,
+                author: { "@type": "Person", name: r.name },
+                ...(r.rating
+                  ? { reviewRating: { "@type": "Rating", ratingValue: r.rating, bestRating: 5 } }
+                  : {}),
+              })),
+            }
+          : {}),
         subjectOf: PORTFOLIO.filter((p) => p.story).map((p) => ({
           "@type": "CreativeWork",
           name: p.title,

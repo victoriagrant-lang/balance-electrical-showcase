@@ -22,42 +22,49 @@ function art(name: ServiceArt, alt: string, fallback: Card): Card {
 const SERVICES = [
   {
     title: "Lighting design",
+    page: "lighting-design-taupo",
     service: "Lighting design",
     card: fromPhoto(getPhoto("fold-house", "07")),
     copy: "Lighting that brings out the best in your home. We plan fittings, placement and controls around your architecture, your interiors and the way you use each room.",
   },
   {
     title: "New builds",
+    page: "new-build-electrician-taupo",
     service: "New residential build",
     card: fromPhoto(getPhoto("cedar-gables", "06"), "62% 50%"),
     copy: "Complete electrical installations, planned alongside your build. We work with you and your project team to get the details right, from power points and switchboards to lighting and the final fit-off.",
   },
   {
     title: "Renovations",
+    page: "renovation-electrician-taupo",
     service: "Renovation or addition",
     card: fromPhoto(getPhoto("the-arches", "02-kitchen")),
     copy: "Electrical upgrades that make your home work better. From rewiring and switchboard replacements to new lighting and additional power points, we help bring your plans together.",
   },
   {
     title: "Commercial",
+    page: "commercial-electrician-taupo",
     service: "Commercial fit-out",
     card: fromPhoto(getPhoto("beechtree-studio", "02-entry-at-dusk")),
     copy: "Practical electrical solutions for workplaces and commercial spaces. Our services include office and retail fit-outs, three-phase power, emergency lighting and compliance testing.",
   },
   {
     title: "Solar & battery",
+    page: "solar-installation-taupo",
     service: "Solar & battery storage",
     card: fromPhoto(getPhoto("glass-pavilion", "01-array")),
     copy: "Make more of the energy your property can generate. We help with solar electrical installation, grid connection and battery storage options suited to your property and energy use.",
   },
   {
-    title: "Air-Conditioning",
-    service: "Air-Conditioning",
+    title: "Air conditioning & heating",
+    page: "air-conditioning-heating-taupo",
+    service: "Air conditioning & heating",
     card: fromPhoto(getPhoto("walnut-house", "01-kitchen")),
-    copy: "Comfort throughout the seasons. We supply and install air-conditioning, from individual rooms to multi-zone systems.",
+    copy: "Heat pumps and ducted central heating and cooling, designed into the home — linear grilles in ceilings and custom grilles in the joinery, so nothing hangs on show.",
   },
   {
     title: "EV charging",
+    page: "ev-charger-installation-taupo",
     service: "EV charging",
     card: art(
       "ev-charging",
@@ -197,6 +204,13 @@ export function Circuits() {
                 className="beam-link eyebrow mt-5 inline-flex items-center gap-2 text-[10px]"
               >
                 Discuss your project <ArrowUpRight className="size-3" />
+              </Link>
+              <Link
+                to="/services/$slug"
+                params={{ slug: s.page }}
+                className="beam-link eyebrow ml-6 mt-5 inline-flex items-center gap-2 text-[10px] text-ink-soft"
+              >
+                Learn more
               </Link>
             </article>
           ))}

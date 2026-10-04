@@ -8,6 +8,7 @@ import { CONTACT } from "@/lib/contact";
 import { cn } from "@/lib/utils";
 import { gsap, isFinePointer, prefersReducedMotion } from "@/lib/gsap";
 import { EwrbLogo } from "@/components/EwrbLogo";
+import { AREAS } from "@/lib/areas";
 
 const nav = [
   { to: "/", label: "Home" },
@@ -18,15 +19,16 @@ const nav = [
   { to: "/contact", label: "Contact" },
 ] as const;
 
-// Footer service list → the matching circuit on Areas of Expertise.
+// Footer service list → each service's own page.
 const SERVICE_LINKS: [string, string][] = [
-  ["Lighting design", "01"],
-  ["New builds", "06"],
-  ["Renovations", "01"],
-  ["Commercial", "02"],
-  ["Solar & battery", "07"],
-  ["Air-Conditioning", "03"],
-  ["EV charging", "04"],
+  ["Lighting design", "lighting-design-taupo"],
+  ["New builds", "new-build-electrician-taupo"],
+  ["Renovations", "renovation-electrician-taupo"],
+  ["Commercial", "commercial-electrician-taupo"],
+  ["Solar & battery", "solar-installation-taupo"],
+  ["Air conditioning & heating", "air-conditioning-heating-taupo"],
+  ["EV charging", "ev-charger-installation-taupo"],
+  ["Smart home", "smart-home-automation-taupo"],
 ];
 
 export function SiteLayout({ children }: { children: ReactNode }) {
@@ -244,8 +246,8 @@ function SiteFooter() {
                 {SERVICE_LINKS.map(([label, area]) => (
                   <li key={label}>
                     <Link
-                      to="/areas-of-expertise"
-                      hash={`area-${area}`}
+                      to="/services/$slug"
+                      params={{ slug: area }}
                       className="beam-link text-ivory/80 hover:text-ivory"
                     >
                       {label}
@@ -256,9 +258,19 @@ function SiteFooter() {
             </div>
             <div className="col-span-2 md:col-span-1">
               <p className="eyebrow mb-5 text-muted-foreground">Working across</p>
-              <p className="text-sm leading-relaxed text-ivory/80">
-                Taupō · Kinloch · Acacia Bay · Wairakei · Turangi · Central North Island
-              </p>
+              <ul className="space-y-3 text-sm">
+                {AREAS.map((a) => (
+                  <li key={a.slug}>
+                    <Link
+                      to="/areas/$slug"
+                      params={{ slug: a.slug }}
+                      className="beam-link text-ivory/80 hover:text-ivory"
+                    >
+                      {a.name}
+                    </Link>
+                  </li>
+                ))}
+              </ul>
               <EwrbLogo tone="light" className="mt-8 h-12" />
             </div>
           </div>

@@ -71,7 +71,7 @@ export const Route = createFileRoute("/contact")({
       {
         name: "description",
         content:
-          "Contact Victoria Grant at Balance Electrical to discuss electrical work, lighting, air-conditioning or solar for your home or business in the Taupō district.",
+          "Contact Victoria Grant at Balance Electrical to discuss electrical work, lighting, heating and air conditioning or solar for your home or business in the Taupō district.",
       },
       { name: "robots", content: "index, follow, max-image-preview:large" },
       { name: "geo.region", content: "NZ-WKO" },

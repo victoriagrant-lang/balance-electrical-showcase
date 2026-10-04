@@ -7,6 +7,7 @@ import { Reveal, SplitReveal } from "@/components/motion/Reveal";
 import { photos } from "@/lib/photos";
 import { getPhoto, PORTFOLIO } from "@/lib/portfolio";
 import { serviceImage, type ServiceArt } from "@/lib/service-images";
+import { SERVICES } from "@/lib/services";
 import { cn } from "@/lib/utils";
 import { useLenis } from "@/hooks/use-lenis";
 
@@ -20,7 +21,7 @@ export const Route = createFileRoute("/areas-of-expertise")({
       {
         name: "description",
         content:
-          "Electrical services in Taupō for homes and businesses. Explore lighting, new builds, renovations, air-conditioning, solar, EV charging and repairs.",
+          "Electrical services in Taupō for homes and businesses. Explore lighting, new builds, renovations, heat pumps and ducted heating and cooling, solar, EV charging and smart homes.",
       },
       { name: "robots", content: "index, follow, max-image-preview:large" },
       { name: "geo.region", content: "NZ-WKO" },
@@ -50,6 +51,8 @@ type Area = {
   intro: string;
   bullets: string[];
   closing?: string;
+  /** Service pages that go deeper on this area. */
+  pages: string[];
   /** Portfolio chapters where this work can be seen. */
   projects?: string[];
 };
@@ -67,6 +70,7 @@ function withArt(name: ServiceArt, alt: string, fallback: Area["img"]): Area["im
 const sections: Area[] = [
   {
     num: "01",
+    pages: ["lighting-design-taupo", "renovation-electrician-taupo"],
     heading: "Homes & renovations",
     service: "Renovation or addition",
     img: shot("the-arches", "02-kitchen"),
@@ -85,6 +89,7 @@ const sections: Area[] = [
   },
   {
     num: "02",
+    pages: ["commercial-electrician-taupo"],
     heading: "Commercial",
     service: "Commercial fit-out",
     img: shot("beechtree-studio", "01-front-at-dusk"),
@@ -103,22 +108,26 @@ const sections: Area[] = [
   },
   {
     num: "03",
-    heading: "Air-Conditioning",
-    service: "Air-Conditioning",
+    pages: ["air-conditioning-heating-taupo"],
+    heading: "Air conditioning & heating",
+    service: "Air conditioning & heating",
     img: shot("walnut-house", "01-kitchen"),
     intro:
-      "Keep your home or workplace comfortable throughout the seasons. We help you select an air-conditioning system suited to the space, then take care of supply, installation and commissioning — from a single room to a complete ducted system.",
+      "Heating and cooling, designed into the home rather than hung on the wall. We supply and install high-wall and floor-mounted heat pumps, ducted central heating and cooling, and multi-zone systems — then integrate them into the design, with linear grilles set into ceilings and bulkheads and custom grilles or heat pumps built into the joinery.",
     bullets: [
-      "Residential air-conditioning installation",
-      "Ducted systems for whole-home comfort",
+      "High-wall and floor-mounted heat pumps",
+      "Ducted central heating and cooling for the whole home",
+      "Linear grilles coordinated with ceilings and bulkheads",
+      "Custom joinery grilles and heat pumps built into cabinetry",
       "Commercial multi-zone systems",
-      "Air-conditioning servicing and maintenance",
+      "Servicing and maintenance",
       "All major brands supplied and installed",
     ],
-    projects: ["the-arches", "pool-courtyard"],
+    projects: ["walnut-house", "cedar-gables", "lake-house", "cedar-cube-house"],
   },
   {
     num: "04",
+    pages: ["ev-charger-installation-taupo"],
     heading: "EV charger installation",
     service: "EV charging",
     img: withArt(
@@ -137,6 +146,7 @@ const sections: Area[] = [
   },
   {
     num: "05",
+    pages: [],
     heading: "Maintenance & repairs",
     service: "Something else",
     img: shot("beechtree-studio", "09-switchboard"),
@@ -152,6 +162,7 @@ const sections: Area[] = [
   },
   {
     num: "06",
+    pages: ["new-build-electrician-taupo", "smart-home-automation-taupo"],
     heading: "New builds",
     service: "New residential build",
     img: shot("cedar-gables", "06"),
@@ -169,6 +180,7 @@ const sections: Area[] = [
   },
   {
     num: "07",
+    pages: ["solar-installation-taupo"],
     heading: "Solar & battery storage",
     service: "Solar & battery storage",
     img: shot("glass-pavilion", "01-array"),
@@ -321,7 +333,11 @@ function AreasOfExpertise() {
                       <ul className="mt-3 flex flex-wrap gap-x-5 gap-y-2">
                         {s.projects.map((slug) => (
                           <li key={slug}>
-                            <Link to="/portfolio" hash={slug} className="beam-link text-[0.98rem]">
+                            <Link
+                              to="/portfolio/$slug"
+                              params={{ slug }}
+                              className="beam-link text-[0.98rem]"
+                            >
                               {PORTFOLIO.find((p) => p.slug === slug)?.title}
                             </Link>
                           </li>
@@ -336,6 +352,16 @@ function AreasOfExpertise() {
                   >
                     Discuss your project <ArrowUpRight className="size-3" />
                   </Link>
+                  {s.pages.map((page) => (
+                    <Link
+                      key={page}
+                      to="/services/$slug"
+                      params={{ slug: page }}
+                      className="beam-link eyebrow ml-6 mt-10 inline-flex items-center gap-2 text-[10px] text-ink-soft"
+                    >
+                      {SERVICES.find((x) => x.slug === page)?.name} in detail
+                    </Link>
+                  ))}
                 </div>
               </article>
             );
