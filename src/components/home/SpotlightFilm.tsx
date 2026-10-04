@@ -1,11 +1,10 @@
 import { useEffect, useRef, type CSSProperties, type RefObject } from "react";
-import { gsap } from "@/lib/gsap";
 import { photos } from "@/lib/photos";
 
 const revealStyle = {
-  "--spot-x": "72%",
-  "--spot-y": "50%",
-  "--spot-size": "0px",
+  clipPath: "circle(0px at 72% 50%)",
+  WebkitClipPath: "circle(0px at 72% 50%)",
+  willChange: "clip-path",
 } as CSSProperties;
 
 /** A quiet stone veil that lets the project image emerge under the pointer. */
@@ -17,49 +16,45 @@ export function SpotlightFilm({ host }: { host: RefObject<HTMLElement | null> })
     const reveal = revealRef.current;
     if (!section || !reveal) return;
 
-    const media = window.matchMedia(
-      "(min-width: 768px) and (hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference)",
-    );
-    if (!media.matches) return;
+    const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
+    if (reducedMotion.matches) return;
 
-    const setX = gsap.quickTo(reveal, "--spot-x", { duration: 0.35, ease: "power3.out" });
-    const setY = gsap.quickTo(reveal, "--spot-y", { duration: 0.35, ease: "power3.out" });
-    const setSize = gsap.quickTo(reveal, "--spot-size", { duration: 0.8, ease: "power3.out" });
-    const centre = () => {
-      setX(section.clientWidth * 0.72);
-      setY(section.clientHeight * 0.5);
+    const hide = () => {
+      const clip = "circle(0px at 72% 50%)";
+      reveal.style.clipPath = clip;
+      reveal.style.webkitClipPath = clip;
     };
-    const resize = new ResizeObserver(centre);
-    resize.observe(section);
-    centre();
 
     const move = (event: PointerEvent) => {
+      if (event.pointerType === "touch") return;
+
       const rect = section.getBoundingClientRect();
+      const inside =
+        event.clientX >= rect.left &&
+        event.clientX <= rect.right &&
+        event.clientY >= rect.top &&
+        event.clientY <= rect.bottom;
+
+      if (!inside) {
+        hide();
+        return;
+      }
+
       const x = event.clientX - rect.left;
       const y = event.clientY - rect.top;
-      const size = Math.min(520, Math.max(320, section.clientWidth * 0.34));
-      setX(x);
-      setY(y);
-      setSize(size);
-      reveal.style.setProperty("--spot-x", `${x}px`);
-      reveal.style.setProperty("--spot-y", `${y}px`);
-      reveal.style.setProperty("--spot-size", `${size}px`);
-    };
-    const leave = () => {
-      setSize(0);
-      reveal.style.setProperty("--spot-size", "0px");
+      const size = Math.min(520, Math.max(320, rect.width * 0.34));
+      const clip = `circle(${size}px at ${x}px ${y}px)`;
+      reveal.style.clipPath = clip;
+      reveal.style.webkitClipPath = clip;
     };
 
-    section.addEventListener("pointermove", move, { passive: true });
-    section.addEventListener("pointerleave", leave);
+    window.addEventListener("pointermove", move, { passive: true });
+    window.addEventListener("blur", hide);
+    hide();
 
     return () => {
-      resize.disconnect();
-      section.removeEventListener("pointermove", move);
-      section.removeEventListener("pointerleave", leave);
-      setX.tween.kill();
-      setY.tween.kill();
-      setSize.tween.kill();
+      window.removeEventListener("pointermove", move);
+      window.removeEventListener("blur", hide);
     };
   }, [host]);
 
@@ -75,18 +70,7 @@ export function SpotlightFilm({ host }: { host: RefObject<HTMLElement | null> })
         className="absolute inset-0 h-full w-full scale-[1.03] object-cover object-center opacity-35 saturate-[0.72] mix-blend-multiply"
       />
       <div className="absolute inset-0 bg-stone-pale/70" />
-      <div
-        ref={revealRef}
-        className="absolute inset-0 overflow-hidden"
-        style={{
-          ...revealStyle,
-          clipPath: "circle(var(--spot-size) at var(--spot-x) var(--spot-y))",
-          maskImage:
-            "radial-gradient(circle var(--spot-size) at var(--spot-x) var(--spot-y), black 0%, black 62%, transparent 100%)",
-          WebkitMaskImage:
-            "radial-gradient(circle var(--spot-size) at var(--spot-x) var(--spot-y), black 0%, black 62%, transparent 100%)",
-        }}
-      >
+      <div ref={revealRef} className="absolute inset-0 overflow-hidden" style={revealStyle}>
         <img
           src={photos.img0003}
           alt=""
