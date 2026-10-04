@@ -57,8 +57,8 @@ const SERVICES = [
     title: "Air conditioning",
     page: "air-conditioning-heating-taupo",
     service: "Air conditioning & heating",
-    card: fromPhoto(getPhoto("walnut-house", "01-kitchen")),
-    copy: "Heat pumps and ducted central heating and cooling, designed into the home — linear grilles in ceilings and custom grilles in the joinery, so nothing hangs on show.",
+    card: fromPhoto(getPhoto("walnut-house", "02-galley"), "50% 30%"),
+    copy: "Comfort should be felt, not seen. From discreet high-wall units to fully ducted systems with grilles built into ceilings and joinery.",
   },
   {
     title: "Solar & battery",
