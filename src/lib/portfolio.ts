@@ -29,7 +29,7 @@ export type PortfolioProject = {
   location: string;
   tags: string[];
   summary: string;
-  /** Heading for the details list, e.g. "Lighting in view" */
+  /** Heading for the details list, e.g. "Lighting details" */
   detailsTitle: string;
   details: string[];
   accolade?: string;
@@ -60,8 +60,8 @@ export const PORTFOLIO: PortfolioProject[] = [
     accolade:
       "Gold Award — Master Builders House of the Year 2025, Bay of Plenty & Central Plateau",
     summary:
-      "A lake-view home in pale timber, where the lighting is as considered as the joinery — a drum pendant floating over the living room, one clean linear line above the island, and a courtyard that glows at dusk.",
-    detailsTitle: "Lighting in view",
+      "Lighting planned to complement the timber interiors and lake views of this new home. Feature pendants define the living spaces, integrated LEDs highlight the joinery, and outdoor lighting connects the courtyard and garden after dark.",
+    detailsTitle: "Lighting details",
     details: [
       "Feature pendants over the living room and lounge",
       "Linear pendant lighting above the kitchen island",
@@ -75,7 +75,7 @@ export const PORTFOLIO: PortfolioProject[] = [
         1313,
         851,
         "Courtyard at dusk",
-        "Pergola lighting, garden uplights and warm interiors glowing through the glass.",
+        "Pergola and garden lighting alongside the illuminated interior.",
       ),
       photo(
         "oakleaf-residence",
@@ -83,7 +83,7 @@ export const PORTFOLIO: PortfolioProject[] = [
         1320,
         873,
         "Living room",
-        "A drum pendant beneath the timber-lined ceiling, with the lake framed in glass.",
+        "A drum pendant beneath the timber-lined living room ceiling.",
       ),
       photo(
         "oakleaf-residence",
@@ -107,7 +107,7 @@ export const PORTFOLIO: PortfolioProject[] = [
         1320,
         876,
         "Lounge",
-        "A pendant anchors the curved sofa under the raked timber ceiling.",
+        "A feature pendant above the curved sofa, beneath the sloping timber ceiling.",
       ),
     ],
   },
@@ -117,8 +117,8 @@ export const PORTFOLIO: PortfolioProject[] = [
     location: "Kinloch",
     tags: ["Residential", "New build"],
     summary:
-      "Curves traced in light. A continuous LED line follows the sweep of the deck soffit, the profile of the stair and the length of the hallway, while a glowing ellipse hangs over the dining table.",
-    detailsTitle: "Lighting in view",
+      "Lighting follows the distinctive curves of this Kinloch home. Continuous LED lines highlight the deck, hallway and staircase, while feature pendants and concealed ceiling lighting give each interior space its own character.",
+    detailsTitle: "Lighting details",
     details: [
       "LED line following the curved deck soffit",
       "Recessed LED channel along the hallway ceiling",
@@ -148,7 +148,7 @@ export const PORTFOLIO: PortfolioProject[] = [
         1320,
         1317,
         "Kitchen & dining",
-        "A glowing ellipse overhead and a linear pendant above the island.",
+        "An elliptical dining pendant and linear lighting above the kitchen island.",
       ),
       photo(
         "the-curve-house",
@@ -156,7 +156,7 @@ export const PORTFOLIO: PortfolioProject[] = [
         1800,
         1350,
         "Open-plan living",
-        "Cove lighting follows the raked ceiling; downlights pick out the island.",
+        "Concealed lighting along the sloping ceiling, with downlights over the island.",
       ),
       photo(
         "the-curve-house",
@@ -182,8 +182,8 @@ export const PORTFOLIO: PortfolioProject[] = [
     location: "Taupō district",
     tags: ["Commercial", "New build"],
     summary:
-      "A two-storey headquarters in cedar and black steel. Soffit downlights wash the glazing at dusk, a cluster of glass pendants drops through the double-height stairwell, and LED tucked beneath the handrails lights every tread — all fed from a switchboard and labelled sub-mains built for the tenancies to come.",
-    detailsTitle: "Lighting & power in view",
+      "A complete electrical installation for a two-storey commercial headquarters, covering offices, a workshop and shared spaces. The work combines switchboards and distribution cabling with practical workplace lighting, stairwell pendants and illuminated handrails.",
+    detailsTitle: "Electrical scope",
     details: [
       "Soffit downlights and wall washers across the glazed frontage",
       "Glass pendant cluster through the double-height stairwell",
@@ -230,7 +230,7 @@ export const PORTFOLIO: PortfolioProject[] = [
         1041,
         1511,
         "Lit handrail",
-        "LED concealed beneath the timber handrail washes each tread.",
+        "LED lighting beneath the timber handrail illuminates the stair treads.",
       ),
       photo(
         "beechtree-building-headquarters",
@@ -288,13 +288,13 @@ export const PORTFOLIO: PortfolioProject[] = [
     location: "Kinloch",
     tags: ["Residential", "New build"],
     summary:
-      "A cluster of dark gabled pavilions on a Kinloch hillside. As the sky turns, warm light spills from every room, a concealed LED line glows beneath the deck's built-in bench, and the courtyard between the pavilions lights up like a lantern.",
-    detailsTitle: "Lighting in view",
+      "Exterior lighting connects the separate pavilions of this hillside home in Kinloch. Concealed LEDs beneath the deck seating, deck-edge lighting and sheltered courtyard lighting extend the living spaces into the evening.",
+    detailsTitle: "Lighting details",
     details: [
       "Concealed LED beneath the built-in deck seating",
       "Deck-edge lighting around the pavilions",
       "Soffit lighting to the sheltered courtyard",
-      "Warm, layered interiors that read from outside",
+      "Interior lighting across the living spaces",
     ],
     photos: [
       photo(
@@ -303,7 +303,7 @@ export const PORTFOLIO: PortfolioProject[] = [
         1800,
         1200,
         "At dusk",
-        "Warm interiors and deck-edge lighting glow across the pavilions at dusk.",
+        "Interior and deck-edge lighting across the pavilions at dusk.",
       ),
       photo(
         "sparrowhawk",
@@ -311,7 +311,7 @@ export const PORTFOLIO: PortfolioProject[] = [
         1800,
         1201,
         "Deck at sunset",
-        "A concealed LED line runs beneath the built-in bench as the sky turns.",
+        "Concealed LED lighting beneath the built-in deck seating.",
       ),
       photo(
         "sparrowhawk",
@@ -319,7 +319,7 @@ export const PORTFOLIO: PortfolioProject[] = [
         1800,
         1348,
         "Pavilions from above",
-        "Each room lit warm against the evening, seen from the hillside above.",
+        "The illuminated pavilions viewed from the hillside at dusk.",
       ),
       photo(
         "sparrowhawk",
@@ -327,7 +327,7 @@ export const PORTFOLIO: PortfolioProject[] = [
         1800,
         1200,
         "Courtyard at dusk",
-        "The sheltered courtyard glows between the pavilions.",
+        "Lighting around the sheltered courtyard between the pavilions.",
       ),
     ],
   },
@@ -337,8 +337,8 @@ export const PORTFOLIO: PortfolioProject[] = [
     location: "Kinloch",
     tags: ["Residential", "New build"],
     summary:
-      "Dark timber, native tussock and the lake on the horizon. Inside, downlights set into timber-lined ceilings and warm LED tucked above the joinery keep the mood low and calm.",
-    detailsTitle: "Lighting in view",
+      "Lighting integrated with the timber architecture of a Kinloch home. Recessed downlights provide general illumination, concealed LEDs light the kitchen joinery, and soffit lighting defines the covered entrance.",
+    detailsTitle: "Lighting details",
     details: [
       "Soffit lighting along the covered entry",
       "Downlights set into timber-lined ceilings",
@@ -385,8 +385,8 @@ export const PORTFOLIO: PortfolioProject[] = [
     location: "Kinloch",
     tags: ["Residential", "New build"],
     summary:
-      "Cedar cladding, a copper-toned front door and the lake through the glass. Downlights set into the soffits lead the way to the entry, wall lights flank the stacker doors, and small step lights glow low in the deck and planting after dark — followed here from framing to finish.",
-    detailsTitle: "Lighting in view",
+      "A new home followed from framing through to the finished electrical installation. Exterior downlights, wall fittings and low-level deck lighting illuminate the entrance and outdoor spaces while complementing the cedar cladding.",
+    detailsTitle: "Lighting details",
     details: [
       "Soffit downlights over the entry and around the house",
       "Wall lights flanking the doors and glazing",
@@ -400,7 +400,7 @@ export const PORTFOLIO: PortfolioProject[] = [
         1800,
         1200,
         "Exterior at dusk",
-        "Soffit downlights ring the cedar-clad house as evening settles.",
+        "Soffit downlights around the exterior of the cedar-clad home.",
       ),
       photo(
         "kinloch-project",
@@ -432,7 +432,7 @@ export const PORTFOLIO: PortfolioProject[] = [
         1200,
         1800,
         "Step light",
-        "A step light glows low beside the tussock.",
+        "A low-level step light beside the garden planting.",
       ),
       photo(
         "kinloch-project",
@@ -458,8 +458,8 @@ export const PORTFOLIO: PortfolioProject[] = [
     location: "Taupō district",
     tags: ["Residential"],
     summary:
-      "Charred timber, cedar-lined ceilings and oak floors — lit almost entirely by light you can't see. Concealed LED coves run the length of the gallery and the living-room ceiling, a warm line floats the kitchen island off the floor, and garden spotlights take over outside.",
-    detailsTitle: "Lighting in view",
+      "Concealed lighting brings out the warmth of this home’s cedar ceilings and oak floors. LEDs run along the ceiling coves and beneath the kitchen island, complemented by small downlights and spotlights in the garden.",
+    detailsTitle: "Lighting details",
     details: [
       "Concealed LED cove along the cedar ceilings",
       "LED line beneath the kitchen island",
@@ -473,7 +473,7 @@ export const PORTFOLIO: PortfolioProject[] = [
         1800,
         1200,
         "Kitchen island",
-        "An LED line beneath the island throws a soft wash across the oak floor.",
+        "Concealed LED lighting beneath the kitchen island illuminates the oak floor.",
       ),
       photo(
         "the-lakehouse",
@@ -515,8 +515,8 @@ export const PORTFOLIO: PortfolioProject[] = [
     location: "Taupō district",
     tags: ["Residential"],
     summary:
-      "Black board-and-batten gables and a manicured lawn — and after dark, a lighting scheme that does the landscaping justice. Uplights climb the columnar trees, soffit lights trace the eaves and garage, and inside a slim linear pendant draws the line of the black island.",
-    detailsTitle: "Lighting in view",
+      "A coordinated lighting scheme for the home and garden. Tree uplights and soffit fittings highlight the exterior, while kitchen pendants, track lighting and downlights provide lighting throughout the interior.",
+    detailsTitle: "Lighting details",
     details: [
       "Uplights to the trees and planting",
       "Soffit lighting along the eaves and garage",
@@ -530,7 +530,7 @@ export const PORTFOLIO: PortfolioProject[] = [
         1448,
         1086,
         "Front at dusk",
-        "Uplights climb the columnar trees; soffit lights trace the eaves.",
+        "Uplights illuminate the trees, with soffit lighting along the eaves.",
       ),
       photo(
         "pukeko",
@@ -546,7 +546,7 @@ export const PORTFOLIO: PortfolioProject[] = [
         1448,
         1086,
         "Garden at dusk",
-        "Garden uplights and soffit lighting carry the glow along the frontage.",
+        "Garden uplights and soffit lighting along the front of the property.",
       ),
       photo(
         "pukeko",
@@ -602,13 +602,13 @@ export const PORTFOLIO: PortfolioProject[] = [
     slug: "jarden-mile",
     title: "Jarden Mile",
     location: "Taupō",
-    tags: ["Residential", "Pool", "Heating"],
+    tags: ["Residential", "Pool", "Air-Conditioning"],
     summary:
-      "A black board-and-batten home with a lap pool out the back. Balance wired the pool, installed the heat pump and ran ducted heating through the whole house — then brought the frontage to life after dark with lights set into the pavers, an LED line over the garage door and up/down lights on the cladding.",
-    detailsTitle: "The work",
+      "Electrical work spanning pool wiring, air-conditioning, ducted heating and feature lighting. The installation includes lights within the entrance pavers, an LED strip above the garage and wall fittings along the frontage, with integrated lighting in the bathrooms.",
+    detailsTitle: "Electrical scope",
     details: [
       "Swimming pool wiring",
-      "Heat pump installation",
+      "Air-conditioning installation",
       "Ducted heating throughout the home",
       "Lights set into the stepping-stone pavers",
       "LED strip above the garage door; up/down wall lights",
@@ -628,7 +628,7 @@ export const PORTFOLIO: PortfolioProject[] = [
         720,
         479,
         "Lap pool",
-        "The lap pool out back, with its pump and equipment wired as part of the job.",
+        "The lap pool, with electrical connections for its pump and equipment.",
       ),
       photo(
         "jarden-mile",
@@ -636,7 +636,7 @@ export const PORTFOLIO: PortfolioProject[] = [
         720,
         524,
         "Entry & hall",
-        "A wire pendant floats in the raked entry; the hall runs the length of the house.",
+        "A wire-frame pendant in the high-ceilinged entrance, looking through to the hallway.",
       ),
       photo(
         "jarden-mile",
@@ -670,8 +670,8 @@ export const PORTFOLIO: PortfolioProject[] = [
     location: "Taupō district",
     tags: ["Residential", "Solar"],
     summary:
-      "A lakefront home that opens fully to the view, with a rooftop array laid across its black standing-seam roofs. Inside, slim pendants and clean downlights; up top, rails set out to the seams first, then panels aligned to each roof plane.",
-    detailsTitle: "In view",
+      "Solar installation and interior lighting for a lakefront home. Rooftop panels are arranged across several standing-seam roof sections, while pendants and downlights serve the open-plan kitchen, dining and living areas.",
+    detailsTitle: "Project highlights",
     details: [
       "Solar array across several roof planes",
       "Mounting rails fixed to the standing seams",
@@ -693,7 +693,7 @@ export const PORTFOLIO: PortfolioProject[] = [
         1800,
         1350,
         "Array",
-        "Panels laid to the roof plane, looking out over the lake.",
+        "Solar panels installed along the sloping roof, overlooking the lake.",
       ),
       photo(
         "the-sisters",
@@ -709,7 +709,7 @@ export const PORTFOLIO: PortfolioProject[] = [
         1305,
         1310,
         "Living room",
-        "Stacker doors fold away to the lake; downlights keep the ceiling clean.",
+        "Recessed downlights above the living room, which opens onto the lakefront deck.",
       ),
       photo(
         "the-sisters",
@@ -751,8 +751,8 @@ export const PORTFOLIO: PortfolioProject[] = [
     location: "Taupō district",
     tags: ["Residential"],
     summary:
-      "Dark-stained timber joinery set against pale oak, with the lighting built right into it. LED lines sit beneath the shelves to light the stone splashbacks, a red linear pendant marks the kitchen island, and a warm glow runs along the bedhead.",
-    detailsTitle: "Lighting in view",
+      "Lighting integrated into the joinery of a holiday home. LEDs beneath shelves illuminate the kitchen surfaces, a red pendant defines the island, and concealed lighting along the bedhead provides a softer setting in the bedroom.",
+    detailsTitle: "Lighting details",
     details: [
       "LED concealed beneath the joinery shelves",
       "Red linear pendant over the island",
@@ -790,7 +790,7 @@ export const PORTFOLIO: PortfolioProject[] = [
         1448,
         1086,
         "Bedroom",
-        "A warm LED line glows along the bedhead ledge.",
+        "Concealed LED lighting along the bedhead ledge.",
       ),
     ],
   },
@@ -800,12 +800,12 @@ export const PORTFOLIO: PortfolioProject[] = [
     location: "Taupō",
     tags: ["Residential", "Renovation"],
     summary:
-      "A holiday home reworked room by room. Lit arched niches frame a new fireplace wall, track spots follow the curved kitchen, a heat pump keeps it comfortable year-round, and outside, wall and step lights lead across the new courtyard.",
-    detailsTitle: "In view",
+      "Lighting and air-conditioning upgrades as part of a holiday home renovation. The work includes illuminated display niches, kitchen track lighting and wall and step lights for the courtyard and covered deck.",
+    detailsTitle: "Project highlights",
     details: [
       "LED to the arched display niches",
       "Track spotlights over the kitchen",
-      "Heat pump installation",
+      "Air-conditioning installation",
       "Wall and step lighting to the deck and courtyard",
     ],
     photos: [
@@ -823,7 +823,7 @@ export const PORTFOLIO: PortfolioProject[] = [
         1320,
         892,
         "Kitchen",
-        "Track spotlights over the curved kitchen, with a heat pump mounted high on the wall.",
+        "Track spotlights over the curved kitchen and a wall-mounted air-conditioning unit.",
       ),
       photo(
         "rainbow-reno",
@@ -847,15 +847,15 @@ export const PORTFOLIO: PortfolioProject[] = [
     slug: "pre-wires",
     title: "Pre-wires",
     location: "Taupō district",
-    tags: ["New build", "First fix"],
+    tags: ["New build", "Pre-wiring"],
     summary:
-      "The work nobody sees, and the reason everything else works. Before the linings go on, every cable is planned, run and clipped neatly through the framing, ready for the fittings, scenes and controls that come later.",
-    detailsTitle: "In view",
+      "The electrical installation begins before the wall and ceiling linings go on. These photographs show cable routes through the framing, organised drops for fittings and wiring prepared for the next stage of the build.",
+    detailsTitle: "Project highlights",
     details: [
       "Cable runs planned and clipped along the joists",
       "Bundled drops through the wall framing",
       "Loops kept clear of openings and arches",
-      "First fix ready for inspection before linings",
+      "Pre-wiring before wall and ceiling linings",
     ],
     photos: [
       photo(
@@ -871,8 +871,8 @@ export const PORTFOLIO: PortfolioProject[] = [
         "02-first-fix",
         1350,
         1800,
-        "First fix",
-        "First-fix cabling through the framing of a two-storey build.",
+        "Pre-wiring",
+        "Electrical cabling through the framing of a two-storey build.",
       ),
       photo(
         "pre-wires",
@@ -880,7 +880,7 @@ export const PORTFOLIO: PortfolioProject[] = [
         1350,
         1800,
         "Cable drops",
-        "Cable drops bundled down the framing, ready for fit-off.",
+        "Cable drops grouped along the framing for the later installation of fittings.",
       ),
       photo(
         "pre-wires",
@@ -917,12 +917,12 @@ const PHOTO_TAGS: Record<string, string[]> = {
   "the-sisters/08-kitchen": ["Residential"],
   "jarden-mile/02-front-by-day": ["Residential"],
   "jarden-mile/03-lap-pool": ["Pool"],
-  "jarden-mile/04-entry-and-hall": ["Residential", "Heating"],
-  "jarden-mile/05-bedroom": ["Residential", "Heating"],
-  "jarden-mile/06-shower-niche": ["Residential", "Heating"],
-  "jarden-mile/07-ensuite": ["Residential", "Heating"],
-  "rainbow-reno/02-kitchen": ["Residential", "Renovation", "Heating"],
-  "kinloch-project/07-during-the-build": ["New build", "First fix"],
+  "jarden-mile/04-entry-and-hall": ["Residential", "Air-Conditioning"],
+  "jarden-mile/05-bedroom": ["Residential", "Air-Conditioning"],
+  "jarden-mile/06-shower-niche": ["Residential", "Air-Conditioning"],
+  "jarden-mile/07-ensuite": ["Residential", "Air-Conditioning"],
+  "rainbow-reno/02-kitchen": ["Residential", "Renovation", "Air-Conditioning"],
+  "kinloch-project/07-during-the-build": ["New build", "Pre-wiring"],
 };
 
 export function photoTags(project: PortfolioProject, photo: PortfolioPhoto): string[] {

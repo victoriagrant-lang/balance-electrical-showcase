@@ -20,7 +20,7 @@ export const Route = createFileRoute("/areas-of-expertise")({
       {
         name: "description",
         content:
-          "Registered electrical services in Taupō — new builds, renovations, solar & battery storage, heat pump installation, EV chargers, and commercial fit-outs. Balance Electrical, Victoria Grant.",
+          "Electrical services in Taupō for homes and businesses. Explore lighting, new builds, renovations, air-conditioning, solar, EV charging and repairs.",
       },
       { name: "robots", content: "index, follow, max-image-preview:large" },
       { name: "geo.region", content: "NZ-WKO" },
@@ -67,18 +67,18 @@ function withArt(name: ServiceArt, alt: string, fallback: Area["img"]): Area["im
 const sections: Area[] = [
   {
     num: "01",
-    heading: "Residential",
+    heading: "Homes & renovations",
     service: "Renovation or addition",
     img: { src: photos.img0004, alt: "Kitchen lighting in a Taupō home", credit: "Residential" },
     intro:
-      "From lake-view new builds in Kinloch to a holiday home reworked room by room, Balance Electrical handles the full scope of residential electrical work. In New Zealand, using a registered electrician isn't just about quality — it's a legal requirement.",
+      "Make your home work better, room by room. We plan and install lighting, power and wiring around the way you live, whether you’re renovating, extending or updating an existing space.",
     bullets: [
-      "New build electrical fit-out — full installation from foundations to CCC",
-      "Renovation wiring — additional circuits, partial rewires, room additions",
-      "Switchboard upgrades — safety switches, modern distribution boards",
-      "Lighting design and installation — interior, exterior, and garden lighting",
+      "Complete electrical installations for new homes",
+      "Rewiring, additional circuits and wiring for extensions",
+      "Switchboard upgrades and safety switches",
+      "Interior, exterior and garden lighting design and installation",
       "Swimming pool and spa wiring",
-      "Network and data cabling — home offices and media rooms",
+      "Network and data cabling for home offices and media rooms",
       "General maintenance, fault finding, and repairs",
     ],
     projects: ["oakleaf-residence", "the-curve-house", "pukeko", "rainbow-reno"],
@@ -89,14 +89,14 @@ const sections: Area[] = [
     service: "Commercial fit-out",
     img: shot("beechtree-building-headquarters", "01-front-at-dusk"),
     intro:
-      "Tenanting, refurbishing or building new. At Beechtree Building's two-storey headquarters we wired it all — the main switchboard and labelled sub-mains for every office and workshop, track lighting and high-bays, a pendant cluster through the stairwell and LED beneath the handrails.",
+      "Electrical installations planned around your business, your premises and the people working there. From offices and retail spaces to workshops, we coordinate power, lighting and cabling with the wider fit-out. Our work includes Beechtree Building’s two-storey headquarters.",
     bullets: [
       "New office and retail fit-outs",
       "Warehouse and workshop electrical installations",
-      "3-phase power installations",
-      "Commercial switchboards, sub-mains and cable containment",
+      "Three-phase power installations",
+      "Switchboards, distribution cabling and cable containment",
       "Exit and emergency lighting — supply, install, and compliance testing",
-      "Emergency breakdown and fault finding",
+      "Electrical fault finding and repairs",
       "Data and voice cabling installations",
     ],
     projects: ["beechtree-building-headquarters"],
@@ -107,12 +107,12 @@ const sections: Area[] = [
     service: "Air-Conditioning",
     img: shot("rainbow-reno", "02-kitchen", "100% 50%"),
     intro:
-      "Victoria is an experienced heat pump installer working with all major brands — from a single high-wall unit in a renovated holiday home to ducted heating throughout a new build. Supply, installation and commissioning, handled by one registered electrician.",
+      "Keep your home or workplace comfortable throughout the seasons. We help you select an air-conditioning system suited to the space, then take care of supply, installation and commissioning — from a single room to a complete ducted system.",
     bullets: [
-      "Residential heat pump installation",
-      "Ducted heating throughout the home",
+      "Residential air-conditioning installation",
+      "Ducted systems for whole-home comfort",
       "Commercial multi-zone systems",
-      "Heat pump servicing and maintenance",
+      "Air-conditioning servicing and maintenance",
       "All major brands supplied and installed",
     ],
     projects: ["rainbow-reno", "jarden-mile"],
@@ -127,12 +127,12 @@ const sections: Area[] = [
       shot("pukeko", "02-driveway-at-dusk", "72% 50%"),
     ),
     intro:
-      "EV ownership is growing fast across the Taupō district. A dedicated home charger installed by a registered electrician means faster charging, safer wiring, and an install that's ready for whatever you drive next.",
+      "Make charging part of your everyday routine. We assess your electrical supply, charger location and usage needs, then install a dedicated charging point for your home or business.",
     bullets: [
-      "Level 2 home EV charger installation",
+      "Dedicated home EV chargers",
       "Commercial charging points for businesses and rental properties",
-      "Load management assessment",
-      "All work certified and compliant with NZ electrical standards",
+      "Electrical supply and load management assessment",
+      "Installation, testing and electrical certification",
     ],
   },
   {
@@ -141,7 +141,7 @@ const sections: Area[] = [
     service: "Something else",
     img: shot("beechtree-building-headquarters", "09-switchboard"),
     intro:
-      "Need something fixed? Balance Electrical handles general residential and commercial electrical maintenance and repairs across Taupō — tidy, tested and signed off.",
+      "Get faults investigated and everyday electrical problems sorted. We provide maintenance and repairs for homes and businesses across Taupō, with a clear explanation of the issue and the work required.",
     bullets: [
       "Fault finding and diagnosis",
       "Safety switch installation and testing",
@@ -156,14 +156,14 @@ const sections: Area[] = [
     service: "New residential build",
     img: shot("kinloch-project", "03-entry-at-dusk"),
     intro:
-      "From the first cable through the framing to the last fitting at handover, Balance Electrical works alongside builders, architects and project managers on new homes across the district — including the Gold Award-winning Oakleaf Residence.",
+      "Plan your electrical installation while your home is taking shape. We work with you, your builder and your design team to coordinate power, lighting and controls, from the initial layout through to the finished installation.",
     bullets: [
       "Full new build electrical design and installation",
-      "Pre-wiring and first fix, second fix and fit-off",
+      "Pre-wiring before wall linings and final installation of fittings",
       "Switchboard design and installation",
       "Exterior and landscape lighting",
       "Smart home pre-wiring and automation-ready installations",
-      "Coordination with all other trades throughout the build",
+      "Coordination with your builder and other trades",
     ],
     projects: ["oakleaf-residence", "sparrowhawk", "kinloch-project", "pre-wires"],
   },
@@ -173,10 +173,10 @@ const sections: Area[] = [
     service: "Solar & battery storage",
     img: shot("the-sisters", "01-array"),
     intro:
-      "Solar power is one of the smartest investments a Taupō homeowner can make — and getting it installed correctly from the start determines how well it performs for the next 25 years. As a registered electrician, Victoria handles the full electrical scope of your solar installation from inverter wiring through to grid connection approval.",
+      "Plan solar and battery storage around your property and the way you use electricity. Balance Electrical handles the electrical installation, including inverter wiring, switchboard requirements and the grid connection process.",
     bullets: [
       "Residential solar panel system wiring and installation",
-      "Battery storage system installation — Powerwall and compatible systems",
+      "Battery storage installation and integration",
       "Grid connection and meter upgrades",
       "Solar and EV charger combined installations",
       "Switchboard upgrades for solar-ready homes",
@@ -184,7 +184,7 @@ const sections: Area[] = [
       "New build solar pre-wiring",
     ],
     closing:
-      "Victoria works alongside your solar panel supplier or can recommend trusted local suppliers. The electrical installation, grid connection approval, and sign-off is handled entirely by Balance Electrical.",
+      "We can work alongside your chosen solar supplier or discuss local supplier options. We’ll clarify the electrical scope and connection requirements before the installation begins.",
     projects: ["the-sisters"],
   },
 ];
@@ -224,14 +224,14 @@ function AreasOfExpertise() {
           as="h1"
           immediate
           delay={0.2}
-          className="display-caps mt-6 text-[clamp(2.8rem,8.6vw,8.4rem)] leading-[0.95] tracking-[0.08em]"
+          className="display-caps mt-6 max-w-5xl text-balance text-[clamp(2rem,5.6vw,5.5rem)] leading-[0.95] tracking-[0.08em]!"
         >
-          Areas of expertise.
+          Electrical expertise. From start to finish.
         </SplitReveal>
         <Reveal delay={0.5} className="mt-10 grid gap-8 md:grid-cols-12 md:items-end">
           <p className="max-w-xl text-[1.05rem] leading-relaxed text-ink-soft md:col-span-6">
-            Registered electrical services across Taupō and the surrounding district — seven
-            circuits, one standard of work, each shown on a project we've wired.
+            Electrical services for homes and businesses across Taupō. Explore how we can help with
+            your build, renovation or upgrade, and see examples of our work.
           </p>
           <div className="flex flex-wrap gap-2 md:col-span-6 md:justify-end">
             {sections.map((s, i) => (
@@ -239,9 +239,10 @@ function AreasOfExpertise() {
                 key={s.num}
                 type="button"
                 onClick={() => jump(i)}
-                className="eyebrow h-10 rounded-full border border-ink/20 px-4 text-[10px] transition-colors hover:border-ink hover:bg-ink hover:text-stone-pale"
+                aria-label={`View ${s.heading}`}
+                className="eyebrow min-h-10 rounded-full border border-ink/20 px-4 text-[10px] transition-colors hover:border-ink hover:bg-ink hover:text-stone-pale"
               >
-                {s.num}
+                {s.heading}
               </button>
             ))}
           </div>
@@ -300,8 +301,8 @@ function AreasOfExpertise() {
                 </figure>
 
                 <div className={cn("lg:col-span-6 lg:py-4", flip && "lg:order-1")}>
-                  <p className="eyebrow text-ink-soft">Circuit {s.num}</p>
-                  <h2 className="display-caps mt-4 text-[clamp(1.9rem,3.2vw,3rem)] leading-[1.05] tracking-[0.1em]">
+                  <p className="eyebrow text-ink-soft">Service {s.num}</p>
+                  <h2 className="display-caps mt-4 text-[clamp(1.9rem,3.2vw,3rem)] leading-[1.05] tracking-[0.1em]!">
                     {s.heading}
                   </h2>
                   <p className="mt-6 text-[1.05rem] leading-relaxed text-ink-soft">{s.intro}</p>
@@ -316,7 +317,7 @@ function AreasOfExpertise() {
                   {s.closing && <p className="mt-8 leading-relaxed text-ink-soft">{s.closing}</p>}
                   {s.projects && (
                     <div className="mt-10 border-t border-ink/15 pt-6">
-                      <p className="eyebrow text-[10px] text-ink-soft">See it in the portfolio</p>
+                      <p className="eyebrow text-[10px] text-ink-soft">Related projects</p>
                       <ul className="mt-3 flex flex-wrap gap-x-5 gap-y-2">
                         {s.projects.map((slug) => (
                           <li key={slug}>
@@ -333,7 +334,7 @@ function AreasOfExpertise() {
                     search={{ service: s.service }}
                     className="beam-link eyebrow mt-10 inline-flex items-center gap-2 text-[10px]"
                   >
-                    Get a quote <ArrowUpRight className="size-3" />
+                    Discuss your project <ArrowUpRight className="size-3" />
                   </Link>
                 </div>
               </article>
@@ -355,16 +356,17 @@ function AreasOfExpertise() {
         <div className="relative mx-auto max-w-3xl px-5 py-28 text-center md:py-40">
           <SplitReveal
             as="h2"
-            className="display-caps text-[clamp(2.2rem,5vw,4.4rem)] leading-[1] tracking-[0.1em] text-ivory"
+            className="display-caps text-[clamp(2.2rem,5vw,4.4rem)] leading-[1] tracking-[0.1em]! text-ivory"
           >
-            Not sure what you need?
+            Let’s work through the details.
           </SplitReveal>
           <Reveal>
             <p className="mx-auto mt-6 max-w-md leading-relaxed text-muted-foreground">
-              Get in touch and Victoria will talk you through it. No obligation, no jargon.
+              You don’t need a finished plan to get in touch. Tell us about your property and what
+              you want to achieve, and Victoria will help you identify the next steps.
             </p>
             <Button asChild variant="lux" size="xl" className="mt-10">
-              <Link to="/contact">Get a quote</Link>
+              <Link to="/contact">Discuss your project</Link>
             </Button>
           </Reveal>
         </div>

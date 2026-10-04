@@ -17,7 +17,7 @@ export const Route = createFileRoute("/projects")({
       {
         name: "description",
         content:
-          "Every project photograph in one place — lighting, new builds, renovations, commercial, solar, heating and pre-wiring across Taupō and the Taupō district.",
+          "Explore Balance Electrical’s gallery of lighting, electrical installations, solar and air-conditioning. Browse photographs by type of work or view projects after dark.",
       },
       { name: "robots", content: "index, follow, max-image-preview:large" },
       { name: "geo.region", content: "NZ-WKO" },
@@ -25,7 +25,8 @@ export const Route = createFileRoute("/projects")({
       { property: "og:title", content: "Gallery — Balance Electrical" },
       {
         property: "og:description",
-        content: "Browse Balance Electrical's work by type — lighting, commercial, solar and more.",
+        content:
+          "See the details of our electrical and lighting work. Filter photographs by service, or explore the full project in our portfolio.",
       },
       { property: "og:image", content: photos.fountainEntry },
     ],
@@ -41,31 +42,31 @@ const EARLIER: Tile[] = [
   {
     src: photos.twilight,
     title: "House at twilight",
-    note: "Full new build, layered exterior lighting.",
+    note: "Exterior lighting for a new home, including the entrance and outdoor spaces.",
     aspect: "aspect-[16/10]",
   },
   {
     src: photos.fountainEntry,
     title: "Fountain entry",
-    note: "Approach and entry lighting design.",
+    note: "Lighting along the approach and around the entrance.",
     aspect: "aspect-[4/5]",
   },
   {
     src: photos.kitchen,
     title: "Kitchen",
-    note: "Joinery-integrated lighting and switching.",
+    note: "Lighting and switches integrated into the kitchen joinery.",
     aspect: "aspect-[4/5]",
   },
   {
     src: photos.living,
     title: "Living room",
-    note: "Layered ambient and feature lighting.",
+    note: "General and feature lighting for the living room.",
     aspect: "aspect-[4/5]",
   },
   {
     src: photos.img0419,
-    title: "Detail",
-    note: "Brass plate, tight tolerances.",
+    title: "Switch plate detail",
+    note: "A brass switch plate fitted into the finished interior.",
     aspect: "aspect-[16/10]",
   },
 ].map((t) => ({
@@ -100,9 +101,9 @@ const ORDER = [
   "Renovation",
   "Commercial",
   "Solar",
-  "Heating",
+  "Air-Conditioning",
   "Pool",
-  "First fix",
+  "Pre-wiring",
 ];
 const FILTERS = ["All", AFTER_DARK, ...ORDER.filter((f) => TILES.some((t) => t.tags.includes(f)))];
 
@@ -127,20 +128,20 @@ function Gallery() {
           as="h1"
           immediate
           delay={0.2}
-          className="display-caps mt-6 max-w-5xl text-[clamp(2.6rem,7.4vw,7.2rem)] leading-[0.98] tracking-[0.08em]"
+          className="display-caps mt-6 max-w-5xl text-[clamp(2.6rem,7.4vw,7.2rem)] leading-[0.98] tracking-[0.08em]!"
         >
-          Browse by the work.
+          See the detail.
         </SplitReveal>
         <Reveal delay={0.5} className="mt-8 grid gap-10 md:grid-cols-12 md:items-end">
           <p className="max-w-2xl text-[1.05rem] leading-relaxed text-ink-soft md:col-span-7">
-            Every photograph from our projects in one place. Filter by the kind of work — or see
-            only what happens after dark — and tap any image to see it properly lit. For the story
-            behind each project, read the portfolio.
+            Explore lighting, fittings and electrical installations from our residential and
+            commercial projects. Filter by the type of work, or choose After dark to see exterior
+            lighting. Select a photograph for a closer look.
           </p>
           <div className="md:col-span-5 md:justify-self-end">
             <Button asChild variant="luxOutline" size="xl">
               <Link to="/portfolio">
-                Read the project stories <ArrowRight />
+                Explore the portfolio <ArrowRight />
               </Link>
             </Button>
           </div>
@@ -217,28 +218,28 @@ function Gallery() {
                 src={photos.media}
                 loading="lazy"
                 decoding="async"
-                alt="Balance Electrical work as featured in media"
+                alt="An example of Balance Electrical’s work"
                 className="aspect-[4/3] w-full object-cover"
               />
             </div>
           </Reveal>
           <div className="md:col-span-5 md:col-start-8">
-            <p className="eyebrow text-ink-soft">Featured</p>
+            <p className="eyebrow text-ink-soft">Your project</p>
             <SplitReveal
               as="h2"
-              className="display-caps mt-5 text-[clamp(2.2rem,4.6vw,4.2rem)] leading-[1] tracking-[0.1em]"
+              className="display-caps mt-5 text-[clamp(2.2rem,4.6vw,4.2rem)] leading-[1] tracking-[0.1em]!"
             >
-              In good company
+              Ideas for your space.
             </SplitReveal>
             <Reveal>
               <p className="mt-6 leading-relaxed text-ink-soft">
-                Our work has appeared alongside some of the architects, designers and builders we
-                most admire across Taupō and the surrounding district — homes where the electrical
-                layer is felt, not seen.
+                Seen a detail you like? Tell us which project caught your eye and what you have in
+                mind. We can discuss how the lighting or electrical approach could work in your own
+                home or business.
               </p>
               <Button asChild variant="lux" size="xl" className="mt-10">
                 <Link to="/contact">
-                  Talk to us about your project <ArrowRight />
+                  Discuss your project <ArrowRight />
                 </Link>
               </Button>
             </Reveal>

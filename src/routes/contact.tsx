@@ -39,20 +39,20 @@ export const Route = createFileRoute("/contact")({
   }),
   head: () => ({
     meta: [
-      { title: "Get a Quote | Electrician Taupō | Balance Electrical" },
+      { title: "Contact Victoria | Electrician Taupō | Balance Electrical" },
       {
         name: "description",
         content:
-          "Request a quote from Victoria Grant, registered electrician in Taupō. New builds, solar, renovations, heat pumps, EV chargers and more across the Taupō district.",
+          "Contact Victoria Grant at Balance Electrical to discuss electrical work, lighting, air-conditioning or solar for your home or business in the Taupō district.",
       },
       { name: "robots", content: "index, follow, max-image-preview:large" },
       { name: "geo.region", content: "NZ-WKO" },
       { name: "geo.placename", content: "Taupo" },
-      { property: "og:title", content: "Get a Quote | Balance Electrical" },
+      { property: "og:title", content: "Contact Balance Electrical" },
       {
         property: "og:description",
         content:
-          "Request a quote from Victoria Grant, registered electrician in Taupō. New builds, solar, renovations, and more.",
+          "Tell us about your property and your plans. Speak directly with Victoria about the electrical work your project needs.",
       },
       { property: "og:image", content: photos.fountainEntry },
     ],
@@ -128,14 +128,15 @@ function Contact() {
           as="h1"
           immediate
           delay={0.2}
-          className="display-caps mt-6 text-[clamp(3rem,10vw,9.5rem)] leading-[0.95] tracking-[0.08em]"
+          className="display-caps mt-6 max-w-5xl text-balance text-[clamp(2rem,5.6vw,5.5rem)] leading-[0.95] tracking-[0.08em]!"
         >
-          Let's talk.
+          Tell us what you have in mind.
         </SplitReveal>
         <Reveal delay={0.5}>
           <p className="mt-8 max-w-xl text-[1.05rem] leading-relaxed text-ink-soft">
-            New build, renovation, commercial fit-out or a single beautifully lit room. A short note
-            from you, and a considered reply from Victoria within a few days.
+            Planning a project or need help with an existing property? Share a few details below, or
+            contact Victoria directly. She’ll be in touch within a few days to discuss what you need
+            and the next steps.
           </p>
         </Reveal>
       </section>
@@ -157,12 +158,18 @@ function Contact() {
             />
             <div className="relative" aria-live="polite">
               {loading ? (
-                <Status title="Sending…" body="One moment while we pass this to Victoria." pulse />
+                <Status
+                  title="Sending your enquiry…"
+                  body="Please wait while we send your details."
+                  pulse
+                />
               ) : error ? (
                 <div className="py-14 text-center">
-                  <p className="display-caps text-2xl tracking-[0.16em]">Something went wrong</p>
+                  <p className="display-caps text-xl leading-snug tracking-[0.08em]!">
+                    Your enquiry wasn’t sent
+                  </p>
                   <p className="mt-4 text-muted-foreground">
-                    Call Victoria directly on{" "}
+                    Please try again, or call Victoria on{" "}
                     <a href={CONTACT.tel} className="text-ivory underline-offset-4 hover:underline">
                       {CONTACT.phoneLocal}
                     </a>
@@ -180,8 +187,8 @@ function Contact() {
                 </div>
               ) : sent ? (
                 <Status
-                  title={`Sent. Thanks${firstName ? `, ${firstName}` : ""}.`}
-                  body="Your enquiry has been sent to Balance Electrical. Victoria will be in touch within the next few days."
+                  title={`Thank you${firstName ? `, ${firstName}` : ""}.`}
+                  body="We’ve received your enquiry. Victoria will be in touch within a few days to discuss your project."
                   note={
                     confirmed
                       ? `A confirmation email is on its way to ${sentTo}.`
@@ -191,7 +198,12 @@ function Contact() {
                 />
               ) : (
                 <>
-                  <p className="eyebrow text-[10px] text-muted-foreground">Project enquiry</p>
+                  <p className="eyebrow text-[10px] text-muted-foreground">
+                    Tell us about your project
+                  </p>
+                  <p className="mt-3 text-sm leading-relaxed text-muted-foreground">
+                    Fields marked * are required. A brief outline is enough to get started.
+                  </p>
                   {/* Honeypot: hidden from people, filled in by bots, ignored by the server. */}
                   <div aria-hidden className="absolute -left-[9999px] h-px w-px overflow-hidden">
                     <label htmlFor="website">Website</label>
@@ -205,13 +217,28 @@ function Contact() {
                   </div>
                   <div className="mt-8 grid gap-x-8 gap-y-8 sm:grid-cols-2">
                     <Field label="Your name" name="name" required autoComplete="name" />
-                    <Field label="Email" name="email" type="email" required autoComplete="email" />
-                    <Field label="Phone" name="phone" type="tel" autoComplete="tel" />
-                    <Field label="Location" name="location" placeholder="Taupō, Kinloch…" />
+                    <Field
+                      label="Email address"
+                      name="email"
+                      type="email"
+                      required
+                      autoComplete="email"
+                    />
+                    <Field
+                      label="Phone number (optional)"
+                      name="phone"
+                      type="tel"
+                      autoComplete="tel"
+                    />
+                    <Field
+                      label="Project location (optional)"
+                      name="location"
+                      placeholder="Town or suburb"
+                    />
                   </div>
                   <div className="mt-8 space-y-2">
                     <Label htmlFor="type" className={labelCls}>
-                      Project type
+                      How can we help?
                     </Label>
                     <Select value={serviceType} onValueChange={setServiceType}>
                       <SelectTrigger id="type" className={cn(field, "[&>svg]:opacity-60")}>
@@ -235,19 +262,19 @@ function Contact() {
                   </div>
                   <div className="mt-8 space-y-2">
                     <Label htmlFor="message" className={labelCls}>
-                      About your project <span className="text-glow">·</span>
+                      Project details <span className="text-glow">*</span>
                     </Label>
                     <Textarea
                       id="message"
                       name="message"
                       rows={5}
                       required
-                      placeholder="A few sentences — timing, scope, anyone else involved."
+                      placeholder="What work do you need, and when are you hoping to start? Let us know if you’re working with a builder or designer."
                       className={cn(field, "min-h-32 resize-none py-3")}
                     />
                   </div>
                   <Button type="submit" variant="lux" size="xl" className="mt-10 w-full sm:w-auto">
-                    Send to Victoria <ArrowRight />
+                    Send enquiry <ArrowRight />
                   </Button>
                 </>
               )}
@@ -257,7 +284,7 @@ function Contact() {
 
         <Reveal delay={0.1} className="lg:col-span-5">
           <aside className="flex h-full flex-col border-[8px] border-frame p-7 md:border-[12px] md:p-12">
-            <p className="eyebrow text-ink-soft">Direct</p>
+            <p className="eyebrow text-ink-soft">Speak with Victoria</p>
             <a
               href={CONTACT.tel}
               data-cursor="Call"
@@ -278,18 +305,19 @@ function Contact() {
               <div>
                 <dt className="eyebrow text-[10px] text-ink-soft">Working across</dt>
                 <dd className="mt-2 leading-relaxed">
-                  Taupō · Kinloch · Acacia Bay · Kuratau · Turangi · the wider Taupō district
+                  Taupō · Kinloch · Acacia Bay · Wairakei · Kuratau · Tūrangi · Ātiamuri · the wider
+                  Taupō district
                 </dd>
               </div>
               <div>
-                <dt className="eyebrow text-[10px] text-ink-soft">Response</dt>
+                <dt className="eyebrow text-[10px] text-ink-soft">What happens next</dt>
                 <dd className="mt-2 leading-relaxed">
-                  Within a few days, with a confirmation email the moment you send. Site visits
-                  booked from there.
+                  Victoria will review your enquiry and reply within a few days. If a site visit is
+                  needed, she’ll arrange a time with you.
                 </dd>
               </div>
               <div>
-                <dt className="eyebrow text-[10px] text-ink-soft">Hours</dt>
+                <dt className="eyebrow text-[10px] text-ink-soft">Business hours</dt>
                 <dd className="mt-2 leading-relaxed">Monday – Friday · 7:30am – 5:30pm</dd>
               </div>
             </dl>
@@ -326,7 +354,9 @@ function Status({
           lit && "size-4 shadow-[0_0_60px_18px_rgb(255_231_194/0.6)]",
         )}
       />
-      <p className="display-caps mt-10 text-3xl tracking-[0.16em] text-ivory">{title}</p>
+      <p className="display-caps mt-10 break-words text-2xl leading-snug tracking-[0.08em]! text-ivory">
+        {title}
+      </p>
       <p className="mx-auto mt-4 max-w-md text-muted-foreground">{body}</p>
       {note && <p className="mx-auto mt-3 max-w-md text-sm text-ivory/60">{note}</p>}
       {lit && (
@@ -360,7 +390,7 @@ function Field({
     <div className="space-y-2">
       <Label htmlFor={name} className={labelCls}>
         {label}
-        {required && <span className="text-glow"> ·</span>}
+        {required && <span className="text-glow"> *</span>}
       </Label>
       <Input
         id={name}

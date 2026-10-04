@@ -22,11 +22,11 @@ const pad = (n: number) => String(n).padStart(2, "0");
 export const Route = createFileRoute("/portfolio")({
   head: () => ({
     meta: [
-      { title: "Projects Portfolio | Electrician Taupō | Balance Electrical" },
+      { title: "Our Projects | Electrical & Lighting Taupō | Balance Electrical" },
       {
         name: "description",
         content:
-          "Project-by-project portfolio of Balance Electrical's residential, commercial and solar work across Taupō and Kinloch — lighting, power and pre-wiring, photographed room by room.",
+          "Explore Balance Electrical’s residential, commercial and solar projects. See the electrical scope, lighting details and finished installations in each property.",
       },
       { name: "robots", content: "index, follow, max-image-preview:large" },
       { name: "geo.region", content: "NZ-WKO" },
@@ -35,7 +35,7 @@ export const Route = createFileRoute("/portfolio")({
       {
         property: "og:description",
         content:
-          "Homes and buildings we've wired and lit across the Taupō district, project by project.",
+          "A closer look at our projects: the properties, the electrical work and the details of each installation.",
       },
       { property: "og:image", content: `${SITE}${PORTFOLIO[0].photos[0].lg}` },
     ],
@@ -78,19 +78,19 @@ function Portfolio() {
             <p className="eyebrow text-ink-soft">Start a project</p>
             <SplitReveal
               as="h2"
-              className="display-caps mt-5 text-[clamp(2.2rem,5vw,4.6rem)] leading-[1] tracking-[0.1em]"
+              className="display-caps mt-5 text-[clamp(2.2rem,5vw,4.6rem)] leading-[1] tracking-[0.1em]!"
             >
-              Your home, next.
+              Let’s plan your project.
             </SplitReveal>
             <Reveal>
               <p className="mt-6 max-w-md text-[1.05rem] leading-relaxed text-ink-soft">
-                A new build, a renovation, or a single room that needs to feel right after dark —
-                Victoria will talk you through it.
+                Building, renovating or fitting out a workplace? Share your plans with Victoria and
+                discuss the lighting, power and electrical systems your project needs.
               </p>
               <div className="mt-10 flex flex-wrap gap-3">
                 <Button asChild variant="lux" size="xl">
                   <Link to="/contact" data-cursor="Let's talk">
-                    Let's talk <ArrowRight />
+                    Discuss your project <ArrowRight />
                   </Link>
                 </Button>
                 <Button asChild variant="luxOutline" size="xl">
@@ -139,22 +139,22 @@ function PortfolioHero() {
 
   return (
     <section className="mx-auto max-w-[1440px] px-5 pb-24 pt-36 md:px-10 md:pb-32 md:pt-48">
-      <p className="eyebrow text-ink-soft">Portfolio · Project stories</p>
+      <p className="eyebrow text-ink-soft">Portfolio</p>
       <SplitReveal
         as="h1"
         immediate
         delay={0.2}
-        className="display-caps mt-6 max-w-6xl text-[clamp(2.6rem,7.4vw,7.2rem)] leading-[0.98] tracking-[0.08em]"
+        className="display-caps mt-6 max-w-6xl text-[clamp(2.6rem,7.4vw,7.2rem)] leading-[0.98] tracking-[0.08em]!"
       >
-        Work, in its best light.
+        Explore our projects.
       </SplitReveal>
       <Reveal delay={0.5} className="mt-10 grid gap-10 md:grid-cols-12 md:items-end">
         <p className="max-w-xl text-[1.05rem] leading-relaxed text-ink-soft md:col-span-6">
-          A closer look at homes and buildings we've wired and lit across the Taupō district — each
-          project in its own chapter, from first fix to the finished glow. Prefer to browse by the
-          kind of work?{" "}
+          From new homes and renovations to commercial premises and solar installations, see what
+          each project involved and explore the finished details. To browse photographs by type of
+          work,{" "}
           <Link to="/projects" className="beam-link text-ink">
-            Open the gallery
+            visit the gallery
           </Link>
           .
         </p>
@@ -211,7 +211,7 @@ function PortfolioHero() {
                 }}
               />
             </span>
-            <span className="display-caps mt-4 block text-xl tracking-[0.14em]">{p.title}</span>
+            <span className="display-caps mt-4 block text-xl tracking-[0.14em]!">{p.title}</span>
             <span className="eyebrow mt-2 block text-[10px] text-ink-soft">
               {p.location} · {p.tags.join(" · ")}
             </span>
@@ -254,8 +254,8 @@ function Chapter({
             className={cn(
               "display-caps mt-5 leading-[1.02] text-ivory",
               longTitle
-                ? "text-[clamp(1.6rem,2.6vw,2.5rem)] tracking-[0.08em]"
-                : "text-[clamp(2rem,3.6vw,3.4rem)] tracking-[0.1em]",
+                ? "text-[clamp(1.6rem,2.6vw,2.5rem)] tracking-[0.08em]!"
+                : "text-[clamp(2rem,3.6vw,3.4rem)] tracking-[0.1em]!",
             )}
           >
             {project.title}

@@ -18,7 +18,7 @@ export const Route = createFileRoute("/about")({
       {
         name: "description",
         content:
-          "Victoria Grant is the registered electrician and owner of Balance Electrical in Taupō — electrician on a Gold Award-winning home, commercial fit-outs, solar, heat pumps and lighting across the Taupō district.",
+          "Meet Victoria Grant, owner of Balance Electrical and a registered electrician in Taupō. Personal service for residential and commercial electrical projects.",
       },
       { name: "robots", content: "index, follow, max-image-preview:large" },
       { name: "geo.region", content: "NZ-WKO" },
@@ -38,16 +38,16 @@ export const Route = createFileRoute("/about")({
 
 const VALUES = [
   {
-    title: "Integrity",
-    copy: "We do what we say we'll do. You'll get an honest quote, clear communication, and workmanship we're proud to put our name on.",
+    title: "Clear advice",
+    copy: "Understand your options before the work begins. We explain the proposed work and costs in plain language, so you can make informed decisions about your project.",
   },
   {
-    title: "Commitment",
-    copy: "Every project — whether it's a heat pump installation or a full new build fit-out — gets Victoria's full attention from the first call to final sign-off.",
+    title: "Careful work",
+    copy: "Details matter at every stage, from the cable routes behind the walls to the fittings you use each day. We give the planning, installation and finish the attention they deserve.",
   },
   {
-    title: "Communication",
-    copy: "You'll always know what's happening, what it costs, and when we'll be there. Good communication is what separates a good tradesperson from a great one.",
+    title: "Personal service",
+    copy: "Work directly with Victoria throughout your project. You have a clear point of contact to discuss progress, ask questions and work through decisions as they arise.",
   },
 ];
 
@@ -65,29 +65,27 @@ function About() {
           <div className="md:col-span-9">
             <LightWords
               className="font-display text-[clamp(1.8rem,3.8vw,3.4rem)] leading-[1.15]"
-              text="Growing up in Taupō, training in Wellington, and returning home to build something of her own — Victoria's path to Balance was driven by one thing: a standard of work she wasn't willing to compromise on."
+              text="Raised in Taupō and trained in Wellington, Victoria returned home to establish Balance Electrical: a local business built on careful workmanship and personal service."
             />
             <Reveal
               stagger={0.12}
               className="mt-16 grid gap-10 text-[1.05rem] leading-relaxed text-ink-soft md:grid-cols-2"
             >
               <p>
-                As a registered electrician with the EWRB, Victoria brings a hands-on, personal
-                approach to every job. She's on the tools herself, which means the person you speak
-                to is the person doing the work. No subcontractors, no hand-offs, no surprises.
+                Victoria is a registered and licensed electrician who takes an active role in the
+                work, from discussing your plans to completing the installation. You deal directly
+                with the person responsible for your project.
               </p>
               <p>
-                From a single power point to a full new build fit-out, every job gets the same care
-                and attention to detail. Victoria's clients don't just get quality electrical work —
-                they get an electrician who answers the phone, shows up when she says she will, and
-                leaves the site clean.
+                That personal approach matters whether you need an additional power point or a
+                complete electrical installation. Victoria takes the time to understand what you
+                need, explain the options and coordinate the work with your wider project.
               </p>
               <p className="md:col-span-2">
-                Today that standard runs from the first cables through the framing to the last
-                fitting at handover — lake-edge homes in Kinloch, the Gold Award-winning Oakleaf
-                Residence, a two-storey headquarters for Beechtree Building, rooftop solar, heat
-                pumps and ducted heating, pool wiring, and the lighting that brings it all to life
-                after dark.
+                Her experience includes homes in Kinloch, the Oakleaf Residence and Beechtree
+                Building’s two-storey headquarters, alongside solar installations, air-conditioning
+                and pool wiring. Across these projects, the focus is the same: electrical work
+                planned around the property and the people who use it.
               </p>
             </Reveal>
             <Reveal className="mt-14 flex flex-wrap gap-4">
@@ -129,17 +127,18 @@ function About() {
           <div>
             <SplitReveal
               as="h2"
-              className="display-caps text-[clamp(2.2rem,5vw,4.6rem)] leading-[1] tracking-[0.1em]"
+              className="display-caps text-[clamp(2.2rem,5vw,4.6rem)] leading-[1] tracking-[0.1em]!"
             >
-              Ready to get started?
+              Start with a conversation.
             </SplitReveal>
             <Reveal>
               <p className="mt-6 max-w-md text-[1.05rem] leading-relaxed text-ink-soft">
-                Get in touch and Victoria will talk you through it. No obligation, no jargon.
+                Tell Victoria about your property, your plans and what you need. She’ll help you
+                work through the electrical requirements and the next steps.
               </p>
               <Button asChild variant="lux" size="xl" className="mt-10">
                 <Link to="/contact">
-                  Get a quote <ArrowRight />
+                  Discuss your project <ArrowRight />
                 </Link>
               </Button>
             </Reveal>
@@ -206,13 +205,17 @@ function AboutHero() {
             as="h1"
             immediate
             delay={0.3}
-            className="display-caps mt-6 text-[clamp(2.6rem,6.3vw,6.4rem)] leading-[0.95] tracking-[0.08em]"
+            className="display-caps mt-6 text-[clamp(2.6rem,6.3vw,6.4rem)] leading-[0.95] tracking-[0.08em]!"
           >
             Meet Victoria.
           </SplitReveal>
           <Reveal delay={0.6}>
             <p className="eyebrow mt-10 text-ink-soft">
               Owner-operator · Registered electrician · Taupō
+            </p>
+            <p className="mt-6 max-w-xl text-[1.05rem] leading-relaxed text-ink-soft">
+              The person behind Balance Electrical — and your point of contact for electrical work,
+              lighting and air-conditioning across Taupō and the surrounding district.
             </p>
           </Reveal>
         </div>
@@ -291,13 +294,13 @@ function Values() {
     >
       <div className="led-h absolute inset-x-0 top-0 opacity-70" />
       <div className="mx-auto max-w-[1440px] px-5 md:px-10">
-        <p className="eyebrow text-muted-foreground">What we stand for</p>
+        <p className="eyebrow text-muted-foreground">Working with Balance</p>
         <SplitReveal
           as="h2"
           id="values-title"
-          className="display-caps mt-5 text-[clamp(2.2rem,5vw,4.6rem)] leading-[1] tracking-[0.1em] text-ivory"
+          className="display-caps mt-5 text-[clamp(2.2rem,5vw,4.6rem)] leading-[1] tracking-[0.1em]! text-ivory"
         >
-          Our values.
+          What you can expect.
         </SplitReveal>
         <div className="mt-16 grid gap-5 md:mt-24 md:grid-cols-3 md:gap-8">
           {VALUES.map((v, i) => (
@@ -327,7 +330,7 @@ function Values() {
                   <span className="h-1/2 w-full rounded-sm bg-ivory/25 transition-[transform,background-color,box-shadow] duration-500 [transition-timing-function:var(--ease-out-expo)] group-data-[on]:translate-y-full group-data-[on]:bg-glow-soft group-data-[on]:shadow-[0_0_14px_rgb(255_231_194/0.8)]" />
                 </span>
               </div>
-              <h3 className="display-caps relative mt-12 text-2xl tracking-[0.16em] text-ivory">
+              <h3 className="display-caps relative mt-12 text-2xl tracking-[0.16em]! text-ivory">
                 {v.title}
               </h3>
               <p className="relative mt-4 leading-relaxed text-muted-foreground">{v.copy}</p>
@@ -358,14 +361,14 @@ function RecentWork() {
           <p className="eyebrow text-ink-soft">Recent work</p>
           <SplitReveal
             as="h2"
-            className="display-caps mt-5 text-[clamp(2.2rem,5vw,4.6rem)] leading-[1] tracking-[0.1em]"
+            className="display-caps mt-5 text-[clamp(2.2rem,5vw,4.6rem)] leading-[1] tracking-[0.1em]!"
           >
-            From the portfolio.
+            Experience in practice.
           </SplitReveal>
         </div>
         <Button asChild variant="luxOutline" size="xl">
           <Link to="/portfolio">
-            See every project <ArrowRight />
+            View all projects <ArrowRight />
           </Link>
         </Button>
       </div>
@@ -390,7 +393,7 @@ function RecentWork() {
                 className="h-full w-full object-cover transition-transform duration-[1200ms] [transition-timing-function:var(--ease-out-expo)] group-hover:scale-[1.04]"
               />
             </span>
-            <span className="display-caps mt-4 block text-lg tracking-[0.14em]">{p.title}</span>
+            <span className="display-caps mt-4 block text-lg tracking-[0.14em]!">{p.title}</span>
             <span className="eyebrow mt-2 block text-[10px] text-ink-soft">
               {p.location} · {p.tags.join(" · ")}
             </span>
