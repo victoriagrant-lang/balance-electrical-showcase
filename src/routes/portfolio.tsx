@@ -291,6 +291,15 @@ function Chapter({
               </li>
             ))}
           </ul>
+          {project.story && (
+            <Link
+              to="/portfolio/$slug"
+              params={{ slug: project.slug }}
+              className="beam-link eyebrow mt-10 inline-flex items-center gap-2 text-[10px] text-ivory"
+            >
+              Read the project story <ArrowRight className="size-3" />
+            </Link>
+          )}
         </header>
 
         <Reveal className="lg:col-span-8">

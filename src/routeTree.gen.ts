@@ -14,9 +14,16 @@ import { Route as AboutRouteImport } from './routes/about'
 import { Route as AreasOfExpertiseRouteImport } from './routes/areas-of-expertise'
 import { Route as ContactRouteImport } from './routes/contact'
 import { Route as EnquiriesRouteImport } from './routes/enquiries'
+import { Route as LlmsFullDottxtRouteImport } from './routes/llms-full[.]txt'
+import { Route as LlmsDottxtRouteImport } from './routes/llms[.]txt'
 import { Route as PortfolioRouteImport } from './routes/portfolio'
 import { Route as ProjectsRouteImport } from './routes/projects'
-import { Route as ServicesRouteImport } from './routes/services'
+import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
+import { Route as AreasIndexRouteImport } from './routes/areas.index'
+import { Route as AreasSlugRouteImport } from './routes/areas.$slug'
+import { Route as PortfolioSlugRouteImport } from './routes/portfolio_.$slug'
+import { Route as ServicesIndexRouteImport } from './routes/services.index'
+import { Route as ServicesSlugRouteImport } from './routes/services.$slug'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -43,6 +50,16 @@ const EnquiriesRoute = EnquiriesRouteImport.update({
   path: '/enquiries',
   getParentRoute: () => rootRouteImport,
 } as any)
+const LlmsFullDottxtRoute = LlmsFullDottxtRouteImport.update({
+  id: '/llms-full.txt',
+  path: '/llms-full.txt',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const LlmsDottxtRoute = LlmsDottxtRouteImport.update({
+  id: '/llms.txt',
+  path: '/llms.txt',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const PortfolioRoute = PortfolioRouteImport.update({
   id: '/portfolio',
   path: '/portfolio',
@@ -53,9 +70,34 @@ const ProjectsRoute = ProjectsRouteImport.update({
   path: '/projects',
   getParentRoute: () => rootRouteImport,
 } as any)
-const ServicesRoute = ServicesRouteImport.update({
-  id: '/services',
-  path: '/services',
+const SitemapDotxmlRoute = SitemapDotxmlRouteImport.update({
+  id: '/sitemap.xml',
+  path: '/sitemap.xml',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AreasIndexRoute = AreasIndexRouteImport.update({
+  id: '/areas/',
+  path: '/areas/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AreasSlugRoute = AreasSlugRouteImport.update({
+  id: '/areas/$slug',
+  path: '/areas/$slug',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PortfolioSlugRoute = PortfolioSlugRouteImport.update({
+  id: '/portfolio_/$slug',
+  path: '/portfolio/$slug',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ServicesIndexRoute = ServicesIndexRouteImport.update({
+  id: '/services/',
+  path: '/services/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ServicesSlugRoute = ServicesSlugRouteImport.update({
+  id: '/services/$slug',
+  path: '/services/$slug',
   getParentRoute: () => rootRouteImport,
 } as any)
 
@@ -65,9 +107,16 @@ export interface FileRoutesByFullPath {
   '/areas-of-expertise': typeof AreasOfExpertiseRoute
   '/contact': typeof ContactRoute
   '/enquiries': typeof EnquiriesRoute
+  '/llms-full.txt': typeof LlmsFullDottxtRoute
+  '/llms.txt': typeof LlmsDottxtRoute
   '/portfolio': typeof PortfolioRoute
   '/projects': typeof ProjectsRoute
-  '/services': typeof ServicesRoute
+  '/sitemap.xml': typeof SitemapDotxmlRoute
+  '/areas/$slug': typeof AreasSlugRoute
+  '/portfolio/$slug': typeof PortfolioSlugRoute
+  '/services/$slug': typeof ServicesSlugRoute
+  '/areas/': typeof AreasIndexRoute
+  '/services/': typeof ServicesIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -75,9 +124,16 @@ export interface FileRoutesByTo {
   '/areas-of-expertise': typeof AreasOfExpertiseRoute
   '/contact': typeof ContactRoute
   '/enquiries': typeof EnquiriesRoute
+  '/llms-full.txt': typeof LlmsFullDottxtRoute
+  '/llms.txt': typeof LlmsDottxtRoute
   '/portfolio': typeof PortfolioRoute
   '/projects': typeof ProjectsRoute
-  '/services': typeof ServicesRoute
+  '/sitemap.xml': typeof SitemapDotxmlRoute
+  '/areas/$slug': typeof AreasSlugRoute
+  '/portfolio/$slug': typeof PortfolioSlugRoute
+  '/services/$slug': typeof ServicesSlugRoute
+  '/areas': typeof AreasIndexRoute
+  '/services': typeof ServicesIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -86,9 +142,16 @@ export interface FileRoutesById {
   '/areas-of-expertise': typeof AreasOfExpertiseRoute
   '/contact': typeof ContactRoute
   '/enquiries': typeof EnquiriesRoute
+  '/llms-full.txt': typeof LlmsFullDottxtRoute
+  '/llms.txt': typeof LlmsDottxtRoute
   '/portfolio': typeof PortfolioRoute
   '/projects': typeof ProjectsRoute
-  '/services': typeof ServicesRoute
+  '/sitemap.xml': typeof SitemapDotxmlRoute
+  '/areas/$slug': typeof AreasSlugRoute
+  '/portfolio_/$slug': typeof PortfolioSlugRoute
+  '/services/$slug': typeof ServicesSlugRoute
+  '/areas/': typeof AreasIndexRoute
+  '/services/': typeof ServicesIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -98,9 +161,16 @@ export interface FileRouteTypes {
     | '/areas-of-expertise'
     | '/contact'
     | '/enquiries'
+    | '/llms-full.txt'
+    | '/llms.txt'
     | '/portfolio'
     | '/projects'
-    | '/services'
+    | '/sitemap.xml'
+    | '/areas/$slug'
+    | '/portfolio/$slug'
+    | '/services/$slug'
+    | '/areas/'
+    | '/services/'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -108,8 +178,15 @@ export interface FileRouteTypes {
     | '/areas-of-expertise'
     | '/contact'
     | '/enquiries'
+    | '/llms-full.txt'
+    | '/llms.txt'
     | '/portfolio'
     | '/projects'
+    | '/sitemap.xml'
+    | '/areas/$slug'
+    | '/portfolio/$slug'
+    | '/services/$slug'
+    | '/areas'
     | '/services'
   id:
     | '__root__'
@@ -118,9 +195,16 @@ export interface FileRouteTypes {
     | '/areas-of-expertise'
     | '/contact'
     | '/enquiries'
+    | '/llms-full.txt'
+    | '/llms.txt'
     | '/portfolio'
     | '/projects'
-    | '/services'
+    | '/sitemap.xml'
+    | '/areas/$slug'
+    | '/portfolio_/$slug'
+    | '/services/$slug'
+    | '/areas/'
+    | '/services/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -129,9 +213,16 @@ export interface RootRouteChildren {
   AreasOfExpertiseRoute: typeof AreasOfExpertiseRoute
   ContactRoute: typeof ContactRoute
   EnquiriesRoute: typeof EnquiriesRoute
+  LlmsFullDottxtRoute: typeof LlmsFullDottxtRoute
+  LlmsDottxtRoute: typeof LlmsDottxtRoute
   PortfolioRoute: typeof PortfolioRoute
   ProjectsRoute: typeof ProjectsRoute
-  ServicesRoute: typeof ServicesRoute
+  SitemapDotxmlRoute: typeof SitemapDotxmlRoute
+  AreasSlugRoute: typeof AreasSlugRoute
+  PortfolioSlugRoute: typeof PortfolioSlugRoute
+  ServicesSlugRoute: typeof ServicesSlugRoute
+  AreasIndexRoute: typeof AreasIndexRoute
+  ServicesIndexRoute: typeof ServicesIndexRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -171,6 +262,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof EnquiriesRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/llms-full.txt': {
+      id: '/llms-full.txt'
+      path: '/llms-full.txt'
+      fullPath: '/llms-full.txt'
+      preLoaderRoute: typeof LlmsFullDottxtRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/llms.txt': {
+      id: '/llms.txt'
+      path: '/llms.txt'
+      fullPath: '/llms.txt'
+      preLoaderRoute: typeof LlmsDottxtRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/portfolio': {
       id: '/portfolio'
       path: '/portfolio'
@@ -185,11 +290,46 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ProjectsRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/services': {
-      id: '/services'
+    '/sitemap.xml': {
+      id: '/sitemap.xml'
+      path: '/sitemap.xml'
+      fullPath: '/sitemap.xml'
+      preLoaderRoute: typeof SitemapDotxmlRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/areas/': {
+      id: '/areas/'
+      path: '/areas'
+      fullPath: '/areas/'
+      preLoaderRoute: typeof AreasIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/areas/$slug': {
+      id: '/areas/$slug'
+      path: '/areas/$slug'
+      fullPath: '/areas/$slug'
+      preLoaderRoute: typeof AreasSlugRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/portfolio_/$slug': {
+      id: '/portfolio_/$slug'
+      path: '/portfolio/$slug'
+      fullPath: '/portfolio/$slug'
+      preLoaderRoute: typeof PortfolioSlugRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/services/': {
+      id: '/services/'
       path: '/services'
-      fullPath: '/services'
-      preLoaderRoute: typeof ServicesRouteImport
+      fullPath: '/services/'
+      preLoaderRoute: typeof ServicesIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/services/$slug': {
+      id: '/services/$slug'
+      path: '/services/$slug'
+      fullPath: '/services/$slug'
+      preLoaderRoute: typeof ServicesSlugRouteImport
       parentRoute: typeof rootRouteImport
     }
   }
@@ -201,9 +341,16 @@ const rootRouteChildren: RootRouteChildren = {
   AreasOfExpertiseRoute: AreasOfExpertiseRoute,
   ContactRoute: ContactRoute,
   EnquiriesRoute: EnquiriesRoute,
+  LlmsFullDottxtRoute: LlmsFullDottxtRoute,
+  LlmsDottxtRoute: LlmsDottxtRoute,
   PortfolioRoute: PortfolioRoute,
   ProjectsRoute: ProjectsRoute,
-  ServicesRoute: ServicesRoute,
+  SitemapDotxmlRoute: SitemapDotxmlRoute,
+  AreasSlugRoute: AreasSlugRoute,
+  PortfolioSlugRoute: PortfolioSlugRoute,
+  ServicesSlugRoute: ServicesSlugRoute,
+  AreasIndexRoute: AreasIndexRoute,
+  ServicesIndexRoute: ServicesIndexRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

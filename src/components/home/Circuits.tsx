@@ -23,37 +23,37 @@ const SERVICES = [
   {
     title: "Lighting design",
     service: "Lighting design",
-    card: fromPhoto(getPhoto("the-curve-house", "07")),
+    card: fromPhoto(getPhoto("fold-house", "07")),
     copy: "Lighting that brings out the best in your home. We plan fittings, placement and controls around your architecture, your interiors and the way you use each room.",
   },
   {
     title: "New builds",
     service: "New residential build",
-    card: fromPhoto(getPhoto("sparrowhawk", "06"), "62% 50%"),
+    card: fromPhoto(getPhoto("cedar-gables", "06"), "62% 50%"),
     copy: "Complete electrical installations, planned alongside your build. We work with you and your project team to get the details right, from power points and switchboards to lighting and the final fit-off.",
   },
   {
     title: "Renovations",
     service: "Renovation or addition",
-    card: fromPhoto(getPhoto("rainbow-reno", "02-kitchen")),
+    card: fromPhoto(getPhoto("the-arches", "02-kitchen")),
     copy: "Electrical upgrades that make your home work better. From rewiring and switchboard replacements to new lighting and additional power points, we help bring your plans together.",
   },
   {
     title: "Commercial",
     service: "Commercial fit-out",
-    card: fromPhoto(getPhoto("beechtree-building-headquarters", "02-entry-at-dusk")),
+    card: fromPhoto(getPhoto("beechtree-studio", "02-entry-at-dusk")),
     copy: "Practical electrical solutions for workplaces and commercial spaces. Our services include office and retail fit-outs, three-phase power, emergency lighting and compliance testing.",
   },
   {
     title: "Solar & battery",
     service: "Solar & battery storage",
-    card: fromPhoto(getPhoto("the-sisters", "01-array")),
+    card: fromPhoto(getPhoto("glass-pavilion", "01-array")),
     copy: "Make more of the energy your property can generate. We help with solar electrical installation, grid connection and battery storage options suited to your property and energy use.",
   },
   {
     title: "Air-Conditioning",
     service: "Air-Conditioning",
-    card: fromPhoto(getPhoto("the-bach", "01-kitchen")),
+    card: fromPhoto(getPhoto("walnut-house", "01-kitchen")),
     copy: "Comfort throughout the seasons. We supply and install air-conditioning, from individual rooms to multi-zone systems.",
   },
   {
@@ -62,7 +62,7 @@ const SERVICES = [
     card: art(
       "ev-charging",
       "Wall-mounted EV charger beside a lit garage at dusk",
-      fromPhoto(getPhoto("pukeko", "02-driveway-at-dusk"), "72% 50%"),
+      fromPhoto(getPhoto("black-gable-house", "02-driveway-at-dusk"), "72% 50%"),
     ),
     copy: "Convenient charging at home. We install dedicated EV chargers, with load management options to suit your electrical supply and household needs.",
   },

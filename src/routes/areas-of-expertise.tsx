@@ -69,7 +69,7 @@ const sections: Area[] = [
     num: "01",
     heading: "Homes & renovations",
     service: "Renovation or addition",
-    img: shot("rainbow-reno", "02-kitchen"),
+    img: shot("the-arches", "02-kitchen"),
     intro:
       "Make your home work better, room by room. We plan and install lighting, power and wiring around the way you live, whether you’re renovating, extending or updating an existing space.",
     bullets: [
@@ -81,15 +81,15 @@ const sections: Area[] = [
       "Network and data cabling for home offices and media rooms",
       "General maintenance, fault finding, and repairs",
     ],
-    projects: ["oakleaf-residence", "the-curve-house", "pukeko", "rainbow-reno"],
+    projects: ["courtyard-house", "fold-house", "black-gable-house", "the-arches"],
   },
   {
     num: "02",
     heading: "Commercial",
     service: "Commercial fit-out",
-    img: shot("beechtree-building-headquarters", "01-front-at-dusk"),
+    img: shot("beechtree-studio", "01-front-at-dusk"),
     intro:
-      "Electrical installations planned around your business, your premises and the people working there. From offices and retail spaces to workshops, we coordinate power, lighting and cabling with the wider fit-out. Our work includes Beechtree Building’s two-storey headquarters.",
+      "Electrical installations planned around your business, your premises and the people working there. From offices and retail spaces to workshops, we coordinate power, lighting and cabling with the wider fit-out. Our work includes Beechtree Studio’s two-storey headquarters.",
     bullets: [
       "New office and retail fit-outs",
       "Warehouse and workshop electrical installations",
@@ -99,13 +99,13 @@ const sections: Area[] = [
       "Electrical fault finding and repairs",
       "Data and voice cabling installations",
     ],
-    projects: ["beechtree-building-headquarters"],
+    projects: ["beechtree-studio"],
   },
   {
     num: "03",
     heading: "Air-Conditioning",
     service: "Air-Conditioning",
-    img: shot("the-bach", "01-kitchen"),
+    img: shot("walnut-house", "01-kitchen"),
     intro:
       "Keep your home or workplace comfortable throughout the seasons. We help you select an air-conditioning system suited to the space, then take care of supply, installation and commissioning — from a single room to a complete ducted system.",
     bullets: [
@@ -115,7 +115,7 @@ const sections: Area[] = [
       "Air-conditioning servicing and maintenance",
       "All major brands supplied and installed",
     ],
-    projects: ["rainbow-reno", "jarden-mile"],
+    projects: ["the-arches", "pool-courtyard"],
   },
   {
     num: "04",
@@ -124,7 +124,7 @@ const sections: Area[] = [
     img: withArt(
       "ev-charging",
       "Wall-mounted EV charger beside a lit garage at dusk",
-      shot("pukeko", "02-driveway-at-dusk", "72% 50%"),
+      shot("black-gable-house", "02-driveway-at-dusk", "72% 50%"),
     ),
     intro:
       "Make charging part of your everyday routine. We assess your electrical supply, charger location and usage needs, then install a dedicated charging point for your home or business.",
@@ -139,7 +139,7 @@ const sections: Area[] = [
     num: "05",
     heading: "Maintenance & repairs",
     service: "Something else",
-    img: shot("beechtree-building-headquarters", "09-switchboard"),
+    img: shot("beechtree-studio", "09-switchboard"),
     intro:
       "Get faults investigated and everyday electrical problems sorted. We provide maintenance and repairs for homes and businesses across Taupō, with a clear explanation of the issue and the work required.",
     bullets: [
@@ -154,7 +154,7 @@ const sections: Area[] = [
     num: "06",
     heading: "New builds",
     service: "New residential build",
-    img: shot("sparrowhawk", "06"),
+    img: shot("cedar-gables", "06"),
     intro:
       "Plan your electrical installation while your home is taking shape. We work with you, your builder and your design team to coordinate power, lighting and controls, from the initial layout through to the finished installation.",
     bullets: [
@@ -165,13 +165,13 @@ const sections: Area[] = [
       "Smart home pre-wiring and automation-ready installations",
       "Coordination with your builder and other trades",
     ],
-    projects: ["oakleaf-residence", "sparrowhawk", "kinloch-project", "pre-wires"],
+    projects: ["courtyard-house", "cedar-gables", "hillside-house", "behind-the-walls"],
   },
   {
     num: "07",
     heading: "Solar & battery storage",
     service: "Solar & battery storage",
-    img: shot("the-sisters", "01-array"),
+    img: shot("glass-pavilion", "01-array"),
     intro:
       "Plan solar and battery storage around your property and the way you use electricity. Balance Electrical handles the electrical installation, including inverter wiring, switchboard requirements and the grid connection process.",
     bullets: [
@@ -185,7 +185,7 @@ const sections: Area[] = [
     ],
     closing:
       "We can work alongside your chosen solar supplier or discuss local supplier options. We’ll clarify the electrical scope and connection requirements before the installation begins.",
-    projects: ["the-sisters"],
+    projects: ["glass-pavilion"],
   },
 ];
 

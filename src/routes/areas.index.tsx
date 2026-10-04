@@ -1,11 +1,11 @@
 import { createFileRoute, useRouter } from "@tanstack/react-router";
 import { useEffect } from "react";
 
-export const Route = createFileRoute("/services")({
-  component: ServicesRedirect,
+export const Route = createFileRoute("/areas/")({
+  component: AreasRedirect,
 });
 
-function ServicesRedirect() {
+function AreasRedirect() {
   const router = useRouter();
   useEffect(() => {
     router.navigate({ to: "/areas-of-expertise", replace: true });

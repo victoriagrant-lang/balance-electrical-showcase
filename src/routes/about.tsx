@@ -82,10 +82,11 @@ function About() {
                 need, explain the options and coordinate the work with your wider project.
               </p>
               <p className="md:col-span-2">
-                Her experience includes homes in Kinloch, the Oakleaf Residence and Beechtree
-                Building’s two-storey headquarters, alongside solar installations, air-conditioning
-                and pool wiring. Across these projects, the focus is the same: electrical work
-                planned around the property and the people who use it.
+                Her work ranges from Cedar Gables — Balance’s own showhome in Kinloch — and the
+                Gold Award-winning Courtyard House to Beechtree Studio’s two-storey headquarters,
+                alongside solar, heat pumps and ducted climate systems, smart-home control and pool
+                wiring. Across every project the focus is the same: electrical work planned around
+                the property and the people who use it.
               </p>
             </Reveal>
             <Reveal className="mt-14 flex flex-wrap gap-4">
@@ -104,12 +105,12 @@ function About() {
               </a>
               <Link
                 to="/portfolio"
-                hash="oakleaf-residence"
+                hash="courtyard-house"
                 className="group inline-flex max-w-md items-center gap-4 border border-ink/20 px-5 py-4 transition-[border-color,box-shadow] duration-500 hover:border-ink/50 hover:shadow-[0_20px_50px_-30px_rgb(28_26_24/0.6)]"
               >
                 <Award className="size-8 shrink-0" strokeWidth={1.1} />
                 <span className="text-sm leading-snug">
-                  Electrician on the Oakleaf Residence — Gold Award, Master Builders House of the
+                  Electrician on Courtyard House — Gold Award, Master Builders House of the
                   Year 2025, Bay of Plenty & Central Plateau
                 </span>
               </Link>
@@ -343,10 +344,10 @@ function Values() {
 }
 
 const RECENT = [
-  "oakleaf-residence",
-  "beechtree-building-headquarters",
-  "sparrowhawk",
-  "the-sisters",
+  "courtyard-house",
+  "beechtree-studio",
+  "cedar-gables",
+  "glass-pavilion",
 ];
 
 /** Four chapters from the portfolio, so the story ends on the work itself. */

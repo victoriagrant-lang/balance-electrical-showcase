@@ -40,14 +40,14 @@ type Tile = Shot & { tags: string[]; smSrc: string; w?: number; h?: number; afte
 
 // The photographs shown on the gallery page, in display order.
 const GALLERY_SELECTION: [string, string][] = [
-  ["the-curve-house", "08"],
-  ["oakleaf-residence", "06"],
-  ["mapleleaf", "03"],
-  ["the-lakehouse", "20"],
-  ["the-lakehouse", "21"],
-  ["sparrowhawk", "11"],
-  ["sparrowhawk", "12"],
-  ["sparrowhawk", "13"],
+  ["fold-house", "08"],
+  ["courtyard-house", "06"],
+  ["cedar-cube-house", "03"],
+  ["lake-house", "20"],
+  ["lake-house", "21"],
+  ["cedar-gables", "11"],
+  ["cedar-gables", "12"],
+  ["cedar-gables", "13"],
 ];
 
 function makeTiles(portfolio: typeof PORTFOLIO): Tile[] {

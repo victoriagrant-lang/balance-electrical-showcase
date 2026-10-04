@@ -11,47 +11,6 @@ import { Victoria } from "@/components/home/Victoria";
 import { AreasMarquee } from "@/components/home/AreasMarquee";
 import { SignCTA } from "@/components/home/SignCTA";
 
-const ldJson = {
-  "@context": "https://schema.org",
-  "@type": "Electrician",
-  name: "Balance Electrical",
-  image: "https://www.balanceelectrical.co.nz/og-image.jpg",
-  url: "https://www.balanceelectrical.co.nz",
-  telephone: "+64279162077",
-  email: "enquiries@balanceelectrical.co.nz",
-  address: {
-    "@type": "PostalAddress",
-    addressLocality: "Taupo",
-    addressRegion: "Waikato",
-    addressCountry: "NZ",
-  },
-  geo: {
-    "@type": "GeoCoordinates",
-    latitude: -38.6857,
-    longitude: 176.0702,
-  },
-  openingHoursSpecification: {
-    "@type": "OpeningHoursSpecification",
-    dayOfWeek: ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"],
-    opens: "07:30",
-    closes: "17:30",
-  },
-  priceRange: "$$",
-  areaServed: [
-    "Taupo",
-    "Kinloch",
-    "Acacia Bay",
-    "Wairakei",
-    "Ātiamuri",
-    "Taupō District",
-    "Central North Island",
-  ],
-  hasCredential: {
-    "@type": "EducationalOccupationalCredential",
-    credentialCategory: "Registered Electrician — EWRB",
-  },
-};
-
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
@@ -73,7 +32,6 @@ export const Route = createFileRoute("/")({
       { property: "og:image", content: photos.twilight },
     ],
     links: [{ rel: "canonical", href: "https://www.balanceelectrical.co.nz" }],
-    scripts: [{ type: "application/ld+json", children: JSON.stringify(ldJson) }],
   }),
   component: Home,
 });
