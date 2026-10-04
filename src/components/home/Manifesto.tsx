@@ -106,11 +106,11 @@ export function Manifesto() {
           <figure className="col-span-3 mt-16 overflow-hidden border-[6px] border-frame bg-frame">
             <img
               data-lamp
-              src={LEFT.sm}
+              src={LEFT.lg}
               alt={`${LEFT.title}, ${LEFT.project}`}
               loading="lazy"
               decoding="async"
-              className="aspect-[4/5] w-full object-cover object-[75%_50%]"
+              className="aspect-[4/5] w-full object-cover object-[78%_50%]"
             />
           </figure>
           <figure className="col-span-2 overflow-hidden border-[6px] border-frame bg-frame">
