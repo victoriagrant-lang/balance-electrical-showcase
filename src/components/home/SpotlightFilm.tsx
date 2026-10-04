@@ -1,18 +1,17 @@
 import { type CSSProperties, type RefObject } from "react";
-import { photos } from "@/lib/photos";
 import { TorchArea } from "@/components/motion/Torch";
 
 const revealStyle = {
-  "--torch-x": "50%",
-  "--torch-y": "50%",
-  "--torch-trail-x": "50%",
-  "--torch-trail-y": "50%",
+  "--torch-x": 0,
+  "--torch-y": 0,
+  "--torch-trail-x": 0,
+  "--torch-trail-y": 0,
   "--torch-opacity": 0,
   opacity: "var(--torch-opacity)",
   maskImage:
-    "radial-gradient(ellipse 28vw 22vw at var(--torch-trail-x) var(--torch-trail-y), rgba(0,0,0,0.44) 0%, rgba(0,0,0,0.34) 40%, rgba(0,0,0,0.14) 72%, transparent 100%), radial-gradient(ellipse 11vw 8vw at var(--torch-x) var(--torch-y), rgba(0,0,0,0.54) 0%, rgba(0,0,0,0.4) 42%, transparent 100%)",
+    "radial-gradient(ellipse 28vw 22vw at calc(var(--torch-trail-x) * 1px) calc(var(--torch-trail-y) * 1px), rgba(0,0,0,0.44) 0%, rgba(0,0,0,0.34) 40%, rgba(0,0,0,0.14) 72%, transparent 100%), radial-gradient(ellipse 11vw 8vw at calc(var(--torch-x) * 1px) calc(var(--torch-y) * 1px), rgba(0,0,0,0.54) 0%, rgba(0,0,0,0.4) 42%, transparent 100%)",
   WebkitMaskImage:
-    "radial-gradient(ellipse 28vw 22vw at var(--torch-trail-x) var(--torch-trail-y), rgba(0,0,0,0.44) 0%, rgba(0,0,0,0.34) 40%, rgba(0,0,0,0.14) 72%, transparent 100%), radial-gradient(ellipse 11vw 8vw at var(--torch-x) var(--torch-y), rgba(0,0,0,0.54) 0%, rgba(0,0,0,0.4) 42%, transparent 100%)",
+    "radial-gradient(ellipse 28vw 22vw at calc(var(--torch-trail-x) * 1px) calc(var(--torch-trail-y) * 1px), rgba(0,0,0,0.44) 0%, rgba(0,0,0,0.34) 40%, rgba(0,0,0,0.14) 72%, transparent 100%), radial-gradient(ellipse 11vw 8vw at calc(var(--torch-x) * 1px) calc(var(--torch-y) * 1px), rgba(0,0,0,0.54) 0%, rgba(0,0,0,0.4) 42%, transparent 100%)",
   maskComposite: "add",
   WebkitMaskComposite: "source-over",
   willChange: "transform, mask-image, opacity",
@@ -23,7 +22,7 @@ export function SpotlightFilm({ host: _host }: { host: RefObject<HTMLElement | n
   return (
     <TorchArea mode="reveal" className="absolute inset-0 overflow-hidden bg-stone-pale">
       <img
-        src={photos.img0003}
+        src="https://nrhfbcqmfsezlkxnzshq.supabase.co/storage/v1/object/public/Website%20Photos/Home%20page%20.png"
         alt=""
         fetchPriority="high"
         className="absolute inset-0 h-full w-full scale-[1.03] object-cover object-center opacity-45 saturate-[0.72] brightness-[0.7] mix-blend-multiply"
@@ -36,7 +35,7 @@ export function SpotlightFilm({ host: _host }: { host: RefObject<HTMLElement | n
         style={revealStyle}
       >
         <img
-          src={photos.img0003}
+          src="https://nrhfbcqmfsezlkxnzshq.supabase.co/storage/v1/object/public/Website%20Photos/Home%20page%20.png"
           alt=""
           className="absolute inset-0 h-full w-full scale-[1.03] object-cover object-center brightness-[0.92] saturate-[0.86]"
         />

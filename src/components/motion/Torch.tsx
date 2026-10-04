@@ -45,6 +45,12 @@ export function TorchArea({
       const setGlowOpacity = glow
         ? gsap.quickTo(glow, "--torch-glow-opacity", { duration: 0.9, ease: "power2.out" })
         : undefined;
+      const centerX = el.clientWidth / 2;
+      const centerY = el.clientHeight / 2;
+      reveal.style.setProperty("--torch-x", String(centerX));
+      reveal.style.setProperty("--torch-y", String(centerY));
+      reveal.style.setProperty("--torch-trail-x", String(centerX));
+      reveal.style.setProperty("--torch-trail-y", String(centerY));
 
       const move = (e: PointerEvent) => {
         const r = el.getBoundingClientRect();
@@ -72,10 +78,10 @@ export function TorchArea({
       };
 
       if (!isFinePointer() || prefersReducedMotion()) {
-        reveal.style.setProperty("--torch-x", "50%");
-        reveal.style.setProperty("--torch-y", "50%");
-        reveal.style.setProperty("--torch-trail-x", "50%");
-        reveal.style.setProperty("--torch-trail-y", "50%");
+        reveal.style.setProperty("--torch-x", String(centerX));
+        reveal.style.setProperty("--torch-y", String(centerY));
+        reveal.style.setProperty("--torch-trail-x", String(centerX));
+        reveal.style.setProperty("--torch-trail-y", String(centerY));
         reveal.style.setProperty("--torch-opacity", prefersReducedMotion() ? "0.58" : "0.5");
         setGlowOpacity?.(0.12);
         return;
