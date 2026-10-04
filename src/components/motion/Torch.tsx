@@ -4,11 +4,16 @@ import { gsap, isFinePointer, prefersReducedMotion } from "@/lib/gsap";
 
 type TorchMode = "dim" | "reveal";
 
-/**
- * A pointer controlled light field. The default dim mode is used by the
- * project grids; reveal mode lets a bright media layer emerge through a
- * broad, layered mask without introducing a second cursor system.
- */
+/*
+  A pointer-controlled light field.
+
+  - "dim" (project grids): a dark veil with a circular opening that follows the
+    cursor; the veil's centre radius is driven by `--tr`.
+  - "reveal" (homepage hero): a bright media layer is clipped by a broad, soft,
+    elliptical mask. The mask trails the pointer slowly (`--torch-trail-*`) while
+    a warmer, tighter highlight follows closely (`--torch-*`). Both coordinates
+    are written onto the container so every child layer inherits them.
+*/
 export function TorchArea({
   children,
   className,
@@ -25,32 +30,38 @@ export function TorchArea({
     if (!el) return;
 
     if (mode === "reveal") {
-      const reveal = el.querySelector<HTMLElement>(":scope > [data-reveal]");
-      if (!reveal) return;
-      const glow = el.querySelector<HTMLElement>(":scope > [data-glow]");
-      const setX = gsap.quickTo(reveal, "--torch-x", { duration: 0.28, ease: "power3.out" });
-      const setY = gsap.quickTo(reveal, "--torch-y", { duration: 0.28, ease: "power3.out" });
-      const setTrailX = gsap.quickTo(reveal, "--torch-trail-x", {
-        duration: 0.82,
-        ease: "power2.out",
-      });
-      const setTrailY = gsap.quickTo(reveal, "--torch-trail-y", {
-        duration: 0.82,
-        ease: "power2.out",
-      });
-      const setOpacity = gsap.quickTo(reveal, "--torch-opacity", {
+      // Coordinates live on the container so [data-reveal] and [data-glow] both
+      // inherit them (CSS variables inherit downward, not across siblings).
+      const setX = gsap.quickTo(el, "--torch-x", { duration: 0.28, ease: "power3.out" });
+      const setY = gsap.quickTo(el, "--torch-y", { duration: 0.28, ease: "power3.out" });
+      const setTrailX = gsap.quickTo(el, "--torch-trail-x", {
         duration: 0.85,
         ease: "power2.out",
       });
-      const setGlowOpacity = glow
-        ? gsap.quickTo(glow, "--torch-glow-opacity", { duration: 0.9, ease: "power2.out" })
-        : undefined;
+      const setTrailY = gsap.quickTo(el, "--torch-trail-y", {
+        duration: 0.85,
+        ease: "power2.out",
+      });
+      const setOpacity = gsap.quickTo(el, "--torch-opacity", {
+        duration: 0.85,
+        ease: "power2.out",
+      });
+      const setGlowOpacity = gsap.quickTo(el, "--torch-glow-opacity", {
+        duration: 0.9,
+        ease: "power2.out",
+      });
+
       const centerX = el.clientWidth / 2;
       const centerY = el.clientHeight / 2;
-      reveal.style.setProperty("--torch-x", String(centerX));
-      reveal.style.setProperty("--torch-y", String(centerY));
-      reveal.style.setProperty("--torch-trail-x", String(centerX));
-      reveal.style.setProperty("--torch-trail-y", String(centerY));
+      el.style.setProperty("--torch-x", String(centerX));
+      el.style.setProperty("--torch-y", String(centerY));
+      el.style.setProperty("--torch-trail-x", String(centerX));
+      el.style.setProperty("--torch-trail-y", String(centerY));
+
+      const leave = () => {
+        setOpacity(0);
+        setGlowOpacity(0);
+      };
 
       const move = (e: PointerEvent) => {
         const r = el.getBoundingClientRect();
@@ -69,21 +80,19 @@ export function TorchArea({
         setY(y);
         setTrailX(x);
         setTrailY(y);
-        setOpacity(e.pointerType === "touch" ? 0.58 : 0.82);
-        setGlowOpacity?.(e.pointerType === "touch" ? 0.16 : 0.24);
-      };
-      const leave = () => {
-        setOpacity(0);
-        setGlowOpacity?.(0);
+        setOpacity(e.pointerType === "touch" ? 0.6 : 0.9);
+        setGlowOpacity(e.pointerType === "touch" ? 0.12 : 0.2);
       };
 
+      // Touch / reduced motion: no chasing spotlight — a broad, softly lit
+      // centre reveal that stays put.
       if (!isFinePointer() || prefersReducedMotion()) {
-        reveal.style.setProperty("--torch-x", String(centerX));
-        reveal.style.setProperty("--torch-y", String(centerY));
-        reveal.style.setProperty("--torch-trail-x", String(centerX));
-        reveal.style.setProperty("--torch-trail-y", String(centerY));
-        reveal.style.setProperty("--torch-opacity", prefersReducedMotion() ? "0.58" : "0.5");
-        setGlowOpacity?.(0.12);
+        el.style.setProperty("--torch-x", String(centerX));
+        el.style.setProperty("--torch-y", String(centerY));
+        el.style.setProperty("--torch-trail-x", String(centerX));
+        el.style.setProperty("--torch-trail-y", String(centerY));
+        el.style.setProperty("--torch-opacity", prefersReducedMotion() ? "0.6" : "0.55");
+        el.style.setProperty("--torch-glow-opacity", "0.12");
         return;
       }
 
@@ -103,7 +112,7 @@ export function TorchArea({
         setTrailX.tween.kill();
         setTrailY.tween.kill();
         setOpacity.tween.kill();
-        setGlowOpacity?.tween.kill();
+        setGlowOpacity.tween.kill();
       };
     }
 
@@ -139,16 +148,17 @@ export function TorchArea({
     };
   }, [mode]);
 
-  const revealVars = {
-    ["--torch-x" as string]: "50%",
-    ["--torch-y" as string]: "50%",
-    ["--torch-trail-x" as string]: "50%",
-    ["--torch-trail-y" as string]: "50%",
-    ["--torch-opacity" as string]: 0,
+  const revealRoot = {
+    ["--torch-x" as string]: "0",
+    ["--torch-y" as string]: "0",
+    ["--torch-trail-x" as string]: "0",
+    ["--torch-trail-y" as string]: "0",
+    ["--torch-opacity" as string]: "0",
+    ["--torch-glow-opacity" as string]: "0",
   } as CSSProperties;
 
   return (
-    <div ref={ref} className={cn("relative", className)}>
+    <div ref={ref} className={cn("relative", className)} style={mode === "reveal" ? revealRoot : undefined}>
       {children}
       {mode === "dim" ? (
         <div
@@ -169,10 +179,9 @@ export function TorchArea({
           aria-hidden
           className="pointer-events-none absolute inset-0"
           style={{
-            ...revealVars,
             opacity: "var(--torch-glow-opacity, 0)",
             background:
-              "radial-gradient(ellipse 16vw 12vw at calc(var(--torch-x) * 1px) calc(var(--torch-y) * 1px), rgb(242 200 139 / 0.16), transparent 72%)",
+              "radial-gradient(ellipse 20vw 14vw at calc(var(--torch-x) * 1px) calc(var(--torch-y) * 1px), rgb(242 200 139 / 0.18), transparent 70%)",
           }}
         />
       )}
