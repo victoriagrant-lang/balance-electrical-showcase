@@ -1,4 +1,12 @@
 import { createClient } from "npm:@supabase/supabase-js@2";
+import {
+  confirmationEmail,
+  enquiryEmail,
+  INBOX,
+  logoAttachment,
+  PHONE_TEL,
+  type EnquiryView,
+} from "./email.ts";
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
@@ -6,12 +14,13 @@ const corsHeaders = {
   "Access-Control-Allow-Methods": "POST, OPTIONS",
 };
 
-const INBOX = "enquiries@balanceelectrical.co.nz";
 const FROM_WEBSITE = "Balance Electrical Website <enquiries@balanceelectrical.co.nz>";
 const FROM_BALANCE = "Balance Electrical <enquiries@balanceelectrical.co.nz>";
-const PHONE_DISPLAY = "027 916 2077";
-const PHONE_TEL = "+64279162077";
-const SITE = "https://www.balanceelectrical.co.nz";
+// Links in the emails point here; SITE_URL overrides it (e.g. before the domain is live).
+const SITE_URL = (Deno.env.get("SITE_URL") || "https://www.balanceelectrical.co.nz").replace(
+  /\/$/,
+  "",
+);
 const BUCKET = "enquiry-files";
 
 // Uploads: photos and plans. The form shrinks photos before sending; these are hard limits.
@@ -26,16 +35,6 @@ const ALLOWED_TYPES = new Set([
   "image/heif",
   "application/pdf",
 ]);
-
-// Site palette — stone panel, ink type, warm glow accent.
-const C = {
-  page: "#d6cabd",
-  panel: "#ece4da",
-  ink: "#1c1a18",
-  soft: "#5a5048",
-  rule: "#c9bcae",
-  frame: "#1c1d1f",
-};
 
 // Base64 for Resend attachments, in chunks so large files don't overflow the call stack.
 function base64(bytes: Uint8Array) {
@@ -56,13 +55,6 @@ const json = (body: unknown, status = 200) =>
 
 const field = (v: unknown, max: number) => (typeof v === "string" ? v.trim().slice(0, max) : "");
 
-// Everything a visitor types is escaped before it goes anywhere near HTML.
-const esc = (s: string) =>
-  s.replace(
-    /[&<>"']/g,
-    (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[c]!,
-  );
-const multiline = (s: string) => esc(s).replace(/\r?\n/g, "<br>");
 const oneLine = (s: string) => s.replace(/[\r\n]+/g, " ");
 const safeName = (s: string) =>
   s
@@ -71,8 +63,6 @@ const safeName = (s: string) =>
     .trim()
     .replace(/\s+/g, "-")
     .slice(-80) || "file";
-const kb = (n: number) =>
-  n > 1024 * 1024 ? `${(n / 1048576).toFixed(1)} MB` : `${Math.ceil(n / 1024)} KB`;
 
 async function sendEmail(payload: Record<string, unknown>) {
   const key = Deno.env.get("RESEND_API_KEY");
@@ -110,37 +100,6 @@ async function sendSms(body: string) {
   });
   if (!res.ok) throw new Error(`Twilio ${res.status}: ${await res.text()}`);
   return true;
-}
-
-function shell(inner: string) {
-  return `<!doctype html><html><body style="margin:0;padding:0;background:${C.page};">
-<table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background:${C.page};padding:32px 12px;">
-<tr><td align="center">
-<table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="max-width:600px;background:${C.panel};border:10px solid ${C.frame};font-family:Georgia,'Times New Roman',serif;color:${C.ink};">
-<tr><td style="padding:28px 36px 20px;border-bottom:1px solid ${C.rule};">
-<div style="font-size:22px;letter-spacing:0.42em;color:${C.ink};">BALANCE</div>
-<div style="font-family:Arial,Helvetica,sans-serif;font-size:10px;letter-spacing:0.32em;color:${C.soft};margin-top:6px;">ELECTRICAL · TAUPŌ</div>
-</td></tr>
-${inner}
-<tr><td style="padding:22px 36px 28px;border-top:1px solid ${C.rule};font-family:Arial,Helvetica,sans-serif;font-size:12px;line-height:1.7;color:${C.soft};">
-Victoria Grant · Registered Electrician<br>
-<a href="tel:${PHONE_TEL}" style="color:${C.ink};text-decoration:none;">${PHONE_DISPLAY}</a> ·
-<a href="mailto:${INBOX}" style="color:${C.ink};text-decoration:none;">${INBOX}</a> ·
-<a href="${SITE}" style="color:${C.ink};text-decoration:none;">balanceelectrical.co.nz</a>
-</td></tr>
-</table>
-</td></tr></table></body></html>`;
-}
-
-function rows(items: [string, string][]) {
-  return items
-    .map(
-      ([k, v]) => `<tr>
-<td style="padding:10px 0;border-bottom:1px solid ${C.rule};font-family:Arial,Helvetica,sans-serif;font-size:10px;letter-spacing:0.22em;text-transform:uppercase;color:${C.soft};width:120px;vertical-align:top;">${k}</td>
-<td style="padding:10px 0;border-bottom:1px solid ${C.rule};font-family:Arial,Helvetica,sans-serif;font-size:15px;line-height:1.6;color:${C.ink};">${v}</td>
-</tr>`,
-    )
-    .join("");
 }
 
 type Upload = { name: string; type: string; size: number; bytes: Uint8Array };
@@ -248,24 +207,21 @@ Deno.serve(async (req) => {
     console.error("Enquiry not stored:", (e as Error).message);
   }
 
-  const summary = rows([
-    ["Name", esc(full_name)],
-    ["Email", `<a href="mailto:${esc(email)}" style="color:${C.ink};">${esc(email)}</a>`],
-    [
-      "Phone",
-      phone ? `<a href="tel:${esc(phone)}" style="color:${C.ink};">${esc(phone)}</a>` : "—",
-    ],
-    ["Location", suburb ? esc(suburb) : "—"],
-    ["Project", esc(service_type)],
-    ["Stage", stage ? esc(stage) : "—"],
-    ["Budget", budget ? esc(budget) : "—"],
-    ["Timeframe", timeframe ? esc(timeframe) : "—"],
-    ["Message", multiline(message)],
-    [
-      "Files",
-      uploads.length ? uploads.map((u) => `${esc(u.name)} (${kb(u.size)})`).join("<br>") : "—",
-    ],
-  ]);
+  const view: EnquiryView = {
+    fullName: full_name,
+    firstName,
+    email,
+    phone,
+    suburb,
+    service: service_type,
+    stage,
+    budget,
+    timeframe,
+    message,
+    files: uploads.map((u) => ({ name: u.name, size: u.size })),
+    receivedAt: nzNow,
+    siteUrl: SITE_URL,
+  };
 
   // 1. The enquiry itself, to Victoria, with the photos and plans attached.
   //    If this fails the visitor is told to call instead.
@@ -275,13 +231,11 @@ Deno.serve(async (req) => {
       to: [INBOX],
       reply_to: email,
       subject: oneLine(`New enquiry — ${service_type} — ${full_name}`),
-      attachments: uploads.map((u) => ({ filename: u.name, content: base64(u.bytes) })),
-      html: shell(`<tr><td style="padding:28px 36px 8px;">
-<div style="font-family:Arial,Helvetica,sans-serif;font-size:10px;letter-spacing:0.32em;color:${C.soft};">NEW PROJECT ENQUIRY · ${esc(nzNow)}</div>
-<div style="font-size:26px;line-height:1.25;margin:10px 0 18px;">${esc(full_name)}</div>
-<table role="presentation" width="100%" cellpadding="0" cellspacing="0">${summary}</table>
-<p style="font-family:Arial,Helvetica,sans-serif;font-size:13px;color:${C.soft};margin:22px 0 6px;">Reply to this email to answer ${esc(firstName)} directly.${uploads.length ? " Files are attached." : ""}</p>
-</td></tr>`),
+      attachments: [
+        logoAttachment(),
+        ...uploads.map((u) => ({ filename: u.name, content: base64(u.bytes) })),
+      ],
+      html: enquiryEmail(view),
     });
   } catch (e) {
     console.error("Enquiry email failed:", (e as Error).message);
@@ -310,17 +264,8 @@ Deno.serve(async (req) => {
       to: [email],
       reply_to: INBOX,
       subject: "Your enquiry has been sent — Balance Electrical",
-      html: shell(`<tr><td style="padding:30px 36px 10px;">
-<div style="font-size:28px;line-height:1.25;">Thanks, ${esc(firstName)}.</div>
-<p style="font-family:Arial,Helvetica,sans-serif;font-size:15px;line-height:1.75;color:${C.ink};margin:16px 0 0;">
-Your enquiry has been sent to Balance Electrical. Victoria will be in touch within the next few days to talk it through.</p>
-<p style="font-family:Arial,Helvetica,sans-serif;font-size:15px;line-height:1.75;color:${C.ink};margin:14px 0 0;">
-If it's urgent, call Victoria on <a href="tel:${PHONE_TEL}" style="color:${C.ink};font-weight:bold;text-decoration:none;">${PHONE_DISPLAY}</a>.</p>
-<div style="font-family:Arial,Helvetica,sans-serif;font-size:10px;letter-spacing:0.32em;color:${C.soft};margin:30px 0 4px;">WHAT YOU SENT</div>
-<table role="presentation" width="100%" cellpadding="0" cellspacing="0">${summary}</table>
-<p style="font-family:Arial,Helvetica,sans-serif;font-size:12px;line-height:1.7;color:${C.soft};margin:20px 0 6px;">
-Need to add something? Just reply to this email.</p>
-</td></tr>`),
+      attachments: [logoAttachment()],
+      html: confirmationEmail(view),
     });
   } catch (e) {
     confirmation = false;
