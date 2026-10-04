@@ -38,63 +38,38 @@ export const Route = createFileRoute("/projects")({
 
 type Tile = Shot & { tags: string[]; smSrc: string; w?: number; h?: number; afterDark: boolean };
 
-// Photos from the original site that aren't tied to a portfolio chapter.
-const EARLIER: Tile[] = [
-  {
-    src: photos.twilight,
-    title: "House at twilight",
-    note: "Exterior lighting for a new home, including the entrance and outdoor spaces.",
-    aspect: "aspect-[16/10]",
-  },
-  {
-    src: photos.fountainEntry,
-    title: "Fountain entry",
-    note: "Lighting along the approach and around the entrance.",
-    aspect: "aspect-[4/5]",
-  },
-  {
-    src: photos.kitchen,
-    title: "Kitchen",
-    note: "Lighting and switches integrated into the kitchen joinery.",
-    aspect: "aspect-[4/5]",
-  },
-  {
-    src: photos.living,
-    title: "Living room",
-    note: "General and feature lighting for the living room.",
-    aspect: "aspect-[4/5]",
-  },
-  {
-    src: photos.img0419,
-    title: "Switch plate detail",
-    note: "A brass switch plate fitted into the finished interior.",
-    aspect: "aspect-[16/10]",
-  },
-].map((t) => ({
-  ...t,
-  place: "Taupō district",
-  smSrc: t.src,
-  tags: ["Residential"],
-  afterDark: t.title === "House at twilight",
-}));
+// The photographs shown on the gallery page, in display order.
+const GALLERY_SELECTION: [string, string][] = [
+  ["the-curve-house", "08"],
+  ["oakleaf-residence", "06"],
+  ["mapleleaf", "03"],
+  ["the-lakehouse", "20"],
+  ["the-lakehouse", "21"],
+  ["sparrowhawk", "11"],
+  ["sparrowhawk", "12"],
+  ["sparrowhawk", "13"],
+];
 
 function makeTiles(portfolio: typeof PORTFOLIO): Tile[] {
-  return [
-    ...portfolio.flatMap((project) =>
-      project.photos.map((ph) => ({
-        src: ph.lg,
-        smSrc: ph.sm,
-        w: ph.w,
-        h: ph.h,
-        title: ph.title,
+  const bySlug = new Map(portfolio.map((project) => [project.slug, project]));
+  return GALLERY_SELECTION.flatMap(([slug, name]) => {
+    const project = bySlug.get(slug);
+    const photo = project?.photos.find((p) => p.name === name);
+    if (!project || !photo) return [];
+    return [
+      {
+        src: photo.lg,
+        smSrc: photo.sm,
+        w: photo.w,
+        h: photo.h,
+        title: photo.title,
         place: project.title,
-        note: ph.caption,
-        tags: photoTags(project, ph),
-        afterDark: /dusk|sunset|night/.test(ph.name),
-      })),
-    ),
-    ...EARLIER,
-  ];
+        note: photo.caption,
+        tags: photoTags(project, photo),
+        afterDark: /dusk|sunset|night/.test(photo.name),
+      },
+    ];
+  });
 }
 
 const AFTER_DARK = "After dark";

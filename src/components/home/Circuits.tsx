@@ -23,19 +23,19 @@ const SERVICES = [
   {
     title: "Lighting design",
     service: "Lighting design",
-    card: fromPhoto(getPhoto("the-curve-house", "01-curved-deck-at-dusk")),
+    card: fromPhoto(getPhoto("the-curve-house", "07")),
     copy: "Lighting that brings out the best in your home. We plan fittings, placement and controls around your architecture, your interiors and the way you use each room.",
   },
   {
     title: "New builds",
     service: "New residential build",
-    card: fromPhoto(getPhoto("sparrowhawk", "01-at-dusk"), "62% 50%"),
+    card: fromPhoto(getPhoto("sparrowhawk", "06"), "62% 50%"),
     copy: "Complete electrical installations, planned alongside your build. We work with you and your project team to get the details right, from power points and switchboards to lighting and the final fit-off.",
   },
   {
     title: "Renovations",
     service: "Renovation or addition",
-    card: fromPhoto(getPhoto("pre-wires", "03-cable-drops")),
+    card: fromPhoto(getPhoto("rainbow-reno", "02-kitchen")),
     copy: "Electrical upgrades that make your home work better. From rewiring and switchboard replacements to new lighting and additional power points, we help bring your plans together.",
   },
   {
@@ -53,7 +53,7 @@ const SERVICES = [
   {
     title: "Air-Conditioning",
     service: "Air-Conditioning",
-    card: fromPhoto(getPhoto("rainbow-reno", "02-kitchen"), "100% 50%"),
+    card: fromPhoto(getPhoto("the-bach", "01-kitchen")),
     copy: "Comfort throughout the seasons. We supply and install air-conditioning, from individual rooms to multi-zone systems.",
   },
   {

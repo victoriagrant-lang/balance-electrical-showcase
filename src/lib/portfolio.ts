@@ -130,14 +130,6 @@ export const PORTFOLIO: PortfolioProject[] = [
     photos: [
       photo(
         "the-curve-house",
-        "01-curved-deck-at-dusk",
-        1320,
-        1320,
-        "Curved deck at dusk",
-        "An LED line traces the sweep of the soffit around the deck.",
-      ),
-      photo(
-        "the-curve-house",
         "02-aerial-at-sunset",
         1320,
         1315,
@@ -816,14 +808,6 @@ export const PORTFOLIO: PortfolioProject[] = [
       ),
       photo(
         "the-sisters",
-        "03-courtyard-wing",
-        1800,
-        1350,
-        "Courtyard wing",
-        "The array continues over the roof of the courtyard wing.",
-      ),
-      photo(
-        "the-sisters",
         "04-rails-set-out",
         1012,
         1800,
@@ -856,7 +840,7 @@ export const PORTFOLIO: PortfolioProject[] = [
         1086,
         1448,
         "Kitchen",
-        "A red linear pendant over the island; LED lights the shelf above the bench.",
+        "Integrated air-conditioning grilles into joinery.",
       ),
       photo(
         "the-bach",
@@ -999,7 +983,6 @@ export function getPhoto(slug: string, name: string): PortfolioPhoto & { project
 const PHOTO_TAGS: Record<string, string[]> = {
   "the-sisters/01-array": ["Solar"],
   "the-sisters/02-rooftops": ["Solar"],
-  "the-sisters/03-courtyard-wing": ["Solar"],
   "the-sisters/04-rails-set-out": ["Solar"],
   "the-sisters/05-exterior": ["Residential"],
   "the-sisters/06-living-room": ["Residential"],
