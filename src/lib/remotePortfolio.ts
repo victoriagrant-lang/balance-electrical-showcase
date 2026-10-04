@@ -11,7 +11,7 @@ type RemoteProjectDefinition = Omit<PortfolioProject, "photos"> & {
 
 const REMOTE_PROJECTS: RemoteProjectDefinition[] = [
   {
-    folder: "The_Lake_House",
+    folder: "The_Lake_House_Photos",
     slug: "the-lakehouse",
     title: "The Lakehouse",
     location: "Taupō district",
@@ -27,7 +27,7 @@ const REMOTE_PROJECTS: RemoteProjectDefinition[] = [
     ],
   },
   {
-    folder: "Sparrowhawk",
+    folder: "Sparrowhawk_Photos",
     slug: "sparrowhawk",
     title: "Sparrowhawk",
     location: "Kinloch",
@@ -43,7 +43,7 @@ const REMOTE_PROJECTS: RemoteProjectDefinition[] = [
     ],
   },
   {
-    folder: "Mapleleaf",
+    folder: "Mapleleaf_Photos",
     slug: "mapleleaf",
     title: "Mapleleaf",
     location: "Taupō district",
