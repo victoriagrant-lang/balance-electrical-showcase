@@ -5,123 +5,86 @@ const BUCKET = "Website Photos";
 const SUPABASE_URL =
   import.meta.env.VITE_SUPABASE_URL || "https://nrhfbcqmfsezlkxnzshq.supabase.co";
 
-type RemoteProjectDefinition = Omit<PortfolioProject, "photos"> & {
-  folder: string;
+/** A hand-written caption for one uploaded file, matched by its exact file name. */
+type RemotePhotoSpec = {
+  file: string;
+  title: string;
+  caption: string;
+  /** Intrinsic size, used to reserve the right space and avoid layout shift. */
+  w?: number;
+  h?: number;
 };
 
+type RemoteProjectDefinition = Omit<PortfolioProject, "photos"> & {
+  folder: string;
+  /**
+   * Optional. The files to publish, in the order they should appear (the first
+   * is the project cover), each with the caption shown beneath it. Uploads that
+   * aren't listed are appended afterwards with a caption taken from the file
+   * name, so a new photo never disappears just because it lacks a caption yet.
+   */
+  photos?: RemotePhotoSpec[];
+};
+
+/*
+  Only projects that do NOT already exist in src/lib/portfolio.ts belong here.
+
+  The curated entries in portfolio.ts are the source of truth: they carry the
+  hand-written captions, the chosen photo order and the resized WebP files. A
+  Supabase folder can therefore only ADD a project — it never replaces one of
+  those entries (see mergeRemotePortfolio). Keeping this list to genuinely new
+  projects also avoids listing the same folders on every page load.
+*/
 const REMOTE_PROJECTS: RemoteProjectDefinition[] = [
-  {
-    folder: "The_Lake_House_Photos",
-    slug: "the-lakehouse",
-    title: "The Lakehouse",
-    location: "Taupō district",
-    tags: ["Residential"],
-    summary:
-      "Concealed lighting brings out the warmth of this home’s cedar ceilings and oak floors. LEDs run along the ceiling coves and beneath the kitchen island, complemented by small downlights and spotlights in the garden.",
-    detailsTitle: "Lighting details",
-    details: [
-      "Concealed LED cove along the cedar ceilings",
-      "LED line beneath the kitchen island",
-      "Pinpoint downlights in the cedar soffit",
-      "Garden spotlights in the planting",
-    ],
-  },
-  {
-    folder: "Sparrowhawk_Photos",
-    slug: "sparrowhawk",
-    title: "Sparrowhawk",
-    location: "Kinloch",
-    tags: ["Residential", "New build"],
-    summary:
-      "Exterior lighting connects the separate pavilions of this hillside home in Kinloch. Concealed LEDs beneath the deck seating, deck-edge lighting and sheltered courtyard lighting extend the living spaces into the evening.",
-    detailsTitle: "Lighting details",
-    details: [
-      "Concealed LED beneath the built-in deck seating",
-      "Deck-edge lighting around the pavilions",
-      "Soffit lighting to the sheltered courtyard",
-      "Interior lighting across the living spaces",
-    ],
-  },
   {
     folder: "Mapleleaf_Photos",
     slug: "mapleleaf",
     title: "Mapleleaf",
     location: "Taupō district",
-    tags: ["Residential"],
-    summary:
-      "A considered electrical and lighting installation shaped around the home, its materials and the way each space is used.",
-    detailsTitle: "Project details",
-    details: [
-      "Lighting planned around the architecture",
-      "Thoughtful placement of power and controls",
-      "Warm, practical illumination throughout the home",
-    ],
-  },
-  {
-    folder: "Jarden Mile",
-    slug: "jarden-mile",
-    title: "Jarden Mile",
-    location: "Taupō",
-    tags: ["Residential", "Pool", "Air-Conditioning"],
-    summary:
-      "Electrical work spanning pool wiring, air-conditioning, ducted heating and feature lighting. The installation includes lights within the entrance pavers, an LED strip above the garage and wall fittings along the frontage, with integrated lighting in the bathrooms.",
-    detailsTitle: "Electrical scope",
-    details: [
-      "Swimming pool wiring",
-      "Air-conditioning installation",
-      "Ducted heating throughout the home",
-      "Lights set into the stepping-stone pavers",
-      "LED strip above the garage door; up/down wall lights",
-    ],
-  },
-  {
-    folder: "The Sisters",
-    slug: "the-sisters",
-    title: "The Sisters",
-    location: "Taupō district",
-    tags: ["Residential", "Solar"],
-    summary:
-      "Solar installation and interior lighting for a lakefront home. Rooftop panels are arranged across several standing-seam roof sections, while pendants and downlights serve the open-plan kitchen, dining and living areas.",
-    detailsTitle: "Project highlights",
-    details: [
-      "Solar array across several roof planes",
-      "Mounting rails fixed to the standing seams",
-      "Pendants over the kitchen island and dining table",
-      "Downlights throughout the open-plan living",
-    ],
-  },
-  {
-    folder: "Curve House",
-    slug: "the-curve-house",
-    title: "The Curve House",
-    location: "Kinloch",
     tags: ["Residential", "New build"],
     summary:
-      "Lighting follows the distinctive curves of this Kinloch home. Continuous LED lines highlight the deck, hallway and staircase, while feature pendants and concealed ceiling lighting give each interior space its own character.",
+      "Lighting built around the shape of this new home: wall lights graze the pale brick, warm interior light spills onto the deck, and the swimming pool and garden are lit for the evening.",
     detailsTitle: "Lighting details",
     details: [
-      "LED line following the curved deck soffit",
-      "Recessed LED channel along the hallway ceiling",
-      "Linear lighting tracing the stair",
-      "Cove lighting to the raked living-room ceiling",
+      "Up and down wall lights across the brick frontage",
+      "Warm interior lighting through full-height glazing",
+      "Linear pendant over the kitchen island",
+      "LED beneath the overhead kitchen cabinets",
+      "Deck, pool and garden lighting",
     ],
-  },
-  {
-    folder: "Oakleaf",
-    slug: "oakleaf-residence",
-    title: "Oakleaf Residence",
-    location: "Taupō district",
-    tags: ["Residential", "New build"],
-    accolade:
-      "Gold Award — Master Builders House of the Year 2025, Bay of Plenty & Central Plateau",
-    summary:
-      "Lighting planned to complement the timber interiors and lake views of this new home. Feature pendants define the living spaces, integrated LEDs highlight the joinery, and outdoor lighting connects the courtyard and garden after dark.",
-    detailsTitle: "Lighting details",
-    details: [
-      "Feature pendants over the living room and lounge",
-      "Linear pendant lighting above the kitchen island",
-      "Recessed LED line along the joinery wall",
-      "Courtyard, pergola and garden lighting",
+    photos: [
+      {
+        file: "Maypleleaf(1).png",
+        title: "House at dusk",
+        caption:
+          "The house from the lawn, its brick and timber walls warmed by exterior lighting against the bush line.",
+        w: 1533,
+        h: 1026,
+      },
+      {
+        file: "Maypleleaf.png",
+        title: "Wall lights at dusk",
+        caption:
+          "Up and down wall lights graze the pale brick beside the timber-clad upper storey.",
+        w: 1537,
+        h: 1023,
+      },
+      {
+        file: "4BFBD394-AD2B-4517-98CD-9B0A17ABB25A.png",
+        title: "Pool and living at sunset",
+        caption:
+          "Open-plan living opens to the deck and pool, with warm interior light glowing through the glazing.",
+        w: 1545,
+        h: 1018,
+      },
+      {
+        file: "3C85CA14-CF54-4583-B8F6-D17F872E485C.png",
+        title: "Kitchen",
+        caption:
+          "A linear pendant over the island, with LED lighting concealed beneath the overhead cabinets.",
+        w: 1448,
+        h: 1086,
+      },
     ],
   },
 ];
@@ -141,7 +104,10 @@ function titleFromFilename(filename: string, index: number) {
   return stem || `Project photograph ${String(index + 1).padStart(2, "0")}`;
 }
 
-async function listFolderPhotos(folder: string): Promise<PortfolioPhoto[]> {
+async function listFolderPhotos(
+  folder: string,
+  spec?: RemotePhotoSpec[],
+): Promise<PortfolioPhoto[]> {
   try {
     const { data, error } = await supabase.storage.from(BUCKET).list(folder, {
       limit: 100,
@@ -150,21 +116,37 @@ async function listFolderPhotos(folder: string): Promise<PortfolioPhoto[]> {
     });
     if (error || !data) return [];
 
-    return data
-      .filter((file) => /\.(avif|gif|jpe?g|png|webp)$/i.test(file.name))
-      .map((file, index) => {
-        const name = file.name;
-        const src = publicUrl(`${folder}/${name}`);
-        return {
-          name: `${folder}/${name}`,
-          lg: src,
-          sm: src,
-          w: 1600,
-          h: 1067,
-          title: titleFromFilename(name, index),
-          caption: `${titleFromFilename(name, index)} — ${folder.replace(/_/g, " ")}.`,
-        };
-      });
+    const uploads = data.filter((file) => /\.(avif|gif|jpe?g|png|webp)$/i.test(file.name));
+    const curated = spec ?? [];
+    const isListed = (name: string) => curated.some((entry) => entry.file === name);
+
+    // Captioned photos first, in the order they were written; anything else the
+    // folder holds follows in file-name order.
+    const ordered = [
+      ...curated
+        .map((entry) => ({
+          name: entry.file,
+          spec: entry as RemotePhotoSpec | undefined,
+        }))
+        .filter(({ name }) => uploads.some((file) => file.name === name)),
+      ...uploads
+        .filter((file) => !isListed(file.name))
+        .map((file) => ({ name: file.name, spec: undefined as RemotePhotoSpec | undefined })),
+    ];
+
+    return ordered.map(({ name, spec: entry }, index) => {
+      const src = publicUrl(`${folder}/${name}`);
+      const fallbackTitle = titleFromFilename(name, index);
+      return {
+        name: `${folder}/${name}`,
+        lg: src,
+        sm: src,
+        w: entry?.w ?? 1600,
+        h: entry?.h ?? 1067,
+        title: entry?.title ?? fallbackTitle,
+        caption: entry?.caption ?? `${fallbackTitle} — ${folder.replace(/_/g, " ")}.`,
+      };
+    });
   } catch {
     return [];
   }
@@ -172,9 +154,9 @@ async function listFolderPhotos(folder: string): Promise<PortfolioPhoto[]> {
 
 export async function loadRemotePortfolioProjects(): Promise<PortfolioProject[]> {
   const loaded = await Promise.all(
-    REMOTE_PROJECTS.map(async ({ folder, ...project }) => ({
+    REMOTE_PROJECTS.map(async ({ folder, photos, ...project }) => ({
       ...project,
-      photos: await listFolderPhotos(folder),
+      photos: await listFolderPhotos(folder, photos),
     })),
   );
   return loaded.filter((project) => project.photos.length > 0);
@@ -184,8 +166,9 @@ export function mergeRemotePortfolio(
   current: PortfolioProject[],
   remote: PortfolioProject[],
 ): PortfolioProject[] {
-  const bySlug = new Map(remote.map((project) => [project.slug, project]));
-  const merged = current.map((project) => bySlug.get(project.slug) ?? project);
+  // The curated projects in portfolio.ts always win. Supabase folders may only
+  // introduce projects that aren't there yet, so hand-written captions, photo
+  // order and the resized images can never be overwritten by an upload.
   const existing = new Set(current.map((project) => project.slug));
-  return [...merged, ...remote.filter((project) => !existing.has(project.slug))];
+  return [...current, ...remote.filter((project) => !existing.has(project.slug))];
 }
