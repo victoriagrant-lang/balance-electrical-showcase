@@ -206,8 +206,8 @@ export const SERVICES: Service[] = [
         a: "Yes. Victoria can work alongside your chosen panel supplier or recommend trusted local suppliers, while Balance handles the electrical installation, connection and certification.",
       },
     ],
-    projects: ["glass-pavilion"],
-    image: img("glass-pavilion", "01-array"),
+    projects: ["twin-pavilions"],
+    image: img("twin-pavilions", "01-array"),
   },
   {
     slug: "air-conditioning-heating-taupo",

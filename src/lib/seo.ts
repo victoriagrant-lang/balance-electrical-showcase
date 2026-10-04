@@ -1,7 +1,6 @@
 import { AREAS } from "@/lib/areas";
 import { CONTACT } from "@/lib/contact";
 import { PORTFOLIO } from "@/lib/portfolio";
-import { REVIEWS } from "@/lib/reviews";
 import { SERVICES, type Faq } from "@/lib/services";
 
 /*
@@ -59,6 +58,15 @@ export function siteGraph() {
         telephone: CONTACT.phone,
         image: `${SITE}${PORTFOLIO[0].photos[0].lg}`,
         logo: `${SITE}/favicon.svg`,
+        alternateName: [
+          "Balance Electrical Taupō",
+          "Balance Electrical Taupo",
+          "Balance Electrical Ltd",
+        ],
+        sameAs: ["https://g.page/r/CUTDVwlL1oZeEBM"],
+        hasMap: "https://g.page/r/CUTDVwlL1oZeEBM",
+        keywords:
+          "electrician Taupō, Taupo electrician, registered electrician Taupo, electrician Kinloch, lighting design Taupo, heat pumps Taupo, ducted heating Taupo, solar installation Taupo, EV charger installation Taupo, commercial electrician Taupo",
         priceRange: "$$",
         address: {
           "@type": "PostalAddress",
@@ -102,18 +110,6 @@ export function siteGraph() {
             },
           })),
         },
-        ...(REVIEWS.length
-          ? {
-              review: REVIEWS.map((r) => ({
-                "@type": "Review",
-                reviewBody: r.quote,
-                author: { "@type": "Person", name: r.name },
-                ...(r.rating
-                  ? { reviewRating: { "@type": "Rating", ratingValue: r.rating, bestRating: 5 } }
-                  : {}),
-              })),
-            }
-          : {}),
         subjectOf: PORTFOLIO.filter((p) => p.story).map((p) => ({
           "@type": "CreativeWork",
           name: p.title,
@@ -175,3 +171,27 @@ export function jsonLd(graph: object[]) {
     children: JSON.stringify({ "@context": "https://schema.org", "@graph": graph }),
   };
 }
+
+/** Home page questions — shown on the page and published as FAQPage data for AI answers. */
+export const HOME_FAQS: Faq[] = [
+  {
+    q: "Who is Balance Electrical?",
+    a: "Balance Electrical is an owner-operated electrical business in Taupō, New Zealand, run by registered electrician Victoria Grant. The person who quotes your job is the person who plans and carries out the work.",
+  },
+  {
+    q: "What areas do you cover?",
+    a: "Taupō, Kinloch, Acacia Bay, Wairakei, Tūrangi and the wider Taupō district, for both homes and businesses.",
+  },
+  {
+    q: "What electrical work do you do?",
+    a: "Lighting design, complete new-build installations, renovations and rewires, commercial fit-outs, heat pumps and ducted heating and cooling integrated into joinery, solar and battery storage, EV chargers, smart-home control, switchboard upgrades and maintenance.",
+  },
+  {
+    q: "Are you a registered electrician?",
+    a: "Yes. Victoria Grant is a registered electrician with the Electrical Workers Registration Board (EWRB), and all work is tested and certified.",
+  },
+  {
+    q: "How do I get a quote?",
+    a: "Send a project brief through the contact page — you can include the stage, budget, timeframe and photos or plans — or call Victoria on 027 916 2077. Victoria replies within a few days.",
+  },
+];

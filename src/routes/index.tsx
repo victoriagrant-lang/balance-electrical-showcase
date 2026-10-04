@@ -10,9 +10,14 @@ import { SelectedWork } from "@/components/home/SelectedWork";
 import { Victoria } from "@/components/home/Victoria";
 import { AreasMarquee } from "@/components/home/AreasMarquee";
 import { SignCTA } from "@/components/home/SignCTA";
+import { HomeFaq } from "@/components/home/HomeFaq";
+import { Testimonials, reviewSchema } from "@/components/Reviews";
+import { getGoogleReviews } from "@/lib/google-reviews";
+import { HOME_FAQS, faqPage, jsonLd } from "@/lib/seo";
 
 export const Route = createFileRoute("/")({
-  head: () => ({
+  loader: () => getGoogleReviews(),
+  head: ({ loaderData }) => ({
     meta: [
       { title: "Electrician Taupō | Solar, EV Chargers & New Builds | Balance Electrical" },
       {
@@ -32,6 +37,9 @@ export const Route = createFileRoute("/")({
       { property: "og:image", content: photos.twilight },
     ],
     links: [{ rel: "canonical", href: "https://www.balanceelectrical.co.nz" }],
+    scripts: [
+      jsonLd([faqPage(HOME_FAQS), ...[reviewSchema(loaderData)].filter((x) => x !== null)]),
+    ],
   }),
   component: Home,
 });
@@ -41,6 +49,7 @@ export const Route = createFileRoute("/")({
   stone by day → the scroll story brings the night → lit rooms → morning again.
 */
 function Home() {
+  const google = Route.useLoaderData();
   return (
     <SiteLayout>
       <Hero />
@@ -52,6 +61,8 @@ function Home() {
       <div className="led-h" />
       <Victoria />
       <AreasMarquee />
+      <Testimonials google={google} className="pt-24 md:pt-32" />
+      <HomeFaq />
       <SignCTA />
     </SiteLayout>
   );

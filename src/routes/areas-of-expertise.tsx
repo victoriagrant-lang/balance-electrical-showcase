@@ -183,7 +183,7 @@ const sections: Area[] = [
     pages: ["solar-installation-taupo"],
     heading: "Solar & battery storage",
     service: "Solar & battery storage",
-    img: shot("glass-pavilion", "01-array"),
+    img: shot("twin-pavilions", "01-array"),
     intro:
       "Plan solar and battery storage around your property and the way you use electricity. Balance Electrical handles the electrical installation, including inverter wiring, switchboard requirements and the grid connection process.",
     bullets: [
@@ -197,7 +197,7 @@ const sections: Area[] = [
     ],
     closing:
       "We can work alongside your chosen solar supplier or discuss local supplier options. We’ll clarify the electrical scope and connection requirements before the installation begins.",
-    projects: ["glass-pavilion"],
+    projects: ["twin-pavilions"],
   },
 ];
 

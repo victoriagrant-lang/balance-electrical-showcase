@@ -10,10 +10,13 @@ import { gsap, prefersReducedMotion, useGSAP } from "@/lib/gsap";
 import { onIntroDone } from "@/lib/intro";
 import { EwrbLogo } from "@/components/EwrbLogo";
 import { PORTFOLIO } from "@/lib/portfolio";
-import { GoogleReviewsBadge, Testimonials } from "@/components/Reviews";
+import { GoogleReviewsBadge, Testimonials, reviewSchema } from "@/components/Reviews";
+import { getGoogleReviews } from "@/lib/google-reviews";
+import { jsonLd } from "@/lib/seo";
 
 export const Route = createFileRoute("/about")({
-  head: () => ({
+  loader: () => getGoogleReviews(),
+  head: ({ loaderData }) => ({
     meta: [
       { title: "About Victoria Grant | Registered Electrician Taupō | Balance Electrical" },
       {
@@ -33,6 +36,7 @@ export const Route = createFileRoute("/about")({
       { property: "og:image", content: photos.victoria },
     ],
     links: [{ rel: "canonical", href: "https://www.balanceelectrical.co.nz/about" }],
+    scripts: [reviewSchema(loaderData)].filter((x) => x !== null).map((x) => jsonLd([x])),
   }),
   component: About,
 });
@@ -53,6 +57,7 @@ const VALUES = [
 ];
 
 function About() {
+  const google = Route.useLoaderData();
   return (
     <SiteLayout>
       <AboutHero />
@@ -115,13 +120,13 @@ function About() {
                   2025, Bay of Plenty & Central Plateau
                 </span>
               </Link>
-              <GoogleReviewsBadge />
+              <GoogleReviewsBadge google={google} />
             </Reveal>
           </div>
         </div>
       </section>
 
-      <Testimonials />
+      <Testimonials google={google} className="pt-28 md:pt-40" />
 
       <Values />
 
@@ -347,7 +352,7 @@ function Values() {
   );
 }
 
-const RECENT = ["courtyard-house", "beechtree-studio", "cedar-gables", "glass-pavilion"];
+const RECENT = ["courtyard-house", "beechtree-studio", "cedar-gables", "twin-pavilions"];
 
 /** Four chapters from the portfolio, so the story ends on the work itself. */
 function RecentWork() {

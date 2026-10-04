@@ -52,7 +52,7 @@ const SERVICES = [
     title: "Solar & battery",
     page: "solar-installation-taupo",
     service: "Solar & battery storage",
-    card: fromPhoto(getPhoto("glass-pavilion", "01-array")),
+    card: fromPhoto(getPhoto("twin-pavilions", "01-array")),
     copy: "Make more of the energy your property can generate. We help with solar electrical installation, grid connection and battery storage options suited to your property and energy use.",
   },
   {

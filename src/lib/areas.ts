@@ -59,7 +59,7 @@ export const AREAS: Area[] = [
       "Acacia Bay sits on the western side of the lake, a short drive from Taupō township, and Balance works on homes here regularly — from renovations and rewires to complete new-build installations.",
       "Lake-facing homes benefit from lighting that keeps the view clear after dark, and from heating and cooling designed into the joinery rather than mounted on the wall.",
     ],
-    projects: ["lake-house", "glass-pavilion", "walnut-house"],
+    projects: ["lake-house", "twin-pavilions", "walnut-house"],
     geo: { lat: -38.7, lng: 176.0333 },
   },
   {
