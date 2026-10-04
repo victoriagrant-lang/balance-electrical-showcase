@@ -7,7 +7,7 @@ const corsHeaders = {
   "Access-Control-Allow-Methods": "POST, OPTIONS",
 };
 
-const INBOX = "enquire@balanceelectrical.co.nz";
+const INBOX = "enquiries@balanceelectrical.co.nz";
 const FROM_WEBSITE = "Balance Electrical Website <enquiries@balanceelectrical.co.nz>";
 const FROM_BALANCE = "Balance Electrical <enquiries@balanceelectrical.co.nz>";
 const PHONE_DISPLAY = "027 916 2077";
