@@ -490,3 +490,29 @@ html,
 body {
   overflow-x: clip;
 }
+
+/* Pointer reveal: a quiet silhouette at rest, a soft pool of light on hover. */
+.hero-film-veil {
+  background: rgb(10 12 11 / 0.58);
+}
+
+@media (min-width: 768px) and (hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference) {
+  .hero-film-veil {
+    --spot-x: 900;
+    --spot-y: 420;
+    --spot-radius: 260;
+    --spot-dark: 0.82;
+    background: radial-gradient(
+      circle calc(var(--spot-radius) * 1px) at calc(var(--spot-x) * 1px) calc(var(--spot-y) * 1px),
+      rgb(10 12 11 / var(--spot-dark)) 0%,
+      rgb(10 12 11 / max(var(--spot-dark), 0.4)) 45%,
+      rgb(10 12 11 / 0.97) 100%
+    );
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-film-veil {
+    background: rgb(10 12 11 / 0.62);
+  }
+}
