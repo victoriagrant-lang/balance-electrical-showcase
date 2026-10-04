@@ -57,6 +57,73 @@ const REMOTE_PROJECTS: RemoteProjectDefinition[] = [
       "Warm, practical illumination throughout the home",
     ],
   },
+  {
+    folder: "Jarden Mile",
+    slug: "jarden-mile",
+    title: "Jarden Mile",
+    location: "Taupō",
+    tags: ["Residential", "Pool", "Air-Conditioning"],
+    summary:
+      "Electrical work spanning pool wiring, air-conditioning, ducted heating and feature lighting. The installation includes lights within the entrance pavers, an LED strip above the garage and wall fittings along the frontage, with integrated lighting in the bathrooms.",
+    detailsTitle: "Electrical scope",
+    details: [
+      "Swimming pool wiring",
+      "Air-conditioning installation",
+      "Ducted heating throughout the home",
+      "Lights set into the stepping-stone pavers",
+      "LED strip above the garage door; up/down wall lights",
+    ],
+  },
+  {
+    folder: "The Sisters",
+    slug: "the-sisters",
+    title: "The Sisters",
+    location: "Taupō district",
+    tags: ["Residential", "Solar"],
+    summary:
+      "Solar installation and interior lighting for a lakefront home. Rooftop panels are arranged across several standing-seam roof sections, while pendants and downlights serve the open-plan kitchen, dining and living areas.",
+    detailsTitle: "Project highlights",
+    details: [
+      "Solar array across several roof planes",
+      "Mounting rails fixed to the standing seams",
+      "Pendants over the kitchen island and dining table",
+      "Downlights throughout the open-plan living",
+    ],
+  },
+  {
+    folder: "Curve House",
+    slug: "the-curve-house",
+    title: "The Curve House",
+    location: "Kinloch",
+    tags: ["Residential", "New build"],
+    summary:
+      "Lighting follows the distinctive curves of this Kinloch home. Continuous LED lines highlight the deck, hallway and staircase, while feature pendants and concealed ceiling lighting give each interior space its own character.",
+    detailsTitle: "Lighting details",
+    details: [
+      "LED line following the curved deck soffit",
+      "Recessed LED channel along the hallway ceiling",
+      "Linear lighting tracing the stair",
+      "Cove lighting to the raked living-room ceiling",
+    ],
+  },
+  {
+    folder: "Oakleaf",
+    slug: "oakleaf-residence",
+    title: "Oakleaf Residence",
+    location: "Taupō district",
+    tags: ["Residential", "New build"],
+    accolade:
+      "Gold Award — Master Builders House of the Year 2025, Bay of Plenty & Central Plateau",
+    summary:
+      "Lighting planned to complement the timber interiors and lake views of this new home. Feature pendants define the living spaces, integrated LEDs highlight the joinery, and outdoor lighting connects the courtyard and garden after dark.",
+    detailsTitle: "Lighting details",
+    details: [
+      "Feature pendants over the living room and lounge",
+      "Linear pendant lighting above the kitchen island",
+      "Recessed LED line along the joinery wall",
+      "Courtyard, pergola and garden lighting",
+    ],
+  },
 ];
 
 function publicUrl(path: string) {
