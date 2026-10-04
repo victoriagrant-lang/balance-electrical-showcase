@@ -1,5 +1,5 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { ArrowRight, Award, Phone } from "lucide-react";
 import { SiteLayout } from "@/components/SiteLayout";
 import { Button } from "@/components/ui/button";
@@ -8,13 +8,9 @@ import { Reveal, SplitReveal } from "@/components/motion/Reveal";
 import { TorchArea } from "@/components/motion/Torch";
 import { useLenis } from "@/hooks/use-lenis";
 import { CONTACT } from "@/lib/contact";
-import {
-  PORTFOLIO,
-  PORTFOLIO_PHOTO_COUNT,
-  type PortfolioPhoto,
-  type PortfolioProject,
-} from "@/lib/portfolio";
+import { PORTFOLIO, type PortfolioPhoto, type PortfolioProject } from "@/lib/portfolio";
 import { cn } from "@/lib/utils";
+import { loadRemotePortfolioProjects, mergeRemotePortfolio } from "@/lib/remotePortfolio";
 
 const SITE = "https://www.balanceelectrical.co.nz";
 const pad = (n: number) => String(n).padStart(2, "0");
@@ -45,8 +41,19 @@ export const Route = createFileRoute("/portfolio")({
 });
 
 function Portfolio() {
+  const [portfolio, setPortfolio] = useState(PORTFOLIO);
   const [open, setOpen] = useState<{ project: number; photo: number } | null>(null);
-  const project = open ? PORTFOLIO[open.project] : null;
+  useEffect(() => {
+    let active = true;
+    loadRemotePortfolioProjects().then((remote) => {
+      if (active && remote.length) setPortfolio((current) => mergeRemotePortfolio(current, remote));
+    });
+    return () => {
+      active = false;
+    };
+  }, []);
+
+  const project = open ? portfolio[open.project] : null;
   const shots = project
     ? project.photos.map((p) => ({
         src: p.lg,
@@ -58,15 +65,16 @@ function Portfolio() {
 
   return (
     <SiteLayout>
-      <PortfolioHero />
+      <PortfolioHero projects={portfolio} />
 
       <section data-night className="theme-night relative bg-night" aria-label="Projects">
         <div className="led-h absolute inset-x-0 top-0 opacity-70" />
-        {PORTFOLIO.map((p, i) => (
+        {portfolio.map((p, i) => (
           <Chapter
             key={p.slug}
             project={p}
             index={i}
+            total={portfolio.length}
             onOpen={(photo) => setOpen({ project: i, photo })}
           />
         ))}
@@ -128,7 +136,7 @@ function Portfolio() {
 }
 
 /** Stone hero with a framed print per project that jumps to its chapter. */
-function PortfolioHero() {
+function PortfolioHero({ projects }: { projects: PortfolioProject[] }) {
   const lenis = useLenis();
   const jump = (slug: string) => {
     const el = document.getElementById(slug);
@@ -161,11 +169,13 @@ function PortfolioHero() {
         <dl className="grid grid-cols-3 gap-6 border-t border-ink/15 pt-6 md:col-span-5 md:col-start-8">
           <div>
             <dt className="eyebrow text-[10px] text-ink-soft">Projects</dt>
-            <dd className="mt-2 font-display text-4xl leading-none">{pad(PORTFOLIO.length)}</dd>
+            <dd className="mt-2 font-display text-4xl leading-none">{pad(projects.length)}</dd>
           </div>
           <div>
             <dt className="eyebrow text-[10px] text-ink-soft">Photos</dt>
-            <dd className="mt-2 font-display text-4xl leading-none">{PORTFOLIO_PHOTO_COUNT}</dd>
+            <dd className="mt-2 font-display text-4xl leading-none">
+              {projects.reduce((total, project) => total + project.photos.length, 0)}
+            </dd>
           </div>
           <div>
             <dt className="eyebrow text-[10px] text-ink-soft">Region</dt>
@@ -178,7 +188,7 @@ function PortfolioHero() {
         stagger={0.08}
         className="mt-16 grid grid-cols-1 gap-8 sm:grid-cols-2 md:mt-24 lg:grid-cols-4 lg:gap-6"
       >
-        {PORTFOLIO.map((p, i) => (
+        {projects.map((p, i) => (
           <a
             key={p.slug}
             href={`#${p.slug}`}
@@ -226,10 +236,12 @@ function PortfolioHero() {
 function Chapter({
   project,
   index,
+  total,
   onOpen,
 }: {
   project: PortfolioProject;
   index: number;
+  total: number;
   onOpen: (photo: number) => void;
 }) {
   const [cover, ...rest] = project.photos;
@@ -246,7 +258,7 @@ function Chapter({
       <div className="mx-auto grid max-w-[1440px] gap-12 px-5 py-24 md:px-10 md:py-32 lg:grid-cols-12 lg:gap-16">
         <header className="self-start lg:sticky lg:top-28 lg:col-span-4">
           <p className="eyebrow text-muted-foreground">
-            {pad(index + 1)} / {pad(PORTFOLIO.length)}
+            {pad(index + 1)} / {pad(total)}
           </p>
           <SplitReveal
             as="h2"

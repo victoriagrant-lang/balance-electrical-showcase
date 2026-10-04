@@ -1,5 +1,5 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { ArrowRight } from "lucide-react";
 import { SiteLayout } from "@/components/SiteLayout";
 import { Button } from "@/components/ui/button";
@@ -9,6 +9,7 @@ import { Lightbox, type Shot } from "@/components/Lightbox";
 import { photos } from "@/lib/photos";
 import { PORTFOLIO, photoTags } from "@/lib/portfolio";
 import { cn } from "@/lib/utils";
+import { loadRemotePortfolioProjects, mergeRemotePortfolio } from "@/lib/remotePortfolio";
 
 export const Route = createFileRoute("/projects")({
   head: () => ({
@@ -77,22 +78,24 @@ const EARLIER: Tile[] = [
   afterDark: t.title === "House at twilight",
 }));
 
-const TILES: Tile[] = [
-  ...PORTFOLIO.flatMap((project) =>
-    project.photos.map((ph) => ({
-      src: ph.lg,
-      smSrc: ph.sm,
-      w: ph.w,
-      h: ph.h,
-      title: ph.title,
-      place: project.title,
-      note: ph.caption,
-      tags: photoTags(project, ph),
-      afterDark: /dusk|sunset|night/.test(ph.name),
-    })),
-  ),
-  ...EARLIER,
-];
+function makeTiles(portfolio: typeof PORTFOLIO): Tile[] {
+  return [
+    ...portfolio.flatMap((project) =>
+      project.photos.map((ph) => ({
+        src: ph.lg,
+        smSrc: ph.sm,
+        w: ph.w,
+        h: ph.h,
+        title: ph.title,
+        place: project.title,
+        note: ph.caption,
+        tags: photoTags(project, ph),
+        afterDark: /dusk|sunset|night/.test(ph.name),
+      })),
+    ),
+    ...EARLIER,
+  ];
+}
 
 const AFTER_DARK = "After dark";
 const ORDER = [
@@ -105,20 +108,34 @@ const ORDER = [
   "Pool",
   "Pre-wiring",
 ];
-const FILTERS = ["All", AFTER_DARK, ...ORDER.filter((f) => TILES.some((t) => t.tags.includes(f)))];
-
 function Gallery() {
+  const [portfolio, setPortfolio] = useState(PORTFOLIO);
   const [filter, setFilter] = useState("All");
   const [open, setOpen] = useState<number | null>(null);
-  const shown = TILES.filter((t) =>
+  useEffect(() => {
+    let active = true;
+    loadRemotePortfolioProjects().then((remote) => {
+      if (active && remote.length) setPortfolio((current) => mergeRemotePortfolio(current, remote));
+    });
+    return () => {
+      active = false;
+    };
+  }, []);
+
+  const tiles = useMemo(() => makeTiles(portfolio), [portfolio]);
+  const filters = useMemo(
+    () => ["All", AFTER_DARK, ...ORDER.filter((f) => tiles.some((t) => t.tags.includes(f)))],
+    [tiles],
+  );
+  const shown = tiles.filter((t) =>
     filter === "All" ? true : filter === AFTER_DARK ? t.afterDark : t.tags.includes(filter),
   );
   const count = (f: string) =>
     f === "All"
-      ? TILES.length
+      ? tiles.length
       : f === AFTER_DARK
-        ? TILES.filter((t) => t.afterDark).length
-        : TILES.filter((t) => t.tags.includes(f)).length;
+        ? tiles.filter((t) => t.afterDark).length
+        : tiles.filter((t) => t.tags.includes(f)).length;
 
   return (
     <SiteLayout>
@@ -156,7 +173,7 @@ function Gallery() {
         <div className="led-h absolute inset-x-0 top-0 opacity-70" />
         <div className="mx-auto max-w-[1440px] px-5 md:px-10">
           <div role="toolbar" aria-label="Filter by type of work" className="flex flex-wrap gap-2">
-            {FILTERS.map((f) => (
+            {filters.map((f) => (
               <button
                 key={f}
                 type="button"
