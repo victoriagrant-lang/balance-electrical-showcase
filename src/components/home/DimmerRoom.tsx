@@ -7,7 +7,7 @@ import { Dial } from "./Dial";
 
 const SCENES = [
   { id: "morning", label: "Morning", level: 85, kelvin: 3600 },
-  { id: "entertain", label: "Entertain", level: 70, kelvin: 3000 },
+  { id: "entertain", label: "Entertaining", level: 70, kelvin: 3000 },
   { id: "dinner", label: "Dinner", level: 42, kelvin: 2700 },
   { id: "late", label: "Late night", level: 14, kelvin: 2200 },
   { id: "off", label: "Off", level: 0, kelvin: 2700 },
@@ -133,17 +133,20 @@ export function DimmerRoom() {
             id="dimmer-title"
             className="display-caps mt-5 text-[clamp(2.2rem,4.6vw,4.2rem)] leading-[1] tracking-[0.1em] text-ivory"
           >
-            Try the dimmer.
+            One room. A different feeling.
           </SplitReveal>
           <Reveal>
             <p className="mt-6 max-w-md leading-relaxed text-muted-foreground">
-              Every scheme we design is built around scenes — one touch for morning, another for
-              dinner. Pick a scene, or take the dial yourself.
+              Bright for the start of the day. Softer over dinner. Low when it’s time to unwind.
+            </p>
+            <p className="mt-4 max-w-md leading-relaxed text-muted-foreground">
+              Explore how brightness and light colour change the feel of a room — and how lighting
+              controls can help you create the setting you want.
             </p>
           </Reveal>
 
           <Reveal className="mt-10">
-            <p className="eyebrow mb-3 text-[10px] text-muted-foreground">Scenes</p>
+            <p className="eyebrow mb-3 text-[10px] text-muted-foreground">Choose a scene</p>
             <ToggleGroup
               type="single"
               value={scene}
@@ -170,14 +173,20 @@ export function DimmerRoom() {
           </Reveal>
 
           <Reveal className="mt-10 grid items-center gap-10 sm:grid-cols-[auto_1fr]">
-            <Dial
-              value={level}
-              onChange={(v) => custom(() => setLevel(v))}
-              className="mx-auto w-[200px] text-ivory sm:mx-0"
-            />
+            <div>
+              <p className="eyebrow mb-3 text-center text-[10px] text-muted-foreground">
+                Adjust the brightness
+              </p>
+              <Dial
+                label="Adjust the brightness"
+                value={level}
+                onChange={(v) => custom(() => setLevel(v))}
+                className="mx-auto w-[200px] text-ivory sm:mx-0"
+              />
+            </div>
             <div>
               <div className="flex items-baseline justify-between">
-                <p className="eyebrow text-[10px] text-muted-foreground">Colour temperature</p>
+                <p className="eyebrow text-[10px] text-muted-foreground">Adjust the warmth</p>
                 <p className="font-display text-xl tabular-nums text-ivory">{kelvin}K</p>
               </div>
               <Slider
@@ -186,7 +195,7 @@ export function DimmerRoom() {
                 max={4000}
                 step={50}
                 onValueChange={([k]) => custom(() => setKelvin(k))}
-                aria-label="Colour temperature"
+                aria-label="Adjust the warmth"
                 className="mt-5 [&_[data-orientation=horizontal]]:h-[3px] [&_[role=slider]]:size-5 [&_[role=slider]]:border-glow/70 [&_[role=slider]]:bg-ivory [&_[role=slider]]:shadow-[0_0_18px_rgb(242_200_139/0.8)] [&>span:first-child]:bg-[linear-gradient(90deg,#ff932c,#ffb46b,#ffd1a3)] [&>span:first-child>span]:bg-transparent"
               />
               <div className="eyebrow mt-3 flex justify-between text-[9px] text-muted-foreground">

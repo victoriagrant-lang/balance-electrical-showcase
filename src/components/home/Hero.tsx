@@ -20,7 +20,7 @@ export function Hero() {
       if (!el || prefersReducedMotion()) return;
       const q = gsap.utils.selector(el);
 
-      const title = SplitText.create(q("[data-hero-title]"), { type: "chars" });
+      const title = SplitText.create(q("[data-hero-title]"), { type: "words,chars" });
       const fixtures = q("[data-fixture]");
       const groups = q("[data-pool-group]");
       const fades = q("[data-hero-fade]");
@@ -127,42 +127,42 @@ export function Hero() {
           data-hero-fade
           className="flex flex-wrap items-center justify-between gap-3 text-ink-soft"
         >
-          <p className="eyebrow">Electrical · Lighting · Heat pumps · Solar</p>
-          <p className="eyebrow">Taupō · Aotearoa</p>
+          <p className="eyebrow">Electrical · Lighting · Air-Conditioning · Solar</p>
+          <p className="eyebrow">Taupō and the surrounding district</p>
         </div>
 
-        <div className="mt-16 md:mt-0">
+        <div className="mt-16 md:mt-12">
           <h1
             id="hero-title"
             data-hero-title
-            className="display-caps text-[clamp(2.45rem,11.2vw,11.5rem)] leading-[0.92] tracking-[0.05em] text-ink sm:tracking-[0.08em]"
+            className="display-caps text-balance text-[clamp(1.7rem,5.6vw,5.5rem)] leading-[1.1] tracking-[0.03em] text-ink"
+            style={{ letterSpacing: "0.03em" }}
           >
-            Light,
-            <br />
-            measured.
+            Thoughtfully planned. Expertly installed.
           </h1>
 
           <div className="mt-10 grid gap-10 md:mt-14 md:grid-cols-12 md:items-end">
-            <div data-hero-fade className="flex items-center gap-5 md:col-span-5">
-              <span className="h-px w-14 bg-ink/40" />
-              <p className="display-caps text-lg tracking-[0.3em] text-ink md:text-xl">
-                Wiring, considered.
+            <div data-hero-fade className="flex items-start gap-5 md:col-span-5">
+              <span className="mt-3 h-px w-14 shrink-0 bg-ink/40" />
+              <p className="max-w-sm text-base leading-relaxed text-ink-soft">
+                Led by local electrician Victoria Grant, with a personal approach from the first
+                conversation to the finished installation.
               </p>
             </div>
             <div data-hero-fade className="md:col-span-5 md:col-start-8">
               <p className="max-w-md text-[1.02rem] leading-relaxed text-ink-soft">
-                Electrical design and installation across Taupō and the surrounding district — from
-                a Gold Award-winning lake home to a two-storey commercial headquarters, with
-                lighting that makes architecture sing after dark. Owner-operated by Victoria.
+                Electrical work and lighting design for homes and businesses across Taupō. From new
+                builds and renovations to commercial fit-outs, Balance Electrical brings careful
+                planning and attention to detail to every project.
               </p>
               <div className="mt-8 flex flex-wrap gap-3">
                 <Button asChild variant="lux" size="xl">
                   <Link to="/contact" data-cursor="Let's talk">
-                    Start a project <ArrowRight />
+                    Discuss your project <ArrowRight />
                   </Link>
                 </Button>
                 <Button asChild variant="luxOutline" size="xl">
-                  <Link to="/portfolio">See the work</Link>
+                  <Link to="/portfolio">View our work</Link>
                 </Button>
               </div>
             </div>
@@ -177,7 +177,7 @@ export function Hero() {
           >
             <span data-switch-knob className="h-3 w-full rounded-[2px] bg-ink/80" />
           </span>
-          <span className="eyebrow text-[10px]">Scroll to switch on</span>
+          <span className="eyebrow text-[10px]">Scroll to explore</span>
           <span className="relative ml-2 hidden h-10 w-px overflow-hidden bg-ink/15 md:block">
             <span className="absolute inset-0 animate-cue bg-ink/70" />
           </span>

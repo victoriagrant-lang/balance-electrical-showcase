@@ -7,9 +7,9 @@ import { gsap, prefersReducedMotion, useGSAP } from "@/lib/gsap";
 import { Reveal, SplitReveal } from "@/components/motion/Reveal";
 
 const STATS = [
-  { value: "1", label: "set of hands on every job" },
+  { value: "Local", label: "Taupō owned & operated" },
   { value: "EWRB", label: "registered & licensed" },
-  { value: "Gold", label: "2025 House of the Year home" },
+  { value: "Expertise", label: "Residential & commercial" },
 ];
 
 export function Victoria() {
@@ -68,25 +68,33 @@ export function Victoria() {
           <SplitReveal
             as="h2"
             id="victoria-title"
-            className="display-caps mt-5 text-[clamp(2.4rem,5.4vw,5rem)] leading-[1] tracking-[0.1em]"
+            className="display-caps mt-5 text-balance text-[clamp(2rem,3.8vw,3.5rem)] leading-[1.1] tracking-[0.05em]!"
           >
-            Meet Victoria
+            Local knowledge. Personal commitment.
           </SplitReveal>
           <Reveal>
             <p className="mt-8 max-w-xl text-[1.05rem] leading-relaxed text-ink-soft">
-              Balance Electrical is led — and run — by Victoria Grant. Raised in Taupō, trained in
-              Wellington, back home to build something of her own. From a Gold Award-winning lake
-              home to a commercial headquarters, every quote, every visit and every cable run passes
-              through one set of hands. That's why clients return, and why the finishes are quiet.
+              Balance Electrical is owned and operated by Victoria Grant, a registered and licensed
+              electrician raised in Taupō.
+            </p>
+            <p className="mt-5 max-w-xl text-[1.05rem] leading-relaxed text-ink-soft">
+              After training in Wellington, Victoria returned home to establish a business built
+              around thoughtful work and personal service. Her experience spans new homes,
+              renovations and commercial projects, with the same attention given to the planning and
+              the finished installation.
+            </p>
+            <p className="mt-5 max-w-xl text-[1.05rem] leading-relaxed text-ink-soft">
+              When you work with Balance, you deal directly with the person responsible for your
+              project.
             </p>
           </Reveal>
           <Reveal
             stagger={0.1}
-            className="mt-12 grid grid-cols-3 gap-6 border-t border-ink/15 pt-8"
+            className="mt-12 grid gap-6 border-t border-ink/15 pt-8 sm:grid-cols-3"
           >
             {STATS.map((s) => (
               <div key={s.label}>
-                <p className="font-display text-[clamp(2rem,3.4vw,3rem)] leading-none">{s.value}</p>
+                <p className="font-display text-2xl leading-none">{s.value}</p>
                 <p className="eyebrow mt-3 text-[10px] leading-relaxed text-ink-soft">{s.label}</p>
               </div>
             ))}
@@ -94,7 +102,7 @@ export function Victoria() {
           <Reveal className="mt-12">
             <Button asChild variant="luxOutline" size="xl">
               <Link to="/about">
-                Read her story <ArrowRight />
+                Meet Victoria <ArrowRight />
               </Link>
             </Button>
           </Reveal>

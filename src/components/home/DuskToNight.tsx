@@ -6,73 +6,63 @@ import { useLenis } from "@/hooks/use-lenis";
 import { HOUSE_SRC, HouseDrawing, HouseLights } from "./HouseScene";
 
 /*
-  Scrolltelling, skydive-style: one pinned scene, scroll is the clock.
+  Scrolltelling, skydive-style: one pinned scene, scroll advances the scene.
   Drawing → dusk → nightfall → five lighting channels switch on in turn.
-  A clock and a lighting keypad track the story like an altimeter.
+  A progress counter and lighting keypad track the scene.
 */
 
 const CHAPTERS = [
-  { at: 0, label: "Plan", title: "Every home begins as a line on a drawing." },
+  {
+    at: 0,
+    label: "Plan",
+    title: "Start with the architecture and the way people move through the home.",
+  },
   {
     at: 0.14,
-    label: "17:48 · Dusk",
-    title: "The sun slips behind the ranges. The lake turns silver.",
+    label: "Dusk",
+    title: "As daylight fades, lighting gives the outdoor spaces a different character.",
   },
   {
     at: 0.26,
-    label: "18:40 · Nightfall",
-    title: "Without light, even the finest architecture disappears.",
+    label: "After dark",
+    title: "Each layer has a purpose. Together, they create a complete picture.",
   },
   {
     at: 0.38,
     label: "Channel 01 · Soffit",
-    title: "Downlights wash the cedar — 2700K, barely there.",
+    title: "Soft light reveals the warmth and texture of the timber.",
   },
-  { at: 0.5, label: "Channel 02 · Stone", title: "Grazing light finds every edge of the stone." },
+  {
+    at: 0.5,
+    label: "Channel 02 · Stonework",
+    title: "Directional light brings depth to the stonework.",
+  },
   {
     at: 0.62,
     label: "Channel 03 · Path",
-    title: "The path draws you home. Low glare, no hot spots.",
+    title: "Low-level lighting helps guide the way to the entrance.",
   },
-  { at: 0.74, label: "Channel 04 · Trees", title: "Trees become sculpture against the night." },
+  {
+    at: 0.74,
+    label: "Channel 04 · Garden",
+    title: "Illuminated planting gives the garden depth after dark.",
+  },
   {
     at: 0.86,
     label: "Channel 05 · Interior",
-    title: "Inside, the glow of home. Everything, in balance.",
+    title: "A warm interior completes the welcome.",
   },
 ];
 
 const CHANNELS = [
   { name: "Soffit", at: 0.38, level: 30 },
-  { name: "Stone", at: 0.5, level: 65 },
+  { name: "Stonework", at: 0.5, level: 65 },
   { name: "Path", at: 0.62, level: 40 },
-  { name: "Trees", at: 0.74, level: 80 },
+  { name: "Garden", at: 0.74, level: 80 },
   { name: "Interior", at: 0.86, level: 100 },
 ];
 
-// Clock keyframes: [progress, minutes since midnight]
-const CLOCK: [number, number][] = [
-  [0, 17 * 60 + 20],
-  [0.14, 17 * 60 + 48],
-  [0.26, 18 * 60 + 40],
-  [0.38, 19 * 60 + 2],
-  [0.86, 19 * 60 + 30],
-  [1, 19 * 60 + 34],
-];
-
 const RAMP = 0.05;
-
-function clockAt(p: number) {
-  for (let i = 1; i < CLOCK.length; i++) {
-    const [p1, m1] = CLOCK[i];
-    const [p0, m0] = CLOCK[i - 1];
-    if (p <= p1) {
-      const m = Math.round(m0 + ((p - p0) / (p1 - p0)) * (m1 - m0));
-      return `${Math.floor(m / 60)}:${String(m % 60).padStart(2, "0")}`;
-    }
-  }
-  return "19:34";
-}
 
 export function DuskToNight() {
   const root = useRef<HTMLElement>(null);
@@ -90,12 +80,10 @@ export function DuskToNight() {
       const captions = q("[data-caption]");
       const leds = q("[data-led]");
       const levels = q("[data-level]");
-      const clock = q("[data-clock]")[0];
       const count = q("[data-count]")[0];
       const bar = q("[data-bar]")[0];
 
       let lastChapter = -1;
-      let lastClock = "";
       const lastLevels = CHANNELS.map(() => -1);
 
       const hud = (p: number) => {
@@ -107,11 +95,6 @@ export function DuskToNight() {
           captions.forEach((c, i) => c.toggleAttribute("data-active", i === ch));
           count.textContent = String(ch + 1).padStart(2, "0");
           lastChapter = ch;
-        }
-        const t = clockAt(p);
-        if (t !== lastClock) {
-          clock.textContent = t;
-          lastClock = t;
         }
         CHANNELS.forEach((c, i) => {
           const lv = Math.round(gsap.utils.clamp(0, 1, (p - c.at) / RAMP) * c.level);
@@ -208,7 +191,19 @@ export function DuskToNight() {
   };
 
   return (
-    <section ref={root} data-night aria-label="From dusk to night — how we light a home">
+    <section ref={root} data-night aria-labelledby="lighting-story-title">
+      <div className="mx-auto max-w-[1440px] px-5 pb-12 pt-24 md:px-10">
+        <h2
+          id="lighting-story-title"
+          className="display-caps max-w-[25ch] text-balance text-[clamp(2rem,4vw,3.8rem)] leading-[1.1] tracking-[0.05em]!"
+        >
+          See what considered lighting can do.
+        </h2>
+        <p className="mt-6 max-w-2xl leading-relaxed text-ink-soft">
+          The right lighting makes an entrance welcoming, a path easier to navigate and
+          architectural details stand out. Explore how each layer changes this home after dark.
+        </p>
+      </div>
       <div
         data-stage
         className="relative flex h-[100svh] min-h-[560px] flex-col items-center justify-center overflow-hidden px-5 pb-6 pt-[84px] md:px-10"
@@ -233,7 +228,7 @@ export function DuskToNight() {
           className="relative flex w-full flex-col gap-4 md:gap-5"
           style={{ maxWidth: "min(100%, 1180px, calc((100svh - 290px) * 1.549))" }}
         >
-          {/* top row: scene + clock */}
+          {/* top row: scene progress */}
           <div className="flex items-end justify-between gap-6">
             <div>
               <p className="eyebrow whitespace-nowrap text-[10px] opacity-70">Scene · Arrival</p>
@@ -249,17 +244,6 @@ export function DuskToNight() {
             >
               Skip the story <ArrowDown className="size-3" />
             </button>
-            <p className="text-right">
-              <span
-                data-clock
-                className="block font-display text-[2rem] leading-none tabular-nums md:text-[2.8rem]"
-              >
-                17:20
-              </span>
-              <span className="eyebrow whitespace-nowrap text-[10px] opacity-70">
-                <span className="hidden sm:inline">Taupō · </span>Local time
-              </span>
-            </p>
           </div>
 
           {/* the plate: the sign's house, in its black frame */}
@@ -292,7 +276,7 @@ export function DuskToNight() {
 
           {/* captions + keypad */}
           <div className="grid gap-4 md:grid-cols-[1fr_auto] md:items-start md:gap-10">
-            <div className="relative h-[5.6rem] md:h-[5.2rem]" aria-live="polite">
+            <div className="relative h-[8rem] md:h-[7rem]" aria-live="polite">
               {CHAPTERS.map((c, i) => (
                 <div
                   key={c.label}
@@ -301,7 +285,7 @@ export function DuskToNight() {
                   className="absolute inset-0 translate-y-3 opacity-0 blur-[3px] transition-[opacity,transform,filter] duration-700 [transition-timing-function:var(--ease-out-expo)] data-[active]:translate-y-0 data-[active]:opacity-100 data-[active]:blur-none"
                 >
                   <p className="eyebrow text-[10px] opacity-70">{c.label}</p>
-                  <p className="mt-2 max-w-[34ch] font-display text-[1.3rem] leading-snug md:text-[1.75rem]">
+                  <p className="mt-2 max-w-[34ch] font-display text-[1.15rem] leading-snug md:text-[1.5rem]">
                     {c.title}
                   </p>
                 </div>

@@ -24,37 +24,37 @@ const SERVICES = [
     title: "Lighting design",
     service: "Lighting design",
     card: fromPhoto(getPhoto("the-curve-house", "01-curved-deck-at-dusk")),
-    copy: "Layered schemes planned with your architect — scenes, circuits and fittings chosen before the first stud goes up.",
+    copy: "Lighting that brings out the best in your home. We plan fittings, placement and controls around your architecture, your interiors and the way you use each room.",
   },
   {
     title: "New builds",
     service: "New residential build",
     card: fromPhoto(getPhoto("sparrowhawk", "01-at-dusk"), "62% 50%"),
-    copy: "Complete electrical fit-out from foundations to CCC, coordinated with every trade on site.",
+    copy: "Complete electrical installations, planned alongside your build. We work with you and your project team to get the details right, from power points and switchboards to lighting and the final fit-off.",
   },
   {
     title: "Renovations",
     service: "Renovation or addition",
     card: fromPhoto(getPhoto("pre-wires", "03-cable-drops")),
-    copy: "New circuits, rewires and switchboards threaded carefully through the home you already love.",
+    copy: "Electrical upgrades that make your home work better. From rewiring and switchboard replacements to new lighting and additional power points, we help bring your plans together.",
   },
   {
     title: "Commercial",
     service: "Commercial fit-out",
     card: fromPhoto(getPhoto("beechtree-building-headquarters", "02-entry-at-dusk")),
-    copy: "Office and retail fit-outs, three-phase power, emergency lighting and compliance testing.",
+    copy: "Practical electrical solutions for workplaces and commercial spaces. Our services include office and retail fit-outs, three-phase power, emergency lighting and compliance testing.",
   },
   {
     title: "Solar & battery",
     service: "Solar & battery storage",
     card: fromPhoto(getPhoto("the-sisters", "01-array")),
-    copy: "Inverter wiring through to grid connection approval, with battery storage sized for Taupō winters.",
+    copy: "Make more of the energy your property can generate. We help with solar electrical installation, grid connection and battery storage options suited to your property and energy use.",
   },
   {
-    title: "Air conditioning",
-    service: "Air conditioning & heat pumps",
+    title: "Air-Conditioning",
+    service: "Air-Conditioning",
     card: fromPhoto(getPhoto("rainbow-reno", "02-kitchen"), "100% 50%"),
-    copy: "Heat pumps from all major brands — single rooms to multi-zone systems, supplied and commissioned.",
+    copy: "Comfort throughout the seasons. We supply and install air-conditioning, from individual rooms to multi-zone systems.",
   },
   {
     title: "EV charging",
@@ -64,7 +64,7 @@ const SERVICES = [
       "Wall-mounted EV charger beside a lit garage at dusk",
       fromPhoto(getPhoto("pukeko", "02-driveway-at-dusk"), "72% 50%"),
     ),
-    copy: "Level 2 home chargers with load management, installed neatly and certified to NZ standards.",
+    copy: "Convenient charging at home. We install dedicated EV chargers, with load management options to suit your electrical supply and household needs.",
   },
 ];
 
@@ -89,7 +89,7 @@ export function Circuits() {
           ease: "none",
           scrollTrigger: {
             trigger: q("[data-pin]")[0],
-            start: "top top",
+            start: "bottom bottom",
             end: () => `+=${distance()}`,
             pin: true,
             scrub: 1,
@@ -130,17 +130,21 @@ export function Circuits() {
 
   return (
     <section ref={root} aria-labelledby="circuits-title" className="relative">
-      <div data-pin className="flex min-h-[100svh] flex-col justify-center py-24 md:py-0">
+      <div data-pin className="flex min-h-[100svh] flex-col justify-center py-24 md:py-12">
         <div className="mx-auto flex w-full max-w-[1440px] items-end justify-between gap-8 px-5 md:px-10">
           <div>
             <p className="eyebrow text-ink-soft">What we do</p>
             <SplitReveal
               as="h2"
               id="circuits-title"
-              className="display-caps mt-5 text-[clamp(2rem,4.2vw,4rem)] leading-[1] tracking-[0.1em]"
+              className="display-caps mt-5 max-w-[24ch] text-balance text-[clamp(2rem,3.6vw,3.4rem)] leading-[1.1] tracking-[0.05em]!"
             >
-              Seven circuits. One standard.
+              Expertise for every part of your project.
             </SplitReveal>
+            <p className="mt-5 max-w-2xl leading-relaxed text-ink-soft">
+              Building from the ground up, improving an existing property or fitting out a business?
+              We’ll help you plan and install the electrical systems your space needs.
+            </p>
           </div>
           <p className="eyebrow hidden shrink-0 text-ink-soft md:block">
             <span data-counter className="text-ink">
@@ -164,7 +168,7 @@ export function Circuits() {
                 <span className="eyebrow text-[10px]">Ch {String(i + 1).padStart(2, "0")}</span>
                 <span className="size-1.5 rounded-full bg-ink/30 transition-all duration-500 group-data-[lit]:bg-glow-soft group-data-[lit]:shadow-[0_0_10px_3px_rgb(255_231_194/0.9)]" />
               </div>
-              <div className="relative mt-4 aspect-[4/5] overflow-hidden border-[6px] border-frame bg-frame">
+              <div className="relative mt-4 aspect-[4/5] overflow-hidden border-[6px] border-frame bg-frame md:aspect-[4/3] md:max-h-[26svh]">
                 <img
                   src={s.card.src}
                   alt={`${s.title} — ${s.card.alt}`}
@@ -192,7 +196,7 @@ export function Circuits() {
                 search={{ service: s.service }}
                 className="beam-link eyebrow mt-5 inline-flex items-center gap-2 text-[10px]"
               >
-                Enquire <ArrowUpRight className="size-3" />
+                Discuss your project <ArrowUpRight className="size-3" />
               </Link>
             </article>
           ))}

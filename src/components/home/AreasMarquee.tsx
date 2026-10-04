@@ -1,9 +1,10 @@
 import { useRef } from "react";
+import { Link } from "@tanstack/react-router";
 import { gsap, prefersReducedMotion, useGSAP } from "@/lib/gsap";
 
 const ROWS = [
   ["Taupō", "Kinloch", "Acacia Bay", "Wairakei", "Kuratau"],
-  ["Turangi", "Ātiamuri", "Rainbow Point", "Nukuhau", "Central Plateau"],
+  ["Tūrangi", "Ātiamuri", "Rainbow Point", "Nukuhau", "Central Plateau"],
 ];
 
 function Row({ words, lit }: { words: string[]; lit?: boolean }) {
@@ -67,7 +68,7 @@ export function AreasMarquee() {
       aria-labelledby="areas-title"
     >
       <p id="areas-title" className="eyebrow mb-12 px-5 text-center text-ink-soft md:mb-16">
-        Working across the Taupō district
+        Based in Taupō. Working throughout the district.
       </p>
       <div
         aria-hidden
@@ -96,7 +97,15 @@ export function AreasMarquee() {
           </div>
         ))}
       </div>
-      <p className="sr-only">{ROWS.flat().join(", ")}</p>
+      <div className="relative mx-auto mt-12 max-w-2xl px-5 text-center">
+        <p className="leading-relaxed text-ink-soft">
+          We work with homeowners, builders and businesses across Taupō, Kinloch, Acacia Bay,
+          Wairakei, Kuratau, Tūrangi, Ātiamuri and the wider Central Plateau.
+        </p>
+        <Link to="/contact" className="beam-link mt-6 inline-block text-sm">
+          Discuss your location and project
+        </Link>
+      </div>
     </section>
   );
 }

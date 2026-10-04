@@ -25,7 +25,7 @@ const SERVICE_LINKS: [string, string][] = [
   ["Renovations", "01"],
   ["Commercial", "02"],
   ["Solar & battery", "07"],
-  ["Heat pumps & heating", "03"],
+  ["Air-Conditioning", "03"],
   ["EV charging", "04"],
 ];
 
@@ -200,6 +200,16 @@ function SiteFooter() {
         <div className="grid gap-16 md:grid-cols-12">
           <div className="md:col-span-6">
             <p className="eyebrow text-muted-foreground">Let's talk</p>
+            <h2 className="mt-5 max-w-md font-display text-4xl leading-tight">
+              Let’s get your project underway.
+            </h2>
+            <p className="mt-5 max-w-md leading-relaxed text-muted-foreground">
+              Planning a new build, a renovation or an electrical upgrade? Tell us what you have in
+              mind. We’ll talk through your requirements and the next steps.
+            </p>
+            <Link to="/contact" className="beam-link mt-6 inline-flex items-center gap-2">
+              Discuss your project <ArrowUpRight className="size-4" />
+            </Link>
             <a
               href={CONTACT.tel}
               data-cursor="Call Victoria"

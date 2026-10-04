@@ -59,7 +59,7 @@ export const Route = createFileRoute("/")({
       {
         name: "description",
         content:
-          "Victoria Grant is a registered electrician based in Taupō. New builds, renovations, solar installation, heat pumps, EV chargers and commercial electrical work across the Taupō district.",
+          "Victoria Grant is a registered electrician based in Taupō. New builds, renovations, solar installation, air-conditioning, EV chargers and commercial electrical work across the Taupō district.",
       },
       { name: "robots", content: "index, follow, max-image-preview:large" },
       { name: "geo.region", content: "NZ-WKO" },
@@ -68,7 +68,7 @@ export const Route = createFileRoute("/")({
       {
         property: "og:description",
         content:
-          "Considered residential and commercial electrical work across Taupō and the Taupō district — lighting, new builds, solar and heat pumps.",
+          "Thoughtfully planned. Expertly installed. Electrical work, lighting design, air-conditioning and solar for homes and businesses across Taupō.",
       },
       { property: "og:image", content: photos.twilight },
     ],

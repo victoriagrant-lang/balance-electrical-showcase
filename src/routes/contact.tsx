@@ -25,7 +25,7 @@ const PROJECT_TYPES = [
   "Renovation or addition",
   "Lighting design",
   "Solar & battery storage",
-  "Air conditioning & heat pumps",
+  "Air-Conditioning",
   "EV charging",
   "Commercial fit-out",
   "Pool & spa wiring",

@@ -74,11 +74,15 @@ export function SelectedWork() {
               id="work-title"
               className="display-caps mt-5 text-[clamp(2.2rem,5vw,4.6rem)] leading-[1] tracking-[0.1em] text-ivory"
             >
-              Selected work
+              Our work, in detail.
             </SplitReveal>
+            <p className="mt-6 max-w-xl leading-relaxed text-muted-foreground">
+              Explore electrical installations and lighting across homes and commercial spaces in
+              Taupō and the surrounding district.
+            </p>
           </div>
           <Button asChild variant="luxOutline" size="xl">
-            <Link to="/portfolio">Explore the portfolio</Link>
+            <Link to="/portfolio">View all projects</Link>
           </Button>
         </div>
 
