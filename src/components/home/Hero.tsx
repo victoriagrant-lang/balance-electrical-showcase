@@ -86,15 +86,15 @@ export function Hero() {
             className="display-caps text-balance text-[clamp(1.7rem,5.6vw,5.5rem)] leading-[1.1] tracking-[0.03em] text-ink"
             style={{ letterSpacing: "0.03em" }}
           >
-            Thoughtfully planned. Expertly installed.
+            Planned, precise.
           </h1>
 
           <div className="mt-10 grid gap-10 md:mt-14 md:grid-cols-12 md:items-end">
             <div data-hero-fade className="flex items-start gap-5 md:col-span-5">
               <span className="mt-3 h-px w-14 shrink-0 bg-ink/35" />
               <p className="max-w-sm text-base leading-relaxed text-ink-soft">
-                Led by local electrician Victoria Grant, with a personal approach from the first
-                conversation to the finished installation.
+                Thoughtfully planned and expertly installed by local electrician Victoria Grant,
+                with a personal approach from the first conversation to the finished installation.
               </p>
             </div>
             <div data-hero-fade className="md:col-span-5 md:col-start-8">
