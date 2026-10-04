@@ -1,88 +1,47 @@
-import { useEffect, useRef, type CSSProperties, type RefObject } from "react";
+import { type CSSProperties, type RefObject } from "react";
 import { photos } from "@/lib/photos";
+import { TorchArea } from "@/components/motion/Torch";
 
 const revealStyle = {
-  maskImage: "radial-gradient(circle 0px at 72% 50%, transparent 0%, transparent 100%)",
-  WebkitMaskImage: "radial-gradient(circle 0px at 72% 50%, transparent 0%, transparent 100%)",
-  willChange: "mask-image",
+  "--torch-x": "50%",
+  "--torch-y": "50%",
+  "--torch-trail-x": "50%",
+  "--torch-trail-y": "50%",
+  "--torch-opacity": 0,
+  opacity: "var(--torch-opacity)",
+  maskImage:
+    "radial-gradient(ellipse 28vw 22vw at var(--torch-trail-x) var(--torch-trail-y), rgba(0,0,0,0.44) 0%, rgba(0,0,0,0.34) 40%, rgba(0,0,0,0.14) 72%, transparent 100%), radial-gradient(ellipse 11vw 8vw at var(--torch-x) var(--torch-y), rgba(0,0,0,0.54) 0%, rgba(0,0,0,0.4) 42%, transparent 100%)",
+  WebkitMaskImage:
+    "radial-gradient(ellipse 28vw 22vw at var(--torch-trail-x) var(--torch-trail-y), rgba(0,0,0,0.44) 0%, rgba(0,0,0,0.34) 40%, rgba(0,0,0,0.14) 72%, transparent 100%), radial-gradient(ellipse 11vw 8vw at var(--torch-x) var(--torch-y), rgba(0,0,0,0.54) 0%, rgba(0,0,0,0.4) 42%, transparent 100%)",
+  maskComposite: "add",
+  WebkitMaskComposite: "source-over",
+  willChange: "transform, mask-image, opacity",
 } as CSSProperties;
 
-/** A quiet stone veil that lets the project image emerge under the pointer. */
-export function SpotlightFilm({ host }: { host: RefObject<HTMLElement | null> }) {
-  const revealRef = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    const section = host.current;
-    const reveal = revealRef.current;
-    if (!section || !reveal) return;
-
-    const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
-    if (reducedMotion.matches) return;
-
-    const hide = () => {
-      const mask = "radial-gradient(circle 0px at 72% 50%, transparent 0%, transparent 100%)";
-      reveal.style.maskImage = mask;
-      reveal.style.webkitMaskImage = mask;
-    };
-
-    const move = (event: PointerEvent) => {
-      const rect = section.getBoundingClientRect();
-      const inside =
-        event.clientX >= rect.left &&
-        event.clientX <= rect.right &&
-        event.clientY >= rect.top &&
-        event.clientY <= rect.bottom;
-
-      if (!inside) {
-        hide();
-        return;
-      }
-
-      const x = event.clientX - rect.left;
-      const y = event.clientY - rect.top;
-      const size =
-        rect.width < 768
-          ? Math.min(140, Math.max(85, rect.width * 0.22))
-          : Math.min(220, Math.max(130, rect.width * 0.12));
-      const mask = `radial-gradient(circle ${size}px at ${x}px ${y}px, black 0%, black 38%, rgba(0,0,0,0.78) 62%, transparent 100%)`;
-      reveal.style.maskImage = mask;
-      reveal.style.webkitMaskImage = mask;
-    };
-
-    window.addEventListener("pointermove", move, { passive: true });
-    window.addEventListener("pointerup", hide);
-    window.addEventListener("pointercancel", hide);
-    window.addEventListener("blur", hide);
-    hide();
-
-    return () => {
-      window.removeEventListener("pointermove", move);
-      window.removeEventListener("pointerup", hide);
-      window.removeEventListener("pointercancel", hide);
-      window.removeEventListener("blur", hide);
-    };
-  }, [host]);
-
+/** The hero's image layers, driven by the shared TorchArea light field. */
+export function SpotlightFilm({ host: _host }: { host: RefObject<HTMLElement | null> }) {
   return (
-    <div
-      aria-hidden="true"
-      className="pointer-events-none absolute inset-0 overflow-hidden bg-stone-pale"
-    >
+    <TorchArea mode="reveal" className="absolute inset-0 overflow-hidden bg-stone-pale">
       <img
         src={photos.img0003}
         alt=""
         fetchPriority="high"
-        className="absolute inset-0 h-full w-full scale-[1.03] object-cover object-center opacity-35 saturate-[0.72] mix-blend-multiply"
+        className="absolute inset-0 h-full w-full scale-[1.03] object-cover object-center opacity-45 saturate-[0.72] brightness-[0.7] mix-blend-multiply"
       />
-      <div className="absolute inset-0 bg-stone-pale/70" />
-      <div ref={revealRef} className="absolute inset-0 overflow-hidden" style={revealStyle}>
+      <div className="pointer-events-none absolute inset-0 bg-stone-pale/60" />
+      <div
+        data-reveal
+        aria-hidden="true"
+        className="pointer-events-none absolute inset-0 overflow-hidden"
+        style={revealStyle}
+      >
         <img
           src={photos.img0003}
           alt=""
-          className="absolute inset-0 h-full w-full scale-[1.03] object-cover object-center"
+          className="absolute inset-0 h-full w-full scale-[1.03] object-cover object-center brightness-[0.92] saturate-[0.86]"
         />
       </div>
-      <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(214,202,189,0.18),transparent_35%,rgba(214,202,189,0.42))]" />
-    </div>
+      <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(180deg,rgba(214,202,189,0.14),transparent_38%,rgba(28,29,31,0.2))]" />
+    </TorchArea>
   );
 }
