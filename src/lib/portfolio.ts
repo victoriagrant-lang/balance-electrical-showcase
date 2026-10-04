@@ -700,6 +700,7 @@ export const PORTFOLIO: PortfolioProject[] = [
       "LED strip above the garage door; up/down wall lights",
     ],
     photos: [
+      photo("jarden-mile", "01", 1672, 941, "", ""),
       photo(
         "jarden-mile",
         "02-front-by-day",
