@@ -29,18 +29,32 @@ const SERVICES = [
     copy: "Electrical, lighting, climate and automation planned alongside your build — from first fix through to final commissioning, so every detail feels part of the architecture.",
   },
   {
-    title: "Renovations & upgrades",
-    page: "renovation-electrician-taupo",
-    service: "Renovation or addition",
-    card: fromPhoto(getPhoto("the-arches", "01-lounge")),
-    copy: "A chance to rethink how a home works, not just how it looks. Lighting, power and climate upgrades coordinated around the new layout, joinery and finishes.",
-  },
-  {
     title: "Lighting design",
     page: "lighting-design-taupo",
     service: "Lighting design",
     card: fromPhoto(getPhoto("fold-house", "07")),
     copy: "Task, ambient, feature and exterior lighting combined into one considered scheme — every fitting selected and positioned to work with the home, not compete with it.",
+  },
+  {
+    title: "Commercial electrical",
+    page: "commercial-electrician-taupo",
+    service: "Commercial fit-out",
+    card: fromPhoto(getPhoto("beechtree-studio", "02-entry-at-dusk")),
+    copy: "Practical electrical solutions for workplaces and commercial spaces. Our services include office and retail fit-outs, three-phase power, emergency lighting and compliance testing.",
+  },
+  {
+    title: "Air conditioning",
+    page: "air-conditioning-heating-taupo",
+    service: "Air conditioning & heating",
+    card: fromPhoto(getPhoto("walnut-house", "02-galley"), "50% 30%"),
+    copy: "Comfort should be felt, not seen. From discreet high-wall units to fully ducted systems with grilles built into ceilings and joinery.",
+  },
+  {
+    title: "Renovations & upgrades",
+    page: "renovation-electrician-taupo",
+    service: "Renovation or addition",
+    card: fromPhoto(getPhoto("the-arches", "01-lounge")),
+    copy: "A chance to rethink how a home works, not just how it looks. Lighting, power and climate upgrades coordinated around the new layout, joinery and finishes.",
   },
   {
     title: "Smart home & automation",
@@ -54,27 +68,6 @@ const SERVICES = [
     copy: "Lighting, climate, selected power and automation brought together into one simple control platform — planned around how the home is actually used.",
   },
   {
-    title: "Air conditioning",
-    page: "air-conditioning-heating-taupo",
-    service: "Air conditioning & heating",
-    card: fromPhoto(getPhoto("walnut-house", "02-galley"), "50% 30%"),
-    copy: "Comfort should be felt, not seen. From discreet high-wall units to fully ducted systems with grilles built into ceilings and joinery.",
-  },
-  {
-    title: "Solar & battery",
-    page: "solar-installation-taupo",
-    service: "Solar & battery storage",
-    card: fromPhoto(getPhoto("twin-pavilions", "01-array")),
-    copy: "Make more of the energy your property can generate. We help with solar electrical installation, grid connection and battery storage options suited to your property and energy use.",
-  },
-  {
-    title: "Commercial electrical",
-    page: "commercial-electrician-taupo",
-    service: "Commercial fit-out",
-    card: fromPhoto(getPhoto("beechtree-studio", "02-entry-at-dusk")),
-    copy: "Practical electrical solutions for workplaces and commercial spaces. Our services include office and retail fit-outs, three-phase power, emergency lighting and compliance testing.",
-  },
-  {
     title: "EV charging",
     page: "ev-charger-installation-taupo",
     service: "EV charging",
@@ -84,6 +77,13 @@ const SERVICES = [
       fromPhoto(getPhoto("black-gable-house", "02-driveway-at-dusk"), "72% 50%"),
     ),
     copy: "Convenient charging at home. We install dedicated EV chargers, with load management options to suit your electrical supply and household needs.",
+  },
+  {
+    title: "Solar & battery",
+    page: "solar-installation-taupo",
+    service: "Solar & battery storage",
+    card: fromPhoto(getPhoto("twin-pavilions", "01-array")),
+    copy: "Make more of the energy your property can generate. We help with solar electrical installation, grid connection and battery storage options suited to your property and energy use.",
   },
 ];
 
