@@ -15,6 +15,7 @@ import { SmoothScroll } from "@/components/motion/SmoothScroll";
 import { CursorLight } from "@/components/motion/CursorLight";
 import { Preloader } from "@/components/motion/Preloader";
 import { LogoMark } from "@/components/brand/Logo";
+import { photos } from "@/lib/photos";
 
 function NotFoundComponent() {
   return (
@@ -83,8 +84,7 @@ function ErrorComponent({ error, reset }: { error: Error; reset: () => void }) {
   );
 }
 
-const OG_IMAGE =
-  "https://qfrmbugbutkjnltnnasf.supabase.co/storage/v1/object/public/balance-photos/twlight.jpg.jpeg";
+const OG_IMAGE = photos.twilight;
 
 export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()({
   head: () => ({

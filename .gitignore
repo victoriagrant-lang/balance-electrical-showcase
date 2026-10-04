@@ -8,6 +8,11 @@ pnpm-debug.log*
 lerna-debug.log*
 
 node_modules
+.env
+.env.*
+!.env.example
+supabase/functions/.env
+.vercel/
 dist
 dist-ssr
 .output
