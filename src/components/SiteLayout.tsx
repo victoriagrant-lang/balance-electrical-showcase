@@ -21,14 +21,14 @@ const nav = [
 
 // Footer service list → each service's own page.
 const SERVICE_LINKS: [string, string][] = [
-  ["Lighting design", "lighting-design-taupo"],
   ["New builds", "new-build-electrician-taupo"],
-  ["Renovations", "renovation-electrician-taupo"],
-  ["Commercial", "commercial-electrician-taupo"],
+  ["Renovations & upgrades", "renovation-electrician-taupo"],
+  ["Lighting design", "lighting-design-taupo"],
+  ["Smart home & automation", "smart-home-automation-taupo"],
+  ["Air conditioning", "air-conditioning-heating-taupo"],
   ["Solar & battery", "solar-installation-taupo"],
-  ["Air conditioning & heating", "air-conditioning-heating-taupo"],
+  ["Commercial electrical", "commercial-electrician-taupo"],
   ["EV charging", "ev-charger-installation-taupo"],
-  ["Smart home", "smart-home-automation-taupo"],
 ];
 
 export function SiteLayout({ children }: { children: ReactNode }) {
@@ -41,65 +41,17 @@ export function SiteLayout({ children }: { children: ReactNode }) {
   );
 }
 
+/*
+  One fixed bar, styled like the dark frame around the Balance sign. It never hides,
+  resizes or changes colour while scrolling — so it reads as part of the page, not a
+  flicker, whatever section passes beneath it.
+*/
 function SiteHeader() {
-  const [scrolled, setScrolled] = useState(false);
-  const [hidden, setHidden] = useState(false);
-  const [night, setNight] = useState(false);
-
-  // Compact on scroll; tuck away while reading down, return on scroll up.
-  useEffect(() => {
-    let last = window.scrollY;
-    let frame = 0;
-    const onScroll = () => {
-      cancelAnimationFrame(frame);
-      frame = requestAnimationFrame(() => {
-        const y = window.scrollY;
-        setScrolled(y > 24);
-        setHidden(y > 320 && y > last + 2);
-        if (y < last - 2) setHidden(false);
-        last = y;
-      });
-    };
-    onScroll();
-    window.addEventListener("scroll", onScroll, { passive: true });
-    return () => {
-      cancelAnimationFrame(frame);
-      window.removeEventListener("scroll", onScroll);
-    };
-  }, []);
-
-  // Switch to ivory when a night section passes beneath the bar.
-  useEffect(() => {
-    const sections = document.querySelectorAll("[data-night]");
-    if (!sections.length) return;
-    const active = new Set<Element>();
-    const io = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((e) => (e.isIntersecting ? active.add(e.target) : active.delete(e.target)));
-        setNight(active.size > 0);
-      },
-      { rootMargin: "0px 0px -93% 0px" },
-    );
-    sections.forEach((s) => io.observe(s));
-    return () => io.disconnect();
-  }, []);
-
   return (
-    <header
-      className={cn(
-        "fixed inset-x-0 top-0 z-50 transition-[transform,background-color,color,border-color] duration-700 [transition-timing-function:var(--ease-out-expo)]",
-        hidden && "-translate-y-full",
-        night ? "text-ivory" : "text-ink",
-        scrolled
-          ? night
-            ? "border-b border-ivory/10 bg-night/60 backdrop-blur-xl"
-            : "border-b border-ink/10 bg-stone/70 backdrop-blur-xl"
-          : "border-b border-transparent",
-      )}
-    >
+    <header className="fixed inset-x-0 top-0 z-50 border-b border-ivory/10 bg-frame/88 text-ivory backdrop-blur-md [transform:translateZ(0)]">
       <div className="mx-auto flex h-[72px] max-w-[1440px] items-center justify-between px-5 md:px-10">
         <Link to="/" className="group -m-2 p-2" aria-label="Balance Electrical — home">
-          <Logo hoverBalance className="w-[132px] md:w-[152px]" />
+          <Logo hoverBalance className="w-[132px] text-stone-pale md:w-[152px]" />
         </Link>
 
         <nav className="hidden items-center gap-10 lg:flex" aria-label="Primary">
@@ -107,7 +59,7 @@ function SiteHeader() {
             <Link
               key={n.to}
               to={n.to}
-              className="beam-link eyebrow text-[10.5px] opacity-75 transition-opacity duration-300 hover:opacity-100"
+              className="beam-link eyebrow text-[10.5px] opacity-70 transition-opacity duration-300 hover:opacity-100"
               activeProps={{ className: "!opacity-100" }}
               activeOptions={{ exact: true }}
             >
@@ -120,16 +72,14 @@ function SiteHeader() {
           <Button
             asChild
             variant="lux"
-            className={cn(
-              "hidden h-11 px-6 text-[10.5px] sm:inline-flex",
-              night && "bg-stone-pale text-frame",
-            )}
+            className="hidden h-11 bg-stone-pale px-6 text-[10.5px] text-frame hover:bg-ivory sm:inline-flex"
           >
             <Link to="/contact">Let's talk</Link>
           </Button>
           <MobileNav />
         </div>
       </div>
+      <div aria-hidden className="led-h absolute inset-x-0 bottom-0 opacity-40" />
     </header>
   );
 }

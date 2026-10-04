@@ -10,6 +10,7 @@ export const photos = {
   logo: enc("Balance+Electrical+-+white+text+(003).webp"),
   ewrbLogo: enc("new-ewrb-logo.png"),
   twilight: enc("twlight.jpg.jpeg"),
+  home: enc("Home page .png"),
   kitchen: enc("kitchen.JPG.jpeg"),
   living: enc("Living.JPG.jpeg"),
   fountainEntry: enc("Fountain+entry.jpg.jpeg"),

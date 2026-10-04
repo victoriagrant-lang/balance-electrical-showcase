@@ -52,7 +52,7 @@ export function siteGraph() {
         legalName: "Balance Electrical Ltd",
         description:
           "Owner-operated registered electrician in Taupō, New Zealand, led by Victoria Grant. Electrical design and installation for new homes, renovations and commercial buildings, with architectural lighting design, heat pumps and ducted heating and cooling integrated into joinery, solar and battery storage, EV chargers and smart-home control.",
-        slogan: "Planned, precise.",
+        slogan: "Electrical, lighting & climate. Considered together.",
         url: SITE,
         email: CONTACT.email,
         telephone: CONTACT.phone,
