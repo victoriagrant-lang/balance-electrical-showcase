@@ -18,7 +18,7 @@ const ldJson = {
   image: "https://www.balanceelectrical.co.nz/og-image.jpg",
   url: "https://www.balanceelectrical.co.nz",
   telephone: "+64279162077",
-  email: "enquire@balanceelectrical.co.nz",
+  email: "enquiries@balanceelectrical.co.nz",
   address: {
     "@type": "PostalAddress",
     addressLocality: "Taupo",
