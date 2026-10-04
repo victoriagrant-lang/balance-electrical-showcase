@@ -5,7 +5,6 @@ import { SiteLayout } from "@/components/SiteLayout";
 import { Button } from "@/components/ui/button";
 import { Lightbox } from "@/components/Lightbox";
 import { Reveal, SplitReveal } from "@/components/motion/Reveal";
-import { TorchArea } from "@/components/motion/Torch";
 import { PORTFOLIO, getProject, type PortfolioProject } from "@/lib/portfolio";
 import { SITE, breadcrumbs, businessRef } from "@/lib/seo";
 
@@ -90,56 +89,69 @@ function ProjectStory() {
 
   return (
     <SiteLayout>
-      <section className="mx-auto max-w-[1440px] px-5 pb-14 pt-36 md:px-10 md:pb-20 md:pt-48">
-        <Link
-          to="/portfolio"
-          hash={project.slug}
-          className="beam-link eyebrow inline-flex items-center gap-2 text-[10px] text-ink-soft"
-        >
-          <ArrowLeft className="size-3" /> Portfolio
-        </Link>
-        <SplitReveal
-          as="h1"
-          immediate
-          delay={0.2}
-          className="display-caps mt-8 max-w-5xl text-balance text-[clamp(2.4rem,7vw,6.8rem)] leading-[0.96] tracking-[0.08em]!"
-        >
-          {project.title}
-        </SplitReveal>
-        <Reveal delay={0.45}>
-          <p className="eyebrow mt-8 text-[10px] leading-relaxed text-ink-soft">
-            {project.location} · {project.tags.join(" · ")}
-          </p>
-          {project.accolade && (
-            <p className="mt-6 inline-flex max-w-xl items-start gap-3 border border-ink/25 px-4 py-3 text-sm leading-snug">
-              <Award className="mt-0.5 size-4 shrink-0" strokeWidth={1.5} />
-              {project.accolade}
-            </p>
-          )}
-        </Reveal>
-      </section>
-
-      <Reveal className="mx-auto max-w-[1440px] px-5 md:px-10">
+      {/* The cover photograph is the hero: full-bleed, with the title set into its lower edge. */}
+      <section
+        data-night
+        className="relative isolate flex min-h-[88svh] flex-col justify-end overflow-hidden bg-night text-ivory"
+      >
         <button
           type="button"
           onClick={() => setOpen(0)}
           data-cursor="View"
-          className="group block w-full overflow-hidden border-[8px] border-frame bg-frame md:border-[12px]"
           aria-label={`${cover.title} — view larger`}
+          className="group absolute inset-0 -z-10 block"
         >
           <img
             src={cover.lg}
             width={cover.w}
             height={cover.h}
             alt={`${cover.title}, ${project.title}`}
-            className="block h-auto max-h-[82svh] w-full object-cover transition-transform duration-[1400ms] [transition-timing-function:var(--ease-out-expo)] group-hover:scale-[1.02]"
+            className="h-full w-full animate-[fadeInUp_1.4s_var(--ease-out-expo)_both] object-cover transition-transform duration-[1800ms] [transition-timing-function:var(--ease-out-expo)] group-hover:scale-[1.02]"
           />
         </button>
-        <p className="mt-4 max-w-2xl text-sm leading-relaxed text-ink-soft">
-          <span className="eyebrow mr-3 text-[10px] text-ink">{cover.title}</span>
-          {cover.caption}
-        </p>
-      </Reveal>
+        <div
+          aria-hidden
+          className="pointer-events-none absolute inset-0 -z-10 bg-gradient-to-t from-night via-night/45 to-night/10"
+        />
+        <div
+          aria-hidden
+          className="pointer-events-none absolute inset-x-0 top-0 -z-10 h-40 bg-gradient-to-b from-night/70 to-transparent"
+        />
+        <div className="pointer-events-none mx-auto w-full max-w-[1440px] px-5 pb-12 pt-36 md:px-10 md:pb-16">
+          <Link
+            to="/portfolio"
+            hash={project.slug}
+            className="beam-link eyebrow pointer-events-auto inline-flex items-center gap-2 text-[10px] text-ivory/80"
+          >
+            <ArrowLeft className="size-3" /> Portfolio
+          </Link>
+          <SplitReveal
+            as="h1"
+            immediate
+            delay={0.2}
+            className="display-caps mt-6 max-w-5xl text-balance text-[clamp(2.4rem,7vw,6.6rem)] leading-[0.96] tracking-[0.08em]! text-ivory [text-shadow:0_2px_30px_rgb(0_0_0/0.35)]"
+          >
+            {project.title}
+          </SplitReveal>
+          <Reveal delay={0.45} className="mt-7 flex flex-wrap items-end justify-between gap-6">
+            <div>
+              <p className="eyebrow text-[10px] leading-relaxed text-glow-soft/90">
+                {project.location} · {project.tags.join(" · ")}
+              </p>
+              {project.accolade && (
+                <p className="mt-5 inline-flex max-w-xl items-start gap-3 border border-glow/40 bg-night/40 px-4 py-3 text-sm leading-snug text-ivory/90 backdrop-blur-sm">
+                  <Award className="mt-0.5 size-4 shrink-0 text-glow-soft" strokeWidth={1.5} />
+                  {project.accolade}
+                </p>
+              )}
+            </div>
+            <p className="max-w-sm text-sm leading-relaxed text-ivory/75">
+              <span className="eyebrow mr-3 text-[10px] text-ivory">{cover.title}</span>
+              {cover.caption}
+            </p>
+          </Reveal>
+        </div>
+      </section>
 
       <section className="mx-auto grid max-w-[1440px] gap-14 px-5 py-24 md:px-10 md:py-32 lg:grid-cols-12 lg:gap-16">
         <div className="lg:col-span-7">
@@ -183,39 +195,41 @@ function ProjectStory() {
         >
           <div className="led-h absolute inset-x-0 top-0 opacity-70" />
           <div className="mx-auto max-w-[1440px] px-5 md:px-10">
-            <p className="eyebrow text-muted-foreground">In detail</p>
-            <TorchArea className="mt-10">
-              <div className="columns-1 gap-6 sm:columns-2 lg:columns-3">
-                {rest.map((p, i) => (
-                  <figure key={p.name} className="mb-8 break-inside-avoid">
-                    <button
-                      type="button"
-                      data-shot
-                      data-cursor="View"
-                      onClick={() => setOpen(i + 1)}
-                      className="group block w-full overflow-hidden"
-                      aria-label={`${p.title} — view larger`}
-                    >
-                      <img
-                        src={p.sm}
-                        width={p.w}
-                        height={p.h}
-                        alt={`${p.title}, ${project.title}`}
-                        loading="lazy"
-                        decoding="async"
-                        className="block h-auto w-full transition-[filter,transform] duration-[1200ms] [transition-timing-function:var(--ease-out-expo)] group-hover:scale-[1.03] max-md:[filter:brightness(0.5)] max-md:group-data-[lit]:[filter:brightness(1)]"
-                      />
-                    </button>
-                    <figcaption className="mt-3">
-                      <span className="eyebrow block text-[10px] text-glow-soft/90">{p.title}</span>
-                      <span className="mt-1.5 block text-sm leading-relaxed text-ivory/70">
-                        {p.caption}
-                      </span>
-                    </figcaption>
-                  </figure>
-                ))}
-              </div>
-            </TorchArea>
+            <div className="flex flex-wrap items-end justify-between gap-4">
+              <p className="eyebrow text-muted-foreground">In detail</p>
+              <p className="eyebrow text-[10px] text-muted-foreground">
+                {project.photos.length} photographs · select one to enlarge
+              </p>
+            </div>
+            <div className="mt-10 columns-1 gap-6 sm:columns-2 lg:columns-3">
+              {rest.map((p, i) => (
+                <figure key={p.name} className="mb-8 break-inside-avoid">
+                  <button
+                    type="button"
+                    data-cursor="View"
+                    onClick={() => setOpen(i + 1)}
+                    className="group block w-full overflow-hidden"
+                    aria-label={`${p.title} — view larger`}
+                  >
+                    <img
+                      src={p.sm}
+                      width={p.w}
+                      height={p.h}
+                      alt={`${p.title}, ${project.title}`}
+                      loading="lazy"
+                      decoding="async"
+                      className="block h-auto w-full transition-[filter,transform] duration-[1200ms] [filter:brightness(0.94)] [transition-timing-function:var(--ease-out-expo)] group-hover:scale-[1.03] group-hover:[filter:brightness(1.03)]"
+                    />
+                  </button>
+                  <figcaption className="mt-3">
+                    <span className="eyebrow block text-[10px] text-glow-soft/90">{p.title}</span>
+                    <span className="mt-1.5 block text-sm leading-relaxed text-ivory/70">
+                      {p.caption}
+                    </span>
+                  </figcaption>
+                </figure>
+              ))}
+            </div>
           </div>
         </section>
       )}

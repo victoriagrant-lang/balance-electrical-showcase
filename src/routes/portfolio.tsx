@@ -5,7 +5,6 @@ import { SiteLayout } from "@/components/SiteLayout";
 import { Button } from "@/components/ui/button";
 import { Lightbox } from "@/components/Lightbox";
 import { Reveal, SplitReveal } from "@/components/motion/Reveal";
-import { TorchArea } from "@/components/motion/Torch";
 import { useLenis } from "@/hooks/use-lenis";
 import { CONTACT } from "@/lib/contact";
 import { PORTFOLIO, type PortfolioPhoto, type PortfolioProject } from "@/lib/portfolio";
@@ -209,7 +208,7 @@ function PortfolioHero({ projects }: { projects: PortfolioProject[] }) {
                 alt=""
                 loading="lazy"
                 decoding="async"
-                className="h-full w-full object-cover transition-[filter,transform] duration-[1200ms] [filter:brightness(0.55)_saturate(0.6)] [transition-timing-function:var(--ease-out-expo)] group-hover:scale-[1.04] group-hover:[filter:brightness(1)_saturate(1)] group-focus-visible:[filter:brightness(1)_saturate(1)] [@media(hover:none)]:[filter:none]"
+                className="h-full w-full object-cover transition-[filter,transform] duration-[1200ms] [filter:brightness(0.92)_saturate(0.92)] [transition-timing-function:var(--ease-out-expo)] group-hover:scale-[1.04] group-hover:[filter:brightness(1)_saturate(1)] group-focus-visible:[filter:brightness(1)_saturate(1)] [@media(hover:none)]:[filter:none]"
               />
               <span
                 aria-hidden
@@ -232,7 +231,14 @@ function PortfolioHero({ projects }: { projects: PortfolioProject[] }) {
   );
 }
 
-/** One project: a sticky story on the left, its photographs in a torch-lit room on the right. */
+/** How many scope lines a chapter shows before pointing to the full story. */
+const SCOPE_PREVIEW = 5;
+
+/*
+  One project as a compact chapter: the story on one side, three photographs on the
+  other (sides alternate down the page). The full write-up, scope and captioned
+  gallery live on the project's own page, so this page stays quick to browse.
+*/
 function Chapter({
   project,
   index,
@@ -245,9 +251,11 @@ function Chapter({
   onOpen: (photo: number) => void;
 }) {
   const [cover, ...rest] = project.photos;
+  const supporting = rest.slice(0, 2);
+  const more = project.photos.length - 1 - supporting.length;
   const titleId = `${project.slug}-title`;
-  // A long single word (e.g. "Headquarters") must still fit the narrow sticky column.
-  const longTitle = Math.max(...project.title.split(" ").map((w) => w.length)) > 9;
+  const flip = index % 2 === 1;
+  const scope = project.details.slice(0, SCOPE_PREVIEW);
 
   return (
     <article
@@ -255,24 +263,19 @@ function Chapter({
       aria-labelledby={titleId}
       className="scroll-mt-20 border-t border-ivory/10 first-of-type:border-t-0"
     >
-      <div className="mx-auto grid max-w-[1440px] gap-12 px-5 py-24 md:px-10 md:py-32 lg:grid-cols-12 lg:gap-16">
-        <header className="self-start lg:sticky lg:top-28 lg:col-span-4">
+      <div className="mx-auto grid max-w-[1440px] items-center gap-10 px-5 py-20 md:px-10 md:py-28 lg:grid-cols-12 lg:gap-16">
+        <header className={cn("lg:col-span-5", flip ? "lg:order-2 lg:col-start-8" : "")}>
           <p className="eyebrow text-muted-foreground">
             {pad(index + 1)} / {pad(total)}
           </p>
           <SplitReveal
             as="h2"
             id={titleId}
-            className={cn(
-              "display-caps mt-5 leading-[1.02] text-ivory",
-              longTitle
-                ? "text-[clamp(1.6rem,2.6vw,2.5rem)] tracking-[0.08em]!"
-                : "text-[clamp(2rem,3.6vw,3.4rem)] tracking-[0.1em]!",
-            )}
+            className="display-caps mt-5 text-balance text-[clamp(2rem,3.4vw,3.2rem)] leading-[1.04] tracking-[0.1em]! text-ivory"
           >
             {project.title}
           </SplitReveal>
-          <p className="eyebrow mt-5 text-[10px] text-glow-soft/80">
+          <p className="eyebrow mt-5 text-[10px] leading-relaxed text-glow-soft/80">
             {project.location} · {project.tags.join(" · ")}
           </p>
           {project.accolade && (
@@ -281,48 +284,61 @@ function Chapter({
               {project.accolade}
             </p>
           )}
-          <p className="mt-6 leading-relaxed text-muted-foreground">{project.summary}</p>
-          <p className="eyebrow mt-10 text-[10px] text-muted-foreground">{project.detailsTitle}</p>
-          <ul className="mt-4 space-y-2.5">
-            {project.details.map((d) => (
+          <p className="mt-6 max-w-xl text-[1.02rem] leading-relaxed text-ivory/75">
+            {project.summary}
+          </p>
+          <ul className="mt-8 space-y-2.5 border-t border-ivory/10 pt-6">
+            {scope.map((d) => (
               <li key={d} className="flex items-start gap-4 text-sm leading-relaxed text-ivory/85">
                 <span className="mt-[0.7em] h-px w-5 shrink-0 bg-glow/60" />
                 {d}
               </li>
             ))}
           </ul>
-          {project.story && (
-            <Link
-              to="/portfolio/$slug"
-              params={{ slug: project.slug }}
-              className="beam-link eyebrow mt-10 inline-flex items-center gap-2 text-[10px] text-ivory"
+          <div className="mt-10 flex flex-wrap items-center gap-x-8 gap-y-4">
+            <Button
+              asChild
+              variant="lux"
+              size="xl"
+              className="bg-stone-pale text-frame hover:bg-ivory"
             >
-              Read the project story <ArrowRight className="size-3" />
-            </Link>
-          )}
+              <Link to="/portfolio/$slug" params={{ slug: project.slug }}>
+                Read the project story <ArrowRight />
+              </Link>
+            </Button>
+            <button
+              type="button"
+              onClick={() => onOpen(0)}
+              className="beam-link eyebrow text-[10px] text-ivory/80 hover:text-ivory"
+            >
+              View all {project.photos.length} photos
+            </button>
+          </div>
         </header>
 
-        <Reveal className="lg:col-span-8">
-          <TorchArea>
-            <Photo
-              photo={cover}
-              project={project.title}
-              sizes="(min-width: 1024px) 62vw, 100vw"
-              onClick={() => onOpen(0)}
-            />
-            <div className="mt-4 columns-1 gap-4 sm:columns-2 md:mt-5 md:gap-5">
-              {rest.map((p, i) => (
+        <Reveal className={cn("lg:col-span-7", flip && "lg:order-1 lg:col-start-1")}>
+          <Photo
+            photo={cover}
+            project={project.title}
+            sizes="(min-width: 1024px) 56vw, 100vw"
+            onClick={() => onOpen(0)}
+            className="aspect-[16/10]"
+          />
+          {supporting.length > 0 && (
+            <div className="mt-4 grid grid-cols-2 gap-4 md:mt-5 md:gap-5">
+              {supporting.map((p, i) => (
                 <Photo
                   key={p.lg}
                   photo={p}
                   project={project.title}
-                  sizes="(min-width: 1024px) 31vw, (min-width: 640px) 50vw, 100vw"
+                  sizes="(min-width: 1024px) 28vw, 50vw"
                   onClick={() => onOpen(i + 1)}
-                  className="mb-4 break-inside-avoid md:mb-5"
+                  className="aspect-[4/3]"
+                  more={i === supporting.length - 1 && more > 0 ? more : 0}
                 />
               ))}
             </div>
-          </TorchArea>
+          )}
         </Reveal>
       </div>
     </article>
@@ -335,12 +351,15 @@ function Photo({
   sizes,
   onClick,
   className,
+  more = 0,
 }: {
   photo: PortfolioPhoto;
   project: string;
   sizes: string;
   onClick: () => void;
   className?: string;
+  /** Photos not shown in the chapter; the last tile says so. */
+  more?: number;
 }) {
   // The small variant is 800px on its long edge.
   const smWidth = photo.w >= photo.h ? 800 : Math.round((800 * photo.w) / photo.h);
@@ -348,11 +367,10 @@ function Photo({
   return (
     <button
       type="button"
-      data-shot
       data-cursor="View"
       onClick={onClick}
       aria-label={`${photo.title} — view larger`}
-      className={cn("group relative block w-full overflow-hidden text-left", className)}
+      className={cn("group relative block w-full overflow-hidden bg-frame text-left", className)}
     >
       <img
         src={photo.sm}
@@ -363,11 +381,15 @@ function Photo({
         alt={`${photo.title}, ${project}`}
         loading="lazy"
         decoding="async"
-        className="block h-auto w-full transition-[filter,transform] duration-[1200ms] [transition-timing-function:var(--ease-out-expo)] group-hover:scale-[1.03] max-md:[filter:brightness(0.45)] max-md:group-data-[lit]:[filter:brightness(1)]"
+        className="absolute inset-0 h-full w-full object-cover transition-[filter,transform] duration-[1200ms] [filter:brightness(0.9)] [transition-timing-function:var(--ease-out-expo)] group-hover:scale-[1.03] group-hover:[filter:brightness(1.03)]"
       />
-      <span className="pointer-events-none absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/85 via-black/40 to-transparent p-5 md:translate-y-2 md:opacity-0 md:transition-all md:duration-700 md:group-hover:translate-y-0 md:group-hover:opacity-100 md:group-focus-visible:translate-y-0 md:group-focus-visible:opacity-100">
-        <span className="eyebrow block text-[10px] text-glow-soft/90">{photo.title}</span>
-        <span className="mt-1 block text-sm leading-snug text-ivory/80">{photo.caption}</span>
+      {more > 0 && (
+        <span className="absolute inset-0 grid place-items-center bg-black/45 transition-colors duration-500 group-hover:bg-black/30">
+          <span className="eyebrow text-[10px] text-ivory">+{more} photos</span>
+        </span>
+      )}
+      <span className="pointer-events-none absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent p-4 pt-12 md:p-5 md:pt-14">
+        <span className="eyebrow block text-[9.5px] text-glow-soft/90">{photo.title}</span>
       </span>
     </button>
   );
