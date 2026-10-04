@@ -2,9 +2,9 @@ import { useEffect, useRef, type CSSProperties, type RefObject } from "react";
 import { photos } from "@/lib/photos";
 
 const revealStyle = {
-  clipPath: "circle(0px at 72% 50%)",
-  WebkitClipPath: "circle(0px at 72% 50%)",
-  willChange: "clip-path",
+  maskImage: "radial-gradient(circle 0px at 72% 50%, transparent 0%, transparent 100%)",
+  WebkitMaskImage: "radial-gradient(circle 0px at 72% 50%, transparent 0%, transparent 100%)",
+  willChange: "mask-image",
 } as CSSProperties;
 
 /** A quiet stone veil that lets the project image emerge under the pointer. */
@@ -20,9 +20,9 @@ export function SpotlightFilm({ host }: { host: RefObject<HTMLElement | null> })
     if (reducedMotion.matches) return;
 
     const hide = () => {
-      const clip = "circle(0px at 72% 50%)";
-      reveal.style.clipPath = clip;
-      reveal.style.webkitClipPath = clip;
+      const mask = "radial-gradient(circle 0px at 72% 50%, transparent 0%, transparent 100%)";
+      reveal.style.maskImage = mask;
+      reveal.style.webkitMaskImage = mask;
     };
 
     const move = (event: PointerEvent) => {
@@ -42,11 +42,11 @@ export function SpotlightFilm({ host }: { host: RefObject<HTMLElement | null> })
       const y = event.clientY - rect.top;
       const size =
         rect.width < 768
-          ? Math.min(170, Math.max(110, rect.width * 0.28))
-          : Math.min(280, Math.max(180, rect.width * 0.16));
-      const clip = `circle(${size}px at ${x}px ${y}px)`;
-      reveal.style.clipPath = clip;
-      reveal.style.webkitClipPath = clip;
+          ? Math.min(140, Math.max(85, rect.width * 0.22))
+          : Math.min(220, Math.max(130, rect.width * 0.12));
+      const mask = `radial-gradient(circle ${size}px at ${x}px ${y}px, black 0%, black 38%, rgba(0,0,0,0.78) 62%, transparent 100%)`;
+      reveal.style.maskImage = mask;
+      reveal.style.webkitMaskImage = mask;
     };
 
     window.addEventListener("pointermove", move, { passive: true });
