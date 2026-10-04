@@ -153,7 +153,7 @@ function ProjectStory() {
         </div>
       </section>
 
-      <section className="mx-auto grid max-w-[1440px] gap-14 px-5 py-24 md:px-10 md:py-32 lg:grid-cols-12 lg:gap-16">
+      <section className="mx-auto grid max-w-[1440px] grid-cols-1 gap-14 px-5 py-24 md:px-10 md:py-32 lg:grid-cols-12 lg:gap-16">
         <div className="lg:col-span-7">
           <Reveal>
             <p className="font-display text-[clamp(1.5rem,2.6vw,2.2rem)] leading-[1.3]">{lede}</p>
@@ -168,7 +168,7 @@ function ProjectStory() {
           </Reveal>
         </div>
         <aside className="self-start lg:sticky lg:top-28 lg:col-span-4 lg:col-start-9">
-          <div className="border-[8px] border-frame p-7 md:p-9">
+          <div className="border-[8px] border-frame p-5 sm:p-7 md:p-9">
             <p className="eyebrow text-[10px] text-ink-soft">{project.detailsTitle}</p>
             <ul className="mt-5 space-y-3">
               {project.details.map((d) => (
@@ -178,7 +178,12 @@ function ProjectStory() {
                 </li>
               ))}
             </ul>
-            <Button asChild variant="lux" size="lg" className="mt-8 w-full">
+            <Button
+              asChild
+              variant="lux"
+              size="lg"
+              className="mt-8 h-auto min-h-12 w-full whitespace-normal py-3 text-center"
+            >
               <Link to="/contact">
                 Discuss a project like this <ArrowRight />
               </Link>
