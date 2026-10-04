@@ -26,8 +26,6 @@ export function SpotlightFilm({ host }: { host: RefObject<HTMLElement | null> })
     };
 
     const move = (event: PointerEvent) => {
-      if (event.pointerType === "touch") return;
-
       const rect = section.getBoundingClientRect();
       const inside =
         event.clientX >= rect.left &&
@@ -42,18 +40,25 @@ export function SpotlightFilm({ host }: { host: RefObject<HTMLElement | null> })
 
       const x = event.clientX - rect.left;
       const y = event.clientY - rect.top;
-      const size = Math.min(280, Math.max(180, rect.width * 0.16));
+      const size =
+        rect.width < 768
+          ? Math.min(170, Math.max(110, rect.width * 0.28))
+          : Math.min(280, Math.max(180, rect.width * 0.16));
       const clip = `circle(${size}px at ${x}px ${y}px)`;
       reveal.style.clipPath = clip;
       reveal.style.webkitClipPath = clip;
     };
 
     window.addEventListener("pointermove", move, { passive: true });
+    window.addEventListener("pointerup", hide);
+    window.addEventListener("pointercancel", hide);
     window.addEventListener("blur", hide);
     hide();
 
     return () => {
       window.removeEventListener("pointermove", move);
+      window.removeEventListener("pointerup", hide);
+      window.removeEventListener("pointercancel", hide);
       window.removeEventListener("blur", hide);
     };
   }, [host]);
