@@ -6,7 +6,7 @@ import { gsap, SplitText, prefersReducedMotion, useGSAP } from "@/lib/gsap";
 import { onIntroDone } from "@/lib/intro";
 import { SpotlightFilm } from "./SpotlightFilm";
 
-/* The existing cursor light reveals a muted film beneath the headline. */
+/* The pointer quietly uncovers the project image beneath the headline. */
 export function Hero() {
   const root = useRef<HTMLElement>(null);
 
@@ -62,7 +62,7 @@ export function Hero() {
     <section
       ref={root}
       data-night
-      className="theme-night relative isolate flex min-h-[100svh] flex-col overflow-hidden bg-night text-ivory"
+      className="relative isolate flex min-h-[100svh] flex-col overflow-hidden bg-stone-pale text-ink"
       aria-labelledby="hero-title"
     >
       <SpotlightFilm host={root} />
@@ -73,7 +73,7 @@ export function Hero() {
       >
         <div
           data-hero-fade
-          className="flex flex-wrap items-center justify-between gap-3 text-ivory/80"
+          className="flex flex-wrap items-center justify-between gap-3 text-ink-soft"
         >
           <p className="eyebrow">Electrical · Lighting · Air-Conditioning · Solar</p>
           <p className="eyebrow">Taupō and the surrounding district</p>
@@ -83,7 +83,7 @@ export function Hero() {
           <h1
             id="hero-title"
             data-hero-title
-            className="display-caps [text-shadow:0_2px_30px_rgb(0_0_0/0.5)] text-balance text-[clamp(1.7rem,5.6vw,5.5rem)] leading-[1.1] tracking-[0.03em] text-ivory"
+            className="display-caps text-balance text-[clamp(1.7rem,5.6vw,5.5rem)] leading-[1.1] tracking-[0.03em] text-ink"
             style={{ letterSpacing: "0.03em" }}
           >
             Thoughtfully planned. Expertly installed.
@@ -91,14 +91,14 @@ export function Hero() {
 
           <div className="mt-10 grid gap-10 md:mt-14 md:grid-cols-12 md:items-end">
             <div data-hero-fade className="flex items-start gap-5 md:col-span-5">
-              <span className="mt-3 h-px w-14 shrink-0 bg-ivory/40" />
-              <p className="max-w-sm text-base leading-relaxed text-ivory/90 [text-shadow:0_2px_12px_rgb(0_0_0/0.9)]">
+              <span className="mt-3 h-px w-14 shrink-0 bg-ink/35" />
+              <p className="max-w-sm text-base leading-relaxed text-ink-soft">
                 Led by local electrician Victoria Grant, with a personal approach from the first
                 conversation to the finished installation.
               </p>
             </div>
             <div data-hero-fade className="md:col-span-5 md:col-start-8">
-              <p className="max-w-md text-[1.02rem] leading-relaxed text-ivory/90 [text-shadow:0_2px_12px_rgb(0_0_0/0.9)]">
+              <p className="max-w-md text-[1.02rem] leading-relaxed text-ink-soft">
                 Electrical work and lighting design for homes and businesses across Taupō. From new
                 builds and renovations to commercial fit-outs, Balance Electrical brings careful
                 planning and attention to detail to every project.
@@ -117,23 +117,23 @@ export function Hero() {
           </div>
         </div>
 
-        <div data-hero-fade className="mt-14 flex items-center gap-4 text-ivory/80 md:mt-10">
+        <div data-hero-fade className="mt-14 flex items-center gap-4 text-ink-soft md:mt-10">
           {/* a light switch that flips as you start to scroll */}
           <span
             aria-hidden
-            className="relative flex h-9 w-5 justify-center rounded-[5px] border border-ivory/35 p-[3px]"
+            className="relative flex h-9 w-5 justify-center rounded-[5px] border border-ink/35 p-[3px]"
           >
-            <span data-switch-knob className="h-3 w-full rounded-[2px] bg-ivory/80" />
+            <span data-switch-knob className="h-3 w-full rounded-[2px] bg-ink/70" />
           </span>
-          <span className="eyebrow text-[9px] leading-relaxed">
+          <span className="eyebrow text-[9px] leading-relaxed text-ink-soft">
             <span className="hidden [@media(min-width:768px)_and_(hover:hover)_and_(pointer:fine)_and_(prefers-reduced-motion:no-preference)]:inline">
               Move your cursor to reveal
               <br />
             </span>
             Scroll to explore
           </span>
-          <span className="relative ml-2 hidden h-10 w-px overflow-hidden bg-ivory/15 md:block">
-            <span className="absolute inset-0 animate-cue bg-ivory/70" />
+          <span className="relative ml-2 hidden h-10 w-px overflow-hidden bg-ink/15 md:block">
+            <span className="absolute inset-0 animate-cue bg-ink/50" />
           </span>
         </div>
       </div>
