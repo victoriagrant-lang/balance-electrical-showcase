@@ -79,6 +79,9 @@ export function SplitReveal({
       const split = SplitText.create(el, {
         type: "lines",
         mask: "lines",
+        // Only a heading can carry SplitText's aria-label; inside one (as a span), whole
+        // lines stay readable as they are.
+        aria: typeof Tag === "string" && /^h[1-6]$/.test(Tag) ? "auto" : "none",
         linesClass: "split-line",
         autoSplit: true,
         onSplit: (self) =>

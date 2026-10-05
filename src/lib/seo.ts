@@ -21,6 +21,8 @@ const AIR_CONDITIONING_ID = `${SITE}/#balance-air-conditioning`;
 const WEBSITE_ID = `${SITE}/#website`;
 const DISTRICT_ID = `${SITE}/#taupo-district`;
 const GOOGLE_PROFILE = "https://g.page/r/CUTDVwlL1oZeEBM";
+/** The same Business Profile as a Google Maps listing link (its "cid"). */
+const GOOGLE_MAPS = "https://maps.google.com/?cid=6811367104212091716";
 
 export const businessRef = { "@id": BUSINESS_ID };
 export const websiteRef = { "@id": WEBSITE_ID };
@@ -139,14 +141,16 @@ function googleRating(google?: GoogleReviews) {
       bestRating: 5,
       worstRating: 1,
     },
-    review: google.reviews.map((r) => ({
-      "@type": "Review",
-      reviewBody: r.text,
-      author: { "@type": "Person", name: r.author },
-      reviewRating: { "@type": "Rating", ratingValue: r.rating, bestRating: 5, worstRating: 1 },
-      publisher: { "@type": "Organization", name: "Google" },
-      ...(r.publishTime ? { datePublished: r.publishTime.slice(0, 10) } : {}),
-    })),
+    review: google.reviews
+      .filter((r) => r.rating >= 1 && r.rating <= 5)
+      .map((r) => ({
+        "@type": "Review",
+        reviewBody: r.text,
+        author: { "@type": "Person", name: r.author },
+        reviewRating: { "@type": "Rating", ratingValue: r.rating, bestRating: 5, worstRating: 1 },
+        publisher: { "@type": "Organization", name: "Google" },
+        ...(r.publishTime ? { datePublished: r.publishTime.slice(0, 10) } : {}),
+      })),
   };
 }
 
@@ -190,8 +194,6 @@ const MITCH = {
  * load the live Google reviews (home, about) pass them in so the rating joins the business.
  */
 export function siteGraph(google?: GoogleReviews) {
-  // The Google Maps link for the profile, when the Places lookup returned one.
-  const maps = google?.url && google.url !== GOOGLE_PROFILE ? google.url : undefined;
   return {
     "@context": "https://schema.org",
     "@graph": [
@@ -223,8 +225,8 @@ export function siteGraph(google?: GoogleReviews) {
           height: 512,
           caption: "Balance Electrical",
         },
-        sameAs: maps ? [GOOGLE_PROFILE, maps] : [GOOGLE_PROFILE],
-        hasMap: maps ?? GOOGLE_PROFILE,
+        sameAs: [GOOGLE_PROFILE, GOOGLE_MAPS],
+        hasMap: GOOGLE_PROFILE,
         // A service-area business: the town only, never a street address.
         address: {
           "@type": "PostalAddress",
@@ -368,8 +370,8 @@ export const HOME_FAQS: Faq[] = [
     a: "Yes. Fault finding, tripping safety switches, switchboard repairs, lighting and power faults, and ongoing maintenance for homes, rental properties and commercial buildings are a regular part of the work, alongside new builds and renovations.",
   },
   {
-    q: "Are you registered electricians?",
-    a: "Yes. Victoria Grant is a registered and licensed electrician with the Electrical Workers Registration Board (EWRB), and Mitch Pearce holds the same EWRB licence. All work is tested and certified.",
+    q: "Are you a registered electrician?",
+    a: "Yes. Victoria Grant is a registered and licensed electrician with the Electrical Workers Registration Board (EWRB), and all work is tested and certified. Mitch Pearce, Director of Balance Air Conditioning, holds the same EWRB licence.",
   },
   {
     q: "What are your hours?",

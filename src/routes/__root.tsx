@@ -20,13 +20,13 @@ import { photos } from "@/lib/photos";
 import { serializeJsonLd, siteGraph } from "@/lib/seo";
 import type { GoogleReviews } from "@/lib/google-reviews";
 
-/** The live Google reviews, if the page being rendered loaded them (home and about do). */
-function loadedReviews(matches: { loaderData?: unknown }[]) {
-  return matches
-    .map((m) => m.loaderData)
-    .find(
-      (d): d is GoogleReviews => !!d && typeof d === "object" && "reviews" in d && "count" in d,
-    );
+/** The live Google reviews, if the page being rendered loaded them (home, about, contact). */
+const REVIEW_PAGES = new Set(["/", "/about", "/contact"]);
+function loadedReviews(matches: { routeId: string; loaderData?: unknown }[]) {
+  const data = matches.find((m) => REVIEW_PAGES.has(m.routeId))?.loaderData;
+  return data && typeof data === "object" && "reviews" in data
+    ? (data as GoogleReviews)
+    : undefined;
 }
 
 function NotFoundComponent() {

@@ -89,7 +89,7 @@ export const SERVICES: Service[] = [
       "Complete electrical for new homes and commercial builds, from the plans to final certification.",
     contactService: "New residential build",
     intro: [
-      "Balance takes new homes and commercial new builds from plans to power-on: pricing and design from the drawings, first-fix wiring at framing, final fit-off once linings and joinery are in, then testing and certification for code compliance.",
+      "Balance takes new construction — new homes and commercial new builds — from plans to power-on: pricing and design from the drawings, first-fix wiring at framing, final fit-off once linings and joinery are in, then testing and certification for code compliance.",
       "Because lighting, climate, solar, EV charging and smart-home control are planned together from the start, cabling and equipment can be hidden in the build — and the finished home works as one system.",
     ],
     includes: [
@@ -136,12 +136,12 @@ export const SERVICES: Service[] = [
       "House rewiring, new circuits, switchboard upgrades and lighting, threaded through an existing home.",
     contactService: "Renovation or addition",
     intro: [
-      "Renovations need electrical work that's threaded carefully through an existing home. Balance rewires houses across Taupō — from a single room to the whole house — and plans new circuits, switchboard upgrades and lighting around the way you live, keeping disruption low and finishes tidy.",
+      "Renovations need electrical work that's threaded carefully through an existing home. Balance handles house electrical wiring and rewiring across Taupō — from a single room to the whole house — and plans new circuits, switchboard upgrades and lighting around the way you live, keeping disruption low and finishes tidy.",
       "It's also the moment to rethink lighting and climate: concealed LED in new joinery, a heat pump or ducted system, and the capacity for solar or EV charging later. At The Arches, a complete renovation in Taupō, that meant a new lighting design, electrical works throughout and high-wall heat pumps.",
     ],
     includes: [
       "Full electrical upgrades for renovations and extensions",
-      "House rewiring, from a single room to the whole home",
+      "House wiring and rewiring, from a single room to the whole home",
       "Additional circuits and power points",
       "Switchboard upgrades and safety improvements",
       "Architectural lighting design",

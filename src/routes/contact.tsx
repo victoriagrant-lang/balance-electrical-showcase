@@ -199,15 +199,17 @@ function Contact() {
   return (
     <SiteLayout>
       <section className="relative mx-auto max-w-[1440px] px-5 pb-16 pt-36 md:px-10 md:pb-24 md:pt-48">
-        <p className="eyebrow text-ink-soft">Contact · Quotes</p>
-        <SplitReveal
-          as="h1"
-          immediate
-          delay={0.2}
-          className="display-caps mt-6 max-w-5xl text-balance text-[clamp(2rem,5.6vw,5.5rem)] leading-[0.95] tracking-[0.08em]!"
-        >
-          Tell us what you have in mind.
-        </SplitReveal>
+        <h1>
+          <span className="eyebrow block text-ink-soft">Request an electrician quote in Taupō</span>{" "}
+          <SplitReveal
+            as="span"
+            immediate
+            delay={0.2}
+            className="display-caps max-w-5xl text-balance text-[clamp(2rem,5.6vw,5.5rem)] leading-[0.95] tracking-[0.08em]! mt-6 block"
+          >
+            Tell us what you have in mind.
+          </SplitReveal>
+        </h1>
         <Reveal delay={0.5}>
           <p className="mt-8 max-w-xl text-[1.05rem] leading-relaxed text-ink-soft">
             Planning a project, need a quote, or need help with an existing property? Share a few
@@ -444,7 +446,7 @@ function Contact() {
         </Reveal>
       </section>
 
-      <Testimonials google={google} limit={3} className="pb-28 md:pb-40" />
+      <Testimonials google={google} initial={3} className="pb-28 md:pb-40" />
     </SiteLayout>
   );
 }

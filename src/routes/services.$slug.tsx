@@ -148,7 +148,7 @@ function ServicePage() {
                     params={{ slug: a.slug }}
                     className="beam-link text-[1.05rem]"
                   >
-                    {a.name}
+                    {a.linkLabel ?? a.name}
                   </Link>
                 </li>
               ))}

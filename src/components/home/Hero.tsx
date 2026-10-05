@@ -16,7 +16,11 @@ export function Hero() {
       if (!el || prefersReducedMotion()) return;
       const q = gsap.utils.selector(el);
 
-      const title = SplitText.create(q("[data-hero-title]"), { type: "words,chars" });
+      // The whole heading is split (so it keeps its accessible name), except the small line.
+      const title = SplitText.create(q("#hero-title"), {
+        type: "words,chars",
+        ignore: "[data-hero-fade]",
+      });
       const fades = q("[data-hero-fade]");
 
       gsap.set(title.chars, { opacity: 0 });
@@ -87,11 +91,9 @@ export function Hero() {
           >
             <span data-hero-fade className="eyebrow mb-5 block text-ink-soft">
               Registered electrician in Taupō
-            </span>
-            <span data-hero-title className="block">
-              <span className="block">Electrical, lighting &amp; air-conditioning.</span>{" "}
-              <span className="block text-ink/55">Considered together.</span>
-            </span>
+            </span>{" "}
+            <span className="block">Electrical, lighting &amp; air-conditioning.</span>{" "}
+            <span className="block text-ink/55">Considered together.</span>
           </h1>
 
           <div className="mt-10 grid gap-10 md:mt-14 md:grid-cols-12 md:items-end">
@@ -105,8 +107,15 @@ export function Hero() {
             <div data-hero-fade className="md:col-span-5 md:col-start-8">
               <p className="max-w-md text-[1.02rem] leading-relaxed text-ink-soft">
                 From high-end new builds and renovations to commercial fit-outs, lighting design,
-                smart-home integration, air conditioning, solar and maintenance, we deliver
-                considered systems that work seamlessly with the architecture.
+                smart-home integration, air conditioning, solar and{" "}
+                <Link
+                  to="/services/$slug"
+                  params={{ slug: "maintenance-electrician-taupo" }}
+                  className="beam-link text-ink underline decoration-ink/30 underline-offset-4"
+                >
+                  maintenance and repairs
+                </Link>
+                , we deliver considered systems that work seamlessly with the architecture.
               </p>
               <div className="mt-8 flex flex-wrap gap-3">
                 <Button asChild variant="lux" size="xl">

@@ -108,7 +108,7 @@ function AreaPage() {
       </section>
 
       <section className="mx-auto max-w-[1440px] px-5 pb-24 md:px-10 md:pb-32">
-        <h2 className="eyebrow text-ink-soft">Services in {a.name}</h2>
+        <h2 className="eyebrow text-ink-soft">Services in {a.linkLabel ?? a.name}</h2>
         <ul className="mt-8 grid gap-px border border-ink/15 bg-ink/15 sm:grid-cols-2 lg:grid-cols-4">
           {SERVICES.map((s) => (
             <li key={s.slug} className="bg-stone">
@@ -146,7 +146,7 @@ function AreaPage() {
                 params={{ slug: o.slug }}
                 className="beam-link font-display text-2xl"
               >
-                {o.name}
+                {o.linkLabel ?? o.name}
               </Link>
             </li>
           ))}

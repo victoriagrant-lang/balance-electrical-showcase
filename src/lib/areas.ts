@@ -6,6 +6,8 @@
 export type Area = {
   slug: string;
   name: string;
+  /** Link text where it should differ from the name (Taupō's page is the township page). */
+  linkLabel?: string;
   h1: string;
   metaTitle: string;
   metaDescription: string;
@@ -21,6 +23,7 @@ export const AREAS: Area[] = [
   {
     slug: "taupo",
     name: "Taupō",
+    linkLabel: "Taupō township",
     h1: "Electrical work around Taupō township",
     metaTitle: "Electrical Work Around Taupō Township | Balance Electrical",
     metaDescription:

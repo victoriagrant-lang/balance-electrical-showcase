@@ -10,7 +10,11 @@ const ROWS = [
 /** A place name in running text, linked to its area page. */
 function Place({ slug, children }: { slug: string; children: string }) {
   return (
-    <Link to="/areas/$slug" params={{ slug }} className="beam-link text-ink">
+    <Link
+      to="/areas/$slug"
+      params={{ slug }}
+      className="beam-link text-ink underline decoration-ink/30 underline-offset-4"
+    >
       {children}
     </Link>
   );
@@ -108,7 +112,7 @@ export function AreasMarquee() {
       </div>
       <div className="relative mx-auto mt-12 max-w-2xl px-5 text-center">
         <p className="leading-relaxed text-ink-soft">
-          We work with homeowners, builders and businesses across <Place slug="taupo">Taupō</Place>,{" "}
+          We work with homeowners, builders and businesses across Taupō,{" "}
           <Place slug="kinloch">Kinloch</Place>, <Place slug="acacia-bay">Acacia Bay</Place>,{" "}
           <Place slug="wairakei">Wairakei</Place>, Kuratau, <Place slug="turangi">Tūrangi</Place>,
           Ātiamuri and the wider Central Plateau.

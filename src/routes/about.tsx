@@ -254,9 +254,7 @@ function Directors({ google }: { google: ReturnType<typeof Route.useLoaderData> 
     >
       <div className="border-t border-ink/15 pt-24 md:pt-32">
         <h1 id="directors-title">
-          <span className="eyebrow block text-ink-soft">
-            <BrandText text="The team · Balance Electrical, Taupō" />
-          </span>
+          <span className="eyebrow block text-ink-soft">The team · Taupō</span>{" "}
           <SplitReveal
             as="span"
             className="display-caps mt-5 block text-[clamp(2.2rem,5vw,4.6rem)] leading-[1] tracking-[0.1em]!"

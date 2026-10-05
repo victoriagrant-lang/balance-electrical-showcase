@@ -41,7 +41,7 @@ export const Route = createFileRoute("/")({
       { property: "og:url", content: `${SITE}/` },
       { property: "og:image", content: photos.twilight },
     ],
-    links: [{ rel: "canonical", href: SITE }],
+    links: [{ rel: "canonical", href: `${SITE}/` }],
     scripts: [jsonLd([faqPage(HOME_FAQS)])],
   }),
   component: Home,

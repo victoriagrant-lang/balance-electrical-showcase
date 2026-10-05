@@ -12,12 +12,19 @@ import { SITE, breadcrumbs, businessRef, jsonLd, serviceId } from "@/lib/seo";
 /** Up to `max` characters, cut at a word, for meta descriptions. */
 function clip(text: string, max = 155) {
   if (text.length <= max) return text;
-  return `${text.slice(0, text.lastIndexOf(" ", max - 1)).replace(/[,;:—–-]$/, "")}…`;
+  const cut = text.lastIndexOf(" ", max - 1);
+  const head = cut > 0 ? text.slice(0, cut) : text.slice(0, max - 1);
+  return `${head.replace(/[,;:—–-]$/, "")}…`;
 }
 
-/** The service pages whose work this project shows (from each service's project list). */
+/**
+ * Service pages related to this project (from each service's project list). Maintenance is
+ * left out: its project cards only illustrate the standard of work, not maintenance jobs.
+ */
 function servicesFor(slug: string) {
-  return SERVICES.filter((s) => s.projects.includes(slug));
+  return SERVICES.filter(
+    (s) => s.slug !== "maintenance-electrician-taupo" && s.projects.includes(slug),
+  );
 }
 
 export const Route = createFileRoute("/portfolio_/$slug")({
@@ -65,7 +72,7 @@ export const Route = createFileRoute("/portfolio_/$slug")({
               height: p.h,
             })),
             keywords: [...project.tags, ...project.details].join(", "),
-            locationCreated: { "@type": "Place", name: `${project.location}, New Zealand` },
+            contentLocation: { "@type": "Place", name: `${project.location}, New Zealand` },
             contributor: businessRef,
             publisher: businessRef,
             mentions: servicesFor(project.slug).map((s) => ({ "@id": serviceId(s.slug) })),
@@ -191,7 +198,7 @@ function ProjectStory() {
             </ul>
             {services.length > 0 && (
               <>
-                <p className="eyebrow mt-8 text-[10px] text-ink-soft">Services on this project</p>
+                <p className="eyebrow mt-8 text-[10px] text-ink-soft">Related services</p>
                 <ul className="mt-4 space-y-2">
                   {services.map((s) => (
                     <li key={s.slug} className="text-[0.95rem] leading-relaxed">

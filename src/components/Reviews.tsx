@@ -72,11 +72,13 @@ type Card = {
 /** Long reviews show their first few lines, with the rest a tap away (all of it is in the page). */
 const LONG = 320;
 
-function ReviewCard({ c }: { c: Card }) {
+function ReviewCard({ c, hidden = false }: { c: Card; hidden?: boolean }) {
   const [open, setOpen] = useState(false);
   const long = c.quote.length > LONG;
   return (
-    <figure className="flex flex-col border-[8px] border-frame p-7 md:p-9">
+    <figure
+      className={cn("flex flex-col border-[8px] border-frame p-7 md:p-9", hidden && "hidden")}
+    >
       {c.rating ? <Stars value={c.rating} /> : null}
       <blockquote
         className={cn(
@@ -138,13 +140,17 @@ function ReviewCard({ c }: { c: Card }) {
 export function Testimonials({
   google,
   className,
-  limit,
+  initial = 6,
 }: {
   google?: GoogleReviews;
   className?: string;
-  /** Show at most this many reviews (the rest are a click away on Google). */
-  limit?: number;
+  /**
+   * Reviews shown at first; the rest are in the page behind "Show all reviews" (so the page
+   * still contains every review its structured data lists).
+   */
+  initial?: number;
 }) {
+  const [showAll, setShowAll] = useState(false);
   // Live reviews when Google returns them; otherwise the saved ones from the same profile.
   const live = google?.reviews ?? [];
   const fromGoogle = live.length ? live : google ? SAVED_GOOGLE_REVIEWS : [];
@@ -166,8 +172,8 @@ export function Testimonials({
       rating: r.rating,
     })),
   ];
-  const shown = limit ? cards.slice(0, limit) : cards;
-  if (!shown.length && !google) return null;
+  if (!cards.length && !google) return null;
+  const more = showAll ? 0 : Math.max(0, cards.length - initial);
   const rated =
     google?.rating && google.count ? { rating: google.rating, count: google.count } : null;
   const profile = google?.url ?? GOOGLE_PROFILE_URL;
@@ -223,12 +229,23 @@ export function Testimonials({
         </div>
       </div>
 
-      {shown.length > 0 ? (
-        <Reveal stagger={0.08} className="mt-14 grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-          {shown.map((c) => (
-            <ReviewCard key={c.key} c={c} />
-          ))}
-        </Reveal>
+      {cards.length > 0 ? (
+        <>
+          <Reveal stagger={0.08} className="mt-14 grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+            {cards.map((c, i) => (
+              <ReviewCard key={c.key} c={c} hidden={!showAll && i >= initial} />
+            ))}
+          </Reveal>
+          {more > 0 && (
+            <button
+              type="button"
+              onClick={() => setShowAll(true)}
+              className="beam-link eyebrow mt-10 text-[10px]"
+            >
+              Show all {cards.length} reviews
+            </button>
+          )}
+        </>
       ) : (
         <p className="mt-10 max-w-xl leading-relaxed text-ink-soft">
           <BrandText text="Worked with Balance? We'd love to hear how it went — your review helps other people in Taupō find the right electrician." />

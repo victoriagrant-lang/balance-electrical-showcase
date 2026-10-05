@@ -230,7 +230,7 @@ function SiteFooter() {
                       params={{ slug: a.slug }}
                       className="beam-link text-ivory/80 hover:text-ivory"
                     >
-                      {a.name}
+                      {a.linkLabel ?? a.name}
                     </Link>
                   </li>
                 ))}

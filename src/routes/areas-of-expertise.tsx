@@ -19,7 +19,7 @@ export const Route = createFileRoute("/areas-of-expertise")({
       {
         name: "description",
         content:
-          "Electrical services in Taupō: new builds, lighting design, commercial, heat pumps, renovations and rewiring, solar, smart homes, EV chargers and repairs.",
+          "All nine electrical services in Taupō, from planning and first fix to fit-off and maintenance: what each includes, with projects and a page for each.",
       },
       { name: "robots", content: "index, follow, max-image-preview:large" },
       { name: "geo.region", content: "NZ-WKO" },
@@ -362,7 +362,7 @@ function AreasOfExpertise() {
     <SiteLayout>
       <section className="mx-auto max-w-[1440px] px-5 pb-16 pt-36 md:px-10 md:pb-24 md:pt-48">
         <h1>
-          <span className="eyebrow block text-ink-soft">Electrical services in Taupō</span>
+          <span className="eyebrow block text-ink-soft">Electrical services in Taupō</span>{" "}
           <SplitReveal
             as="span"
             immediate

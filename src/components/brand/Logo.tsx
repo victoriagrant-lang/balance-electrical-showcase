@@ -53,12 +53,12 @@ export function Logo({
   return (
     <svg
       viewBox={`0 0 1150 ${height}`}
-      role="img"
-      aria-label={title}
+      // An empty title means the logo is decoration (the name is in the text beside it).
+      {...(title ? { role: "img", "aria-label": title } : { "aria-hidden": true })}
       className={cn("block h-auto overflow-visible", className)}
       fill="none"
     >
-      <title>{title}</title>
+      {title && <title>{title}</title>}
       <defs>
         <clipPath id={clipId}>
           <rect x="-20" y="0" width="1190" height="100" />

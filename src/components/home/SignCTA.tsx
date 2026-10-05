@@ -6,7 +6,14 @@ import { CONTACT } from "@/lib/contact";
 import { gsap, isFinePointer, prefersReducedMotion, useGSAP } from "@/lib/gsap";
 import { HOUSE_SRC, HouseLights } from "./HouseScene";
 
-const LIST = ["Lighting design", "New builds", "Renovations", "Commercial", "Solar"];
+// Each links to its own service page.
+const LIST: [string, string][] = [
+  ["Lighting design", "lighting-design-taupo"],
+  ["New builds", "new-build-electrician-taupo"],
+  ["Renovations", "renovation-electrician-taupo"],
+  ["Commercial", "commercial-electrician-taupo"],
+  ["Solar", "solar-installation-taupo"],
+];
 
 /*
   The site sign itself, rebuilt as the closing call to action. A floodlight
@@ -134,10 +141,11 @@ export function SignCTA() {
             <Logo tagline className="w-full" />
             <div className="my-8 h-px w-1/2 bg-ink/35 md:my-[12%]" />
             <ul className="space-y-4">
-              {LIST.map((item) => (
+              {LIST.map(([item, slug]) => (
                 <li key={item}>
                   <Link
-                    to="/areas-of-expertise"
+                    to="/services/$slug"
+                    params={{ slug }}
                     className="beam-link eyebrow text-[11px] tracking-[0.34em] md:text-[12px]"
                   >
                     {item}
