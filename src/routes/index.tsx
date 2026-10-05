@@ -62,6 +62,10 @@ export const Route = createFileRoute("/")({
           "Victoria Grant is a registered electrician based in Taupō. New builds, renovations, solar installation, air-conditioning, EV chargers and commercial electrical work across the Taupō district.",
       },
       { name: "robots", content: "index, follow, max-image-preview:large" },
+      {
+        name: "google-site-verification",
+        content: "ixUeePXyPulAeejRHMt5vlzHzWyExwaVkCc_8dNe3XQ",
+      },
       { name: "geo.region", content: "NZ-WKO" },
       { name: "geo.placename", content: "Taupo" },
       { property: "og:title", content: "Balance Electrical — Electrician Taupō" },
