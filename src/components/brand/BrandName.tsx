@@ -21,9 +21,9 @@ export function GapBefore() {
   return <span aria-hidden className="pr-[0.4em]" />;
 }
 
-const NAME = "Balance Electrical";
+const NAME = /\bBalance\b/;
 
-/** Copy with every "Balance Electrical" shown as the wordmark followed by "Electrical". */
+/** Copy with every mention of "Balance" shown as the wordmark (read as "Balance"). */
 export function BrandText({ text }: { text: string }) {
   const parts = text.split(NAME);
   return (
@@ -38,7 +38,7 @@ export function BrandText({ text }: { text: string }) {
               <>
                 {words && <GapBefore />}
                 {words !== part && " "}
-                <BalanceWordmark /> Electrical
+                <BalanceWordmark />
               </>
             )}
           </Fragment>
