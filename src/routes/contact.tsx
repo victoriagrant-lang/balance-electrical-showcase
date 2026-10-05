@@ -3,7 +3,7 @@ import { useRef, useState, type DragEvent, type FormEvent } from "react";
 import { ArrowRight, Paperclip, Phone, X } from "lucide-react";
 import { SiteLayout } from "@/components/SiteLayout";
 import { CONTACT } from "@/lib/contact";
-import { supabase } from "@/integrations/supabase/client";
+import { sendEnquiry, type SendFailure } from "@/lib/send-enquiry";
 import { photos } from "@/lib/photos";
 import { cn } from "@/lib/utils";
 import { formatBytes, prepareUpload, UPLOAD_ACCEPT, UPLOAD_LIMITS } from "@/lib/prepare-upload";
@@ -100,6 +100,9 @@ function Contact() {
   const [sent, setSent] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(false);
+  const [errorReason, setErrorReason] = useState<SendFailure>("rejected");
+  // Share of the upload sent, 0–1 (null until it starts).
+  const [progress, setProgress] = useState<number | null>(null);
   const [firstName, setFirstName] = useState("");
   const [sentTo, setSentTo] = useState("");
   const [confirmed, setConfirmed] = useState(true);
@@ -138,6 +141,7 @@ function Contact() {
     e.preventDefault();
     setLoading(true);
     setError(false);
+    setProgress(null);
 
     const formData = new FormData(e.currentTarget);
     const get = (k: string) => ((formData.get(k) as string) || "").trim();
@@ -160,26 +164,15 @@ function Contact() {
     body.set("website", get("website"));
     files.forEach((f) => body.append("files", f, f.name));
 
-    try {
-      const { data, error: invokeError } = await supabase.functions.invoke<{
-        success: boolean;
-        confirmation?: boolean;
-      }>("send-balance-enquiry", { body });
-
-      if (invokeError) {
-        console.error("Edge function error:", invokeError);
-        setError(true);
-        setLoading(false);
-        return;
-      }
-
-      setConfirmed(data?.confirmation !== false);
+    const result = await sendEnquiry(body, files.length ? setProgress : undefined);
+    if (result.ok) {
+      setConfirmed(result.confirmation);
       setSent(true);
-    } catch (err) {
-      console.error("Submission error:", err);
+    } else {
+      console.error("Enquiry not sent:", result.reason, result.message ?? "");
+      setErrorReason(result.reason);
       setError(true);
     }
-
     setLoading(false);
   };
 
@@ -224,18 +217,31 @@ function Contact() {
                 <Status
                   title="Sending your enquiry…"
                   body={
-                    files.length
-                      ? "Please wait while we upload your files and send your details."
-                      : "Please wait while we send your details."
+                    !files.length
+                      ? "Please wait while we send your details."
+                      : progress === null || progress < 1
+                        ? `Uploading your ${files.length > 1 ? "files" : "file"}… ${Math.round((progress ?? 0) * 100)}%`
+                        : "Upload complete. Sending your details…"
                   }
+                  progress={files.length ? (progress ?? 0) : undefined}
                   pulse
                 />
               )}
               {error && !loading && (
                 <div className="py-14 text-center">
                   <p className="display-caps text-xl leading-snug tracking-[0.08em]!">
-                    Your enquiry wasn’t sent
+                    {errorReason === "stalled"
+                      ? "The connection dropped"
+                      : errorReason === "unreachable"
+                        ? "We couldn’t reach our enquiry service"
+                        : "Your enquiry wasn’t sent"}
                   </p>
+                  {errorReason === "stalled" && (
+                    <p className="mx-auto mt-4 max-w-md text-muted-foreground">
+                      Your enquiry may still have arrived. If you receive a confirmation email,
+                      there’s no need to send it again.
+                    </p>
+                  )}
                   <p className="mt-4 text-muted-foreground">
                     Nothing you entered has been lost. Please try again, or call Victoria on{" "}
                     <a href={CONTACT.tel} className="text-ivory underline-offset-4 hover:underline">
@@ -427,12 +433,15 @@ function Status({
   note,
   pulse,
   lit,
+  progress,
 }: {
   title: string;
   body: string;
   note?: string;
   pulse?: boolean;
   lit?: boolean;
+  /** Upload progress, 0–1, shown as an LED line under the message */
+  progress?: number;
 }) {
   return (
     <div className="py-16 text-center">
@@ -448,6 +457,21 @@ function Status({
         {title}
       </p>
       <p className="mx-auto mt-4 max-w-md text-muted-foreground">{body}</p>
+      {progress !== undefined && (
+        <div
+          role="progressbar"
+          aria-label="Upload progress"
+          aria-valuemin={0}
+          aria-valuemax={100}
+          aria-valuenow={Math.round(progress * 100)}
+          className="mx-auto mt-6 h-px max-w-xs bg-ivory/10"
+        >
+          <div
+            className="h-full origin-left bg-glow-soft shadow-[0_0_10px_rgb(242_200_139/0.6)] transition-transform duration-300"
+            style={{ transform: `scaleX(${progress})` }}
+          />
+        </div>
+      )}
       {note && <p className="mx-auto mt-3 max-w-md text-sm text-ivory/60">{note}</p>}
       {lit && (
         <a
