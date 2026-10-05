@@ -19,15 +19,15 @@ const nav = [
   { to: "/contact", label: "Contact" },
 ] as const;
 
-// Footer service list → each service's own page.
+// Footer service list → each service's own page, in the same order as the home page chapters.
 const SERVICE_LINKS: [string, string][] = [
   ["New builds", "new-build-electrician-taupo"],
-  ["Renovations & upgrades", "renovation-electrician-taupo"],
   ["Lighting design", "lighting-design-taupo"],
-  ["Smart home & automation", "smart-home-automation-taupo"],
-  ["Air conditioning", "air-conditioning-heating-taupo"],
-  ["Solar & battery", "solar-installation-taupo"],
   ["Commercial electrical", "commercial-electrician-taupo"],
+  ["Air conditioning", "air-conditioning-heating-taupo"],
+  ["Renovations & upgrades", "renovation-electrician-taupo"],
+  ["Solar & battery", "solar-installation-taupo"],
+  ["Smart home & automation", "smart-home-automation-taupo"],
   ["EV charging", "ev-charger-installation-taupo"],
 ];
 

@@ -47,8 +47,8 @@ type Area = {
   num: string;
   heading: string;
   service: string;
-  /** Shown whole; `w`/`h` reserve the frame's shape before the image loads. */
-  img: { src: string; alt: string; credit: string; w?: number; h?: number };
+  /** Shown whole. `w`/`h` (pixels) size the frame before the image loads. */
+  img: { src: string; alt: string; credit: string; w: number; h: number };
   /** The opening line, set larger than the rest of the introduction. */
   lead: string;
   intro: string[];
@@ -67,14 +67,16 @@ function shot(slug: string, name: string): Area["img"] {
   return { src: p.lg, alt: `${p.title}, ${p.project}`, credit: p.project, w: p.w, h: p.h };
 }
 
+// `size` is the artwork file's pixel size; update it if the file in src/assets/services/ changes.
 function withArt(
   name: ServiceArt,
   alt: string,
   fallback: Area["img"],
   credit: string,
+  [w, h]: [number, number],
 ): Area["img"] {
   const src = serviceImage(name);
-  return src ? { src, alt, credit } : fallback;
+  return src ? { src, alt, credit, w, h } : fallback;
 }
 
 const sections: Area[] = [
@@ -246,6 +248,7 @@ const sections: Area[] = [
       "Smart-home control modules and circuit protection, neatly wired in a joinery-housed cabinet",
       shot("black-ridge-house", "04-kitchen-to-living"),
       "Automation control cabinet",
+      [1122, 1402],
     ),
     lead: "Technology should make a home easier to live in — not more complicated.",
     intro: [
@@ -278,6 +281,7 @@ const sections: Area[] = [
       "Wall-mounted EV charger beside a lit garage at dusk",
       shot("black-gable-house", "02-driveway-at-dusk"),
       "EV charging",
+      [1536, 1024],
     ),
     lead: "Charging at home or work should feel simple, reliable and properly integrated into the electrical system.",
     intro: [
@@ -404,12 +408,17 @@ function AreasOfExpertise() {
                   )}
                 >
                   {/* The frame takes the photograph's own shape, so the whole image is seen;
-                      tall ones are capped to the screen height and sit against the page edge. */}
+                      tall ones are capped to --cap high and sit against the page edge. The width
+                      is worked out from the photo's proportions, so the frame is the right size
+                      before the image arrives and the page doesn't jump as photos load. */}
                   <div
                     className={cn(
-                      "relative mx-auto w-fit max-w-full overflow-hidden border-[8px] border-frame bg-frame md:border-[10px]",
+                      "relative mx-auto overflow-hidden border-[length:var(--bw)] border-frame bg-frame [--bw:8px] [--cap:75svh] md:[--bw:10px] lg:[--cap:calc(100svh-180px)]",
                       flip ? "lg:mr-0" : "lg:ml-0",
                     )}
+                    style={{
+                      width: `min(100%, calc(var(--cap) * ${s.img.w / s.img.h} + 2 * var(--bw)))`,
+                    }}
                   >
                     <img
                       src={s.img.src}
@@ -419,7 +428,7 @@ function AreasOfExpertise() {
                       loading={i < 2 ? "eager" : "lazy"}
                       decoding="async"
                       className={cn(
-                        "block h-auto max-h-[75svh] w-auto max-w-full transition-[filter,transform] duration-[1400ms] [transition-timing-function:var(--ease-out-expo)] lg:max-h-[calc(100svh-180px)]",
+                        "block h-auto w-full transition-[filter,transform] duration-[1400ms] [transition-timing-function:var(--ease-out-expo)]",
                         lit
                           ? "scale-100 [filter:brightness(1)_saturate(1)]"
                           : "scale-[1.04] [filter:brightness(0.45)_saturate(0.6)]",
