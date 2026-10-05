@@ -361,6 +361,46 @@ export const SERVICES: Service[] = [
       alt: "Smart-home control modules and circuit protection, neatly wired in a joinery-housed cabinet",
     },
   },
+  {
+    slug: "maintenance-electrician-taupo",
+    name: "Maintenance & repairs",
+    h1: "Maintenance electrician in Taupō",
+    metaTitle: "Maintenance Electrician Taupō | Repairs & Fault Finding | Balance Electrical",
+    metaDescription:
+      "Electrical maintenance, fault finding and repairs in Taupō — tripping safety switches, switchboard issues, lighting and power faults, and home or business repairs by a registered electrician.",
+    contactService: "Maintenance & repairs",
+    intro: [
+      "Faults, flickering lights and tripping safety switches are usually quick to pin down when you know where to look. Balance carries out electrical maintenance and repairs across Taupō — finding the fault, explaining it clearly and fixing it properly.",
+      "Whether it's a switchboard that keeps tripping, a fitting that's stopped working, or a safety check on an older home, Victoria handles the diagnosis and the repair, and leaves the installation tested and safe.",
+    ],
+    includes: [
+      "Fault finding and diagnosis",
+      "Safety switch (RCD) testing and replacement",
+      "Switchboard inspections and repairs",
+      "Lighting and power point repairs and additions",
+      "Tripping circuit and overload investigation",
+      "Smoke alarm checks and replacement",
+      "Landlord and pre-sale electrical checks",
+      "Fixture, fitting and appliance wiring repairs",
+      "General maintenance callouts",
+    ],
+    faqs: [
+      {
+        q: "My safety switch keeps tripping — what should I do?",
+        a: "A safety switch that trips repeatedly usually points to a real fault or an overloaded circuit. Victoria can track down the cause, fix it, and advise whether your switchboard needs upgrading.",
+      },
+      {
+        q: "Do you take small repairs, or only larger projects?",
+        a: "Both. A single fault or fitting is handled with the same care as a full installation — small maintenance jobs and callouts are a regular part of Balance's work across Taupō.",
+      },
+      {
+        q: "Can you check an older home's electrical safety?",
+        a: "Yes. Victoria can inspect the switchboard, safety switches and wiring, and explain what's needed to bring an older home up to a safe, compliant standard.",
+      },
+    ],
+    projects: ["behind-the-walls", "beechtree-studio", "the-arches"],
+    image: img("beechtree-studio", "09-switchboard"),
+  },
 ];
 
 export function getService(slug: string) {
