@@ -210,24 +210,15 @@ function AboutHero() {
     >
       <div className="grid items-end gap-14 md:grid-cols-12">
         <div className="md:col-span-7">
-          <p className="eyebrow text-ink-soft">About Victoria</p>
+          <p className="eyebrow text-ink-soft">The Team</p>
           <SplitReveal
             as="h1"
             immediate
             delay={0.3}
             className="display-caps mt-6 text-[clamp(2.6rem,6.3vw,6.4rem)] leading-[0.95] tracking-[0.08em]!"
           >
-            Meet Victoria.
+            Meet the team.
           </SplitReveal>
-          <Reveal delay={0.6}>
-            <p className="eyebrow mt-10 text-ink-soft">
-              Owner-operator · Registered electrician · Taupō
-            </p>
-            <p className="mt-6 max-w-xl text-[1.05rem] leading-relaxed text-ink-soft">
-              The person behind Balance Electrical — and your point of contact for electrical work,
-              lighting, heating and cooling and solar across Taupō and the surrounding district.
-            </p>
-          </Reveal>
         </div>
         <div className="relative md:col-span-5 md:col-start-8">
           {/* picture light */}
