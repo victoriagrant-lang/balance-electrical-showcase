@@ -1,5 +1,6 @@
 import { Fragment } from "react";
 import { Logo } from "@/components/brand/Logo";
+import { cn } from "@/lib/utils";
 
 /**
  * The BALANCE wordmark set in running text: as tall as the text's capitals, sitting on its
@@ -9,12 +10,15 @@ import { Logo } from "@/components/brand/Logo";
  * The word itself stays in the page as hidden text, so screen readers, search engines and AI
  * assistants that read the text (not the drawing) still see "Balance".
  */
-export function BalanceWordmark() {
+export function BalanceWordmark({ tight = false }: { tight?: boolean }) {
   return (
     <>
       <span className="sr-only">Balance</span>
       <span aria-hidden>
-        <Logo title="" className="mr-[0.4em] inline-block h-[0.7em] w-auto align-baseline" />
+        <Logo
+          title=""
+          className={cn("inline-block h-[0.7em] w-auto align-baseline", !tight && "mr-[0.4em]")}
+        />
       </span>
     </>
   );
@@ -33,11 +37,16 @@ const NAME = /\bBalance\b/;
 /** Copy with every mention of "Balance" shown as the wordmark (read as "Balance"). */
 export function BrandText({ text }: { text: string }) {
   const parts = text.split(NAME);
+  // Punctuation written straight after the name ("Balance’s", "Balance?") stays with the
+  // wordmark: no gap before it, and the line never breaks between them.
+  const attached = parts.map((p, i) => (i > 0 ? (p.match(/^\S+/)?.[0] ?? "") : ""));
   return (
     <>
-      {parts.map((part, i) => {
+      {parts.map((raw, i) => {
+        const part = raw.slice(attached[i].length);
         const beforeName = i < parts.length - 1;
         const words = beforeName ? part.replace(/\s+$/, "") : part;
+        const after = beforeName ? attached[i + 1] : "";
         return (
           <Fragment key={i}>
             {words}
@@ -45,7 +54,14 @@ export function BrandText({ text }: { text: string }) {
               <>
                 {words && <GapBefore />}
                 {words !== part && " "}
-                <BalanceWordmark />
+                {after ? (
+                  <span className="whitespace-nowrap">
+                    <BalanceWordmark tight />
+                    {after}
+                  </span>
+                ) : (
+                  <BalanceWordmark />
+                )}
               </>
             )}
           </Fragment>

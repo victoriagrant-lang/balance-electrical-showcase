@@ -21,6 +21,7 @@ import { Route as PortfolioRouteImport } from './routes/portfolio'
 import { Route as ProjectsRouteImport } from './routes/projects'
 import { Route as ReviewRouteImport } from './routes/review'
 import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
+import { Route as ApiReviewsStatusRouteImport } from './routes/api.reviews-status'
 import { Route as AreasIndexRouteImport } from './routes/areas.index'
 import { Route as AreasSlugRouteImport } from './routes/areas.$slug'
 import { Route as PortfolioSlugRouteImport } from './routes/portfolio_.$slug'
@@ -87,6 +88,11 @@ const SitemapDotxmlRoute = SitemapDotxmlRouteImport.update({
   path: '/sitemap.xml',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ApiReviewsStatusRoute = ApiReviewsStatusRouteImport.update({
+  id: '/api/reviews-status',
+  path: '/api/reviews-status',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const AreasIndexRoute = AreasIndexRouteImport.update({
   id: '/areas/',
   path: '/areas/',
@@ -126,6 +132,7 @@ export interface FileRoutesByFullPath {
   '/projects': typeof ProjectsRoute
   '/review': typeof ReviewRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
+  '/api/reviews-status': typeof ApiReviewsStatusRoute
   '/areas/$slug': typeof AreasSlugRoute
   '/portfolio/$slug': typeof PortfolioSlugRoute
   '/services/$slug': typeof ServicesSlugRoute
@@ -145,6 +152,7 @@ export interface FileRoutesByTo {
   '/projects': typeof ProjectsRoute
   '/review': typeof ReviewRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
+  '/api/reviews-status': typeof ApiReviewsStatusRoute
   '/areas/$slug': typeof AreasSlugRoute
   '/portfolio/$slug': typeof PortfolioSlugRoute
   '/services/$slug': typeof ServicesSlugRoute
@@ -165,6 +173,7 @@ export interface FileRoutesById {
   '/projects': typeof ProjectsRoute
   '/review': typeof ReviewRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
+  '/api/reviews-status': typeof ApiReviewsStatusRoute
   '/areas/$slug': typeof AreasSlugRoute
   '/portfolio_/$slug': typeof PortfolioSlugRoute
   '/services/$slug': typeof ServicesSlugRoute
@@ -186,6 +195,7 @@ export interface FileRouteTypes {
     | '/projects'
     | '/review'
     | '/sitemap.xml'
+    | '/api/reviews-status'
     | '/areas/$slug'
     | '/portfolio/$slug'
     | '/services/$slug'
@@ -205,6 +215,7 @@ export interface FileRouteTypes {
     | '/projects'
     | '/review'
     | '/sitemap.xml'
+    | '/api/reviews-status'
     | '/areas/$slug'
     | '/portfolio/$slug'
     | '/services/$slug'
@@ -224,6 +235,7 @@ export interface FileRouteTypes {
     | '/projects'
     | '/review'
     | '/sitemap.xml'
+    | '/api/reviews-status'
     | '/areas/$slug'
     | '/portfolio_/$slug'
     | '/services/$slug'
@@ -244,6 +256,7 @@ export interface RootRouteChildren {
   ProjectsRoute: typeof ProjectsRoute
   ReviewRoute: typeof ReviewRoute
   SitemapDotxmlRoute: typeof SitemapDotxmlRoute
+  ApiReviewsStatusRoute: typeof ApiReviewsStatusRoute
   AreasSlugRoute: typeof AreasSlugRoute
   PortfolioSlugRoute: typeof PortfolioSlugRoute
   ServicesSlugRoute: typeof ServicesSlugRoute
@@ -337,6 +350,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof SitemapDotxmlRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/api/reviews-status': {
+      id: '/api/reviews-status'
+      path: '/api/reviews-status'
+      fullPath: '/api/reviews-status'
+      preLoaderRoute: typeof ApiReviewsStatusRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/areas/': {
       id: '/areas/'
       path: '/areas'
@@ -388,6 +408,7 @@ const rootRouteChildren: RootRouteChildren = {
   ProjectsRoute: ProjectsRoute,
   ReviewRoute: ReviewRoute,
   SitemapDotxmlRoute: SitemapDotxmlRoute,
+  ApiReviewsStatusRoute: ApiReviewsStatusRoute,
   AreasSlugRoute: AreasSlugRoute,
   PortfolioSlugRoute: PortfolioSlugRoute,
   ServicesSlugRoute: ServicesSlugRoute,

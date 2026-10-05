@@ -2,6 +2,8 @@ import { createFileRoute } from "@tanstack/react-router";
 import { useRef, useState, type DragEvent, type FormEvent } from "react";
 import { ArrowRight, Paperclip, Phone, X } from "lucide-react";
 import { SiteLayout } from "@/components/SiteLayout";
+import { Testimonials } from "@/components/Reviews";
+import { getGoogleReviews } from "@/lib/google-reviews";
 import { CONTACT } from "@/lib/contact";
 import { SITE, businessRef, jsonLd, websiteRef } from "@/lib/seo";
 import { sendEnquiry, type SendFailure } from "@/lib/send-enquiry";
@@ -68,6 +70,7 @@ export const Route = createFileRoute("/contact")({
   validateSearch: (search: Record<string, unknown>): { service?: string } => ({
     service: typeof search.service === "string" ? search.service : undefined,
   }),
+  loader: () => getGoogleReviews(),
   head: () => ({
     meta: [
       { title: "Request a Quote | Contact Balance Electrical, Taupō" },
@@ -113,6 +116,7 @@ const labelCls = "eyebrow text-[10px] font-normal text-muted-foreground";
 
 function Contact() {
   const { service } = Route.useSearch();
+  const google = Route.useLoaderData();
   const [sent, setSent] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(false);
@@ -439,6 +443,8 @@ function Contact() {
           </aside>
         </Reveal>
       </section>
+
+      <Testimonials google={google} limit={3} className="pb-28 md:pb-40" />
     </SiteLayout>
   );
 }
