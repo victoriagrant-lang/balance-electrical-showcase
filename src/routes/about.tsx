@@ -14,6 +14,7 @@ import { GoogleReviewsBadge, Testimonials, reviewSchema } from "@/components/Rev
 import { getGoogleReviews } from "@/lib/google-reviews";
 import { jsonLd, SITE } from "@/lib/seo";
 import { cn } from "@/lib/utils";
+import { BrandText } from "@/components/brand/BrandName";
 
 export const Route = createFileRoute("/about")({
   loader: () => getGoogleReviews(),
@@ -173,8 +174,7 @@ function AboutHero() {
           Owner-operator · Registered electrician · Taupō
         </p>
         <p className="mt-6 max-w-xl text-[1.05rem] leading-relaxed text-ink-soft">
-          The person behind Balance Electrical — and your point of contact for electrical work,
-          lighting, heating and cooling and solar across Taupō and the surrounding district.
+          <BrandText text="The person behind Balance Electrical — and your point of contact for electrical work, lighting, heating and cooling and solar across Taupō and the surrounding district." />
         </p>
       </Reveal>
     </section>
@@ -319,7 +319,7 @@ function Directors({ google }: { google: ReturnType<typeof Route.useLoaderData> 
 
             <div className={cn("md:col-span-6 md:pt-6", flip ? "md:order-1" : "md:col-start-7")}>
               <p className="eyebrow text-ink-soft">
-                {director}
+                <BrandText text={director} />
                 {title && (
                   <>
                     <span className="mx-2 opacity-50">·</span>
@@ -338,7 +338,7 @@ function Directors({ google }: { google: ReturnType<typeof Route.useLoaderData> 
               <Reveal stagger={0.08} className="mt-8 space-y-5">
                 {rest.map((para) => (
                   <p key={para} className="text-[1.05rem] leading-relaxed text-ink-soft">
-                    {para}
+                    <BrandText text={para} />
                   </p>
                 ))}
               </Reveal>

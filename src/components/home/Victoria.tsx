@@ -3,6 +3,7 @@ import { Link } from "@tanstack/react-router";
 import { ArrowRight } from "lucide-react";
 import portrait from "@/assets/victoria-portrait.webp";
 import { Button } from "@/components/ui/button";
+import { BalanceWordmark } from "@/components/brand/BrandName";
 import { gsap, prefersReducedMotion, useGSAP } from "@/lib/gsap";
 import { Reveal, SplitReveal } from "@/components/motion/Reveal";
 
@@ -74,8 +75,8 @@ export function Victoria() {
           </SplitReveal>
           <Reveal>
             <p className="mt-8 max-w-xl text-[1.05rem] leading-relaxed text-ink-soft">
-              Balance Electrical is owned and operated by Victoria Grant, a registered and licensed
-              electrician raised in Taupō.
+              <BalanceWordmark /> Electrical is owned and operated by Victoria Grant, a registered
+              and licensed electrician raised in Taupō.
             </p>
             <p className="mt-5 max-w-xl text-[1.05rem] leading-relaxed text-ink-soft">
               After training in Wellington, Victoria returned home to establish a business built
