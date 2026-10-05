@@ -1,1 +1,10 @@
 project_id = "nrhfbcqmfsezlkxnzshq"
+
+# Both functions are called from the website with the publishable key and do their own
+# checks (honeypot and file limits; a signed link for the enquiries list), so the
+# gateway's JWT check stays off.
+[functions.send-balance-enquiry]
+verify_jwt = false
+
+[functions.enquiries-admin]
+verify_jwt = false

@@ -5,14 +5,20 @@ import { SiteLayout } from "@/components/SiteLayout";
 import { CONTACT } from "@/lib/contact";
 import { Button } from "@/components/ui/button";
 import { LightWords, Reveal, SplitReveal } from "@/components/motion/Reveal";
-import { photos } from "@/lib/photos";
+import portrait from "@/assets/victoria-portrait.webp";
+import mitchPortrait from "@/assets/mitch-portrait.webp";
 import { gsap, prefersReducedMotion, useGSAP } from "@/lib/gsap";
-import { onIntroDone } from "@/lib/intro";
 import { EwrbLogo } from "@/components/EwrbLogo";
 import { PORTFOLIO } from "@/lib/portfolio";
+import { GoogleReviewsBadge, Testimonials, reviewSchema } from "@/components/Reviews";
+import { getGoogleReviews } from "@/lib/google-reviews";
+import { jsonLd, SITE } from "@/lib/seo";
+import { cn } from "@/lib/utils";
+import { BrandText } from "@/components/brand/BrandName";
 
 export const Route = createFileRoute("/about")({
-  head: () => ({
+  loader: () => getGoogleReviews(),
+  head: ({ loaderData }) => ({
     meta: [
       { title: "About Victoria Grant | Registered Electrician Taupō | Balance Electrical" },
       {
@@ -29,12 +35,54 @@ export const Route = createFileRoute("/about")({
         content:
           "Meet Victoria Grant — the owner and registered electrician behind Balance Electrical in Taupō.",
       },
-      { property: "og:image", content: photos.victoria },
+      { property: "og:image", content: `${SITE}${portrait}` },
     ],
     links: [{ rel: "canonical", href: "https://www.balanceelectrical.co.nz/about" }],
+    scripts: [reviewSchema(loaderData)].filter((x) => x !== null).map((x) => jsonLd([x])),
   }),
   component: About,
 });
+
+const DIRECTORS = [
+  {
+    name: "Victoria Grant",
+    role: "Director — Balance Electrical · Design Lead",
+    photo: { src: portrait, w: 1254, h: 1254 },
+    alt: "Victoria Grant, Director of Balance Electrical",
+    lead: "Raised in Taupō and trained in Wellington, Victoria returned home to establish Balance Electrical: a local business built on careful workmanship and personal service.",
+    bio: [
+      "Victoria is a qualified electrician, Director of Balance Electrical and the design lead behind the finer details of each project.",
+      "She brings a strong technical understanding together with a meticulous eye for lighting, finishes and integration, making sure every element is carefully considered from the first stages of planning through to final fit-off.",
+      "Victoria is heavily involved in lighting design, joinery integration and the details that shape the finished space, working closely with clients, builders and designers to make sure the electrical work complements the architecture rather than competing with it.",
+      "Driven by a high standard of workmanship and finish, she is always looking for ways to refine the outcome and make each project feel more resolved.",
+      "Her approach is grounded in thoughtful planning, clear coordination and a commitment to getting the details right.",
+      "Her work ranges from Cedar Gables — Balance’s own showhome in Kinloch — and the Gold Award-winning Courtyard House to Beechtree Studio’s two-storey headquarters, alongside solar, heat pumps and ducted climate systems, smart-home control and pool wiring. Across every project the focus is the same: electrical work planned around the property and the people who use it.",
+    ],
+    credentials: ["ewrb", "award", "reviews"],
+  },
+  {
+    name: "Mitchell Pearce",
+    role: "Director — Balance Air Conditioning · Electrician",
+    photo: { src: mitchPortrait, w: 1122, h: 1402 },
+    alt: "Mitchell Pearce, Director of Balance Air Conditioning",
+    bio: [
+      "Mitch is a qualified electrician and Director of Balance Air Conditioning, bringing a broad technical understanding across both electrical and climate systems.",
+      "He is a genuine all-rounder on site and is often involved well beyond the air-conditioning scope, helping with electrical planning, problem solving, coordination and making sure the different systems within a project work together properly.",
+      "Mitch has a practical, hands-on approach and a strong focus on finding solutions that are reliable, efficient and well integrated into the finished space. From high-wall units through to fully ducted systems built into ceilings and joinery, he works closely with clients, builders and the wider Balance team to get the best result.",
+      "His strength is in seeing the whole project, understanding how each service connects, and helping make sure everything is delivered cleanly, efficiently and to a high standard.",
+    ],
+    credentials: ["ewrb", "award"],
+  },
+] satisfies {
+  name: string;
+  role: string;
+  photo: { src: string; w: number; h: number };
+  alt: string;
+  /** Set larger, lighting up word by word; otherwise the bio's first paragraph is used. */
+  lead?: string;
+  bio: string[];
+  credentials: ("ewrb" | "award" | "reviews")[];
+}[];
 
 const VALUES = [
   {
@@ -52,71 +100,14 @@ const VALUES = [
 ];
 
 function About() {
+  const google = Route.useLoaderData();
   return (
     <SiteLayout>
       <AboutHero />
 
-      <section className="mx-auto max-w-[1440px] px-5 py-24 md:px-10 md:py-40">
-        <div className="grid gap-10 md:grid-cols-12">
-          <Reveal className="md:col-span-3">
-            <p className="eyebrow text-ink-soft">Her story</p>
-            <div className="mt-4 h-px w-14 bg-ink/40" />
-          </Reveal>
-          <div className="md:col-span-9">
-            <LightWords
-              className="font-display text-[clamp(1.8rem,3.8vw,3.4rem)] leading-[1.15]"
-              text="Raised in Taupō and trained in Wellington, Victoria returned home to establish Balance Electrical: a local business built on careful workmanship and personal service."
-            />
-            <Reveal
-              stagger={0.12}
-              className="mt-16 grid gap-10 text-[1.05rem] leading-relaxed text-ink-soft md:grid-cols-2"
-            >
-              <p>
-                Victoria is a registered and licensed electrician who takes an active role in the
-                work, from discussing your plans to completing the installation. You deal directly
-                with the person responsible for your project.
-              </p>
-              <p>
-                That personal approach matters whether you need an additional power point or a
-                complete electrical installation. Victoria takes the time to understand what you
-                need, explain the options and coordinate the work with your wider project.
-              </p>
-              <p className="md:col-span-2">
-                Her experience includes homes in Kinloch, the Oakleaf Residence and Beechtree
-                Building’s two-storey headquarters, alongside solar installations, air-conditioning
-                and pool wiring. Across these projects, the focus is the same: electrical work
-                planned around the property and the people who use it.
-              </p>
-            </Reveal>
-            <Reveal className="mt-14 flex flex-wrap gap-4">
-              <a
-                href="https://www.ewrb.govt.nz"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="group inline-flex items-center gap-5 border border-ink/20 px-5 py-4 transition-[border-color,box-shadow] duration-500 hover:border-ink/50 hover:shadow-[0_20px_50px_-30px_rgb(28_26_24/0.6)]"
-              >
-                <EwrbLogo tone="dark" alt="EWRB Registered Electrician" className="h-14" />
-                <span className="eyebrow text-[10px] leading-relaxed">
-                  Registered electrician
-                  <br />
-                  EWRB licence held
-                </span>
-              </a>
-              <Link
-                to="/portfolio"
-                hash="oakleaf-residence"
-                className="group inline-flex max-w-md items-center gap-4 border border-ink/20 px-5 py-4 transition-[border-color,box-shadow] duration-500 hover:border-ink/50 hover:shadow-[0_20px_50px_-30px_rgb(28_26_24/0.6)]"
-              >
-                <Award className="size-8 shrink-0" strokeWidth={1.1} />
-                <span className="text-sm leading-snug">
-                  Electrician on the Oakleaf Residence — Gold Award, Master Builders House of the
-                  Year 2025, Bay of Plenty & Central Plateau
-                </span>
-              </Link>
-            </Reveal>
-          </div>
-        </div>
-      </section>
+      <Directors google={google} />
+
+      <Testimonials google={google} className="pt-28 md:pt-40" />
 
       <Values />
 
@@ -165,30 +156,86 @@ function About() {
   );
 }
 
-/** The portrait hangs on the stone like a gallery piece, under a picture light. */
+/** The page's opening. Victoria's portrait hangs with Mitch's under "The directors". */
 function AboutHero() {
+  return (
+    <section className="relative mx-auto max-w-[1440px] px-5 pb-10 pt-36 md:px-10 md:pt-44">
+      <p className="eyebrow text-ink-soft">About Victoria</p>
+      <SplitReveal
+        as="h1"
+        immediate
+        delay={0.3}
+        className="display-caps mt-6 text-[clamp(2.6rem,6.3vw,6.4rem)] leading-[0.95] tracking-[0.08em]!"
+      >
+        Meet Victoria.
+      </SplitReveal>
+      <Reveal delay={0.6}>
+        <p className="eyebrow mt-10 text-ink-soft">
+          Owner-operator · Registered electrician · Taupō
+        </p>
+        <p className="mt-6 max-w-xl text-[1.05rem] leading-relaxed text-ink-soft">
+          <BrandText text="The person behind Balance Electrical — and your point of contact for electrical work, lighting, heating and cooling and solar across Taupō and the surrounding district." />
+        </p>
+      </Reveal>
+    </section>
+  );
+}
+
+const badge =
+  "group inline-flex items-center border border-ink/20 px-5 py-4 transition-[border-color,box-shadow] duration-500 hover:border-ink/50 hover:shadow-[0_20px_50px_-30px_rgb(28_26_24/0.6)]";
+
+function EwrbBadge() {
+  return (
+    <a
+      href="https://www.ewrb.govt.nz"
+      target="_blank"
+      rel="noopener noreferrer"
+      className={cn(badge, "gap-5")}
+    >
+      <EwrbLogo tone="dark" alt="EWRB Registered Electrician" className="h-14" />
+      <span className="eyebrow text-[10px] leading-relaxed">
+        Registered electrician
+        <br />
+        EWRB licence held
+      </span>
+    </a>
+  );
+}
+
+function AwardBadge() {
+  return (
+    <Link
+      to="/portfolio/$slug"
+      params={{ slug: "courtyard-house" }}
+      className={cn(badge, "max-w-md gap-4")}
+    >
+      <Award className="size-8 shrink-0" strokeWidth={1.1} />
+      <span className="text-sm leading-snug">
+        Electrician on Courtyard House — Gold Award, Master Builders House of the Year 2025, Bay of
+        Plenty & Central Plateau
+      </span>
+    </Link>
+  );
+}
+
+/** The directors, each portrait hung like a gallery piece, its picture light switching on in view. */
+function Directors({ google }: { google: ReturnType<typeof Route.useLoaderData> }) {
   const root = useRef<HTMLElement>(null);
 
   useGSAP(
     () => {
       const el = root.current;
       if (!el || prefersReducedMotion()) return;
-      const q = gsap.utils.selector(el);
-      gsap.set(q("[data-picture-light]"), { opacity: 0 });
-      gsap.set(q("[data-frame]"), { autoAlpha: 0, y: 40 });
-      const tl = gsap.timeline({ paused: true });
-      tl.to(q("[data-frame]"), { autoAlpha: 1, y: 0, duration: 1.4, ease: "expo.out" }, 0.2).to(
-        q("[data-picture-light]"),
-        { keyframes: { opacity: [0, 1, 0.3, 1] }, duration: 0.6, ease: "none" },
-        0.9,
-      );
-      const off = onIntroDone(() => tl.play());
-      gsap.to(q("[data-frame]"), {
-        yPercent: -8,
-        ease: "none",
-        scrollTrigger: { trigger: el, start: "top top", end: "bottom top", scrub: true },
+      gsap.utils.toArray<HTMLElement>("[data-director]", el).forEach((row) => {
+        const lights = row.querySelectorAll("[data-picture-light]");
+        const frame = row.querySelector("[data-frame]");
+        gsap.set(lights, { opacity: 0 });
+        gsap.set(frame, { autoAlpha: 0, y: 40 });
+        gsap
+          .timeline({ scrollTrigger: { trigger: row, start: "top 75%", once: true } })
+          .to(frame, { autoAlpha: 1, y: 0, duration: 1.4, ease: "expo.out" })
+          .to(lights, { keyframes: { opacity: [0, 1, 0.3, 1] }, duration: 0.6, ease: "none" }, 0.7);
       });
-      return off;
     },
     { scope: root },
   );
@@ -196,70 +243,120 @@ function AboutHero() {
   return (
     <section
       ref={root}
-      className="relative mx-auto max-w-[1440px] px-5 pb-10 pt-36 md:px-10 md:pt-44"
+      aria-labelledby="directors-title"
+      className="mx-auto max-w-[1440px] px-5 pb-8 md:px-10"
     >
-      <div className="grid items-end gap-14 md:grid-cols-12">
-        <div className="md:col-span-7">
-          <p className="eyebrow text-ink-soft">About Victoria</p>
-          <SplitReveal
-            as="h1"
-            immediate
-            delay={0.3}
-            className="display-caps mt-6 text-[clamp(2.6rem,6.3vw,6.4rem)] leading-[0.95] tracking-[0.08em]!"
-          >
-            Meet Victoria.
-          </SplitReveal>
-          <Reveal delay={0.6}>
-            <p className="eyebrow mt-10 text-ink-soft">
-              Owner-operator · Registered electrician · Taupō
-            </p>
-            <p className="mt-6 max-w-xl text-[1.05rem] leading-relaxed text-ink-soft">
-              The person behind Balance Electrical — and your point of contact for electrical work,
-              lighting and air-conditioning across Taupō and the surrounding district.
-            </p>
-          </Reveal>
-        </div>
-        <div className="relative md:col-span-5 md:col-start-8">
-          {/* picture light */}
-          <div
-            data-picture-light
-            aria-hidden
-            className="pointer-events-none absolute inset-x-0 -top-10 z-10 flex justify-center"
-          >
-            <span className="h-2 w-1/3 rounded-full bg-frame shadow-[0_6px_22px_rgb(255_231_194/0.9)]" />
-          </div>
-          <div
-            data-picture-light
-            aria-hidden
-            className="pointer-events-none absolute -inset-x-16 -top-10 bottom-[40%]"
-            style={{
-              background:
-                "radial-gradient(50% 70% at 50% 0%, rgb(255 244 226 / 0.9), rgb(255 232 200 / 0.25) 50%, transparent 80%)",
-              mixBlendMode: "soft-light",
-            }}
-          />
-          <div
-            data-frame
-            className="relative border-[8px] border-frame bg-frame shadow-[0_50px_100px_-45px_rgb(0_0_0/0.7)] md:border-[12px]"
-          >
-            <img
-              src={photos.victoria}
-              alt="Victoria Grant — owner and registered electrician"
-              className="aspect-[4/5] w-full object-cover"
-            />
-            <div
-              data-picture-light
-              aria-hidden
-              className="absolute inset-0"
-              style={{
-                background:
-                  "radial-gradient(70% 60% at 50% 0%, rgb(255 236 206 / 0.4), transparent 75%)",
-                mixBlendMode: "soft-light",
-              }}
-            />
-          </div>
-        </div>
+      <div className="border-t border-ink/15 pt-24 md:pt-32">
+        <p className="eyebrow text-ink-soft">The team</p>
+        <SplitReveal
+          as="h2"
+          id="directors-title"
+          className="display-caps mt-5 text-[clamp(2.2rem,5vw,4.6rem)] leading-[1] tracking-[0.1em]!"
+        >
+          The directors.
+        </SplitReveal>
       </div>
+
+      {DIRECTORS.map((d, i) => {
+        const flip = i % 2 === 1;
+        const [lead, ...rest] = "lead" in d && d.lead ? [d.lead, ...d.bio] : d.bio;
+        const [director, title] = d.role.split(" · ");
+        return (
+          <article
+            key={d.name}
+            data-director
+            className="grid items-start gap-12 pt-20 md:grid-cols-12 md:gap-16 md:pt-28"
+          >
+            <div
+              className={cn(
+                "relative mx-auto w-full max-w-md md:col-span-5 md:max-w-none",
+                flip && "md:order-2 md:col-start-8",
+              )}
+            >
+              {/* picture light */}
+              <div
+                data-picture-light
+                aria-hidden
+                className="pointer-events-none absolute inset-x-0 -top-10 z-10 flex justify-center"
+              >
+                <span className="h-2 w-1/3 rounded-full bg-frame shadow-[0_6px_22px_rgb(255_231_194/0.9)]" />
+              </div>
+              <div
+                data-picture-light
+                aria-hidden
+                className="pointer-events-none absolute -inset-x-16 -top-10 bottom-[40%]"
+                style={{
+                  background:
+                    "radial-gradient(50% 70% at 50% 0%, rgb(255 244 226 / 0.9), rgb(255 232 200 / 0.25) 50%, transparent 80%)",
+                  mixBlendMode: "soft-light",
+                }}
+              />
+              <div
+                data-frame
+                className="relative border-[8px] border-frame bg-frame shadow-[0_50px_100px_-45px_rgb(0_0_0/0.7)] md:border-[12px]"
+              >
+                <img
+                  src={d.photo.src}
+                  width={d.photo.w}
+                  height={d.photo.h}
+                  alt={d.alt}
+                  loading="lazy"
+                  decoding="async"
+                  className="aspect-[4/5] w-full object-cover"
+                />
+                <div
+                  data-picture-light
+                  aria-hidden
+                  className="absolute inset-0"
+                  style={{
+                    background:
+                      "radial-gradient(70% 60% at 50% 0%, rgb(255 236 206 / 0.4), transparent 75%)",
+                    mixBlendMode: "soft-light",
+                  }}
+                />
+              </div>
+            </div>
+
+            <div className={cn("md:col-span-6 md:pt-6", flip ? "md:order-1" : "md:col-start-7")}>
+              <p className="eyebrow text-ink-soft">
+                <BrandText text={director} />
+                {title && (
+                  <>
+                    <span className="mx-2 opacity-50">·</span>
+                    {title}
+                  </>
+                )}
+              </p>
+              <h3 className="display-caps mt-5 text-[clamp(1.9rem,3.2vw,3rem)] leading-[1.05] tracking-[0.1em]!">
+                {d.name}
+              </h3>
+              <div className="led-h mt-7 max-w-[10rem] opacity-80" aria-hidden />
+              <LightWords
+                className="mt-8 font-display text-[clamp(1.45rem,2.2vw,2rem)] leading-snug text-ink"
+                text={lead}
+              />
+              <Reveal stagger={0.08} className="mt-8 space-y-5">
+                {rest.map((para) => (
+                  <p key={para} className="text-[1.05rem] leading-relaxed text-ink-soft">
+                    <BrandText text={para} />
+                  </p>
+                ))}
+              </Reveal>
+              <Reveal className="mt-10 flex flex-wrap gap-4">
+                {d.credentials.map((c) =>
+                  c === "ewrb" ? (
+                    <EwrbBadge key={c} />
+                  ) : c === "award" ? (
+                    <AwardBadge key={c} />
+                  ) : (
+                    <GoogleReviewsBadge key={c} google={google} />
+                  ),
+                )}
+              </Reveal>
+            </div>
+          </article>
+        );
+      })}
     </section>
   );
 }
@@ -342,12 +439,7 @@ function Values() {
   );
 }
 
-const RECENT = [
-  "oakleaf-residence",
-  "beechtree-building-headquarters",
-  "sparrowhawk",
-  "the-sisters",
-];
+const RECENT = ["courtyard-house", "beechtree-studio", "cedar-gables", "twin-pavilions"];
 
 /** Four chapters from the portfolio, so the story ends on the work itself. */
 function RecentWork() {

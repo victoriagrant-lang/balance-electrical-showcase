@@ -36,57 +36,7 @@ type RemoteProjectDefinition = Omit<PortfolioProject, "photos"> & {
   projects also avoids listing the same folders on every page load.
 */
 const REMOTE_PROJECTS: RemoteProjectDefinition[] = [
-  {
-    folder: "Mapleleaf_Photos",
-    slug: "mapleleaf",
-    title: "Mapleleaf",
-    location: "Taupō district",
-    tags: ["Residential", "New build"],
-    summary:
-      "Lighting built around the shape of this new home: wall lights graze the pale brick, warm interior light spills onto the deck, and the swimming pool and garden are lit for the evening.",
-    detailsTitle: "Lighting details",
-    details: [
-      "Up and down wall lights across the brick frontage",
-      "Warm interior lighting through full-height glazing",
-      "Linear pendant over the kitchen island",
-      "LED beneath the overhead kitchen cabinets",
-      "Deck, pool and garden lighting",
-    ],
-    photos: [
-      {
-        file: "Maypleleaf(1).png",
-        title: "House at dusk",
-        caption:
-          "The house from the lawn, its brick and timber walls warmed by exterior lighting against the bush line.",
-        w: 1533,
-        h: 1026,
-      },
-      {
-        file: "Maypleleaf.png",
-        title: "Wall lights at dusk",
-        caption:
-          "Up and down wall lights graze the pale brick beside the timber-clad upper storey.",
-        w: 1537,
-        h: 1023,
-      },
-      {
-        file: "4BFBD394-AD2B-4517-98CD-9B0A17ABB25A.png",
-        title: "Pool and living at sunset",
-        caption:
-          "Open-plan living opens to the deck and pool, with warm interior light glowing through the glazing.",
-        w: 1545,
-        h: 1018,
-      },
-      {
-        file: "3C85CA14-CF54-4583-B8F6-D17F872E485C.png",
-        title: "Kitchen",
-        caption:
-          "A linear pendant over the island, with LED lighting concealed beneath the overhead cabinets.",
-        w: 1448,
-        h: 1086,
-      },
-    ],
-  },
+  // Cedar Cube House (the Mapleleaf_Photos folder) is now bundled locally in portfolio.ts.
 ];
 
 function publicUrl(path: string) {

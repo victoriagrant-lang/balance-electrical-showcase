@@ -10,6 +10,7 @@ export const photos = {
   logo: enc("Balance+Electrical+-+white+text+(003).webp"),
   ewrbLogo: enc("new-ewrb-logo.png"),
   twilight: enc("twlight.jpg.jpeg"),
+  home: enc("Home page .png"),
   kitchen: enc("kitchen.JPG.jpeg"),
   living: enc("Living.JPG.jpeg"),
   fountainEntry: enc("Fountain+entry.jpg.jpeg"),
@@ -22,7 +23,5 @@ export const photos = {
   img0011jpeg: enc("IMG_0011.jpg.jpeg"),
   img0419: enc("IMG_0419.jpg.jpeg"),
   media: enc("media.jpg.jpeg"),
-  victoria: enc("victoria-profile.jpeg"),
   img0004c: enc("IMG_0004_c.jpg.jpeg"),
-  sparrowhawkKinloch: enc("sparrowhawk-kinloch.jpg.jpeg"),
 };

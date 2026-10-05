@@ -10,56 +10,20 @@ import { SelectedWork } from "@/components/home/SelectedWork";
 import { Victoria } from "@/components/home/Victoria";
 import { AreasMarquee } from "@/components/home/AreasMarquee";
 import { SignCTA } from "@/components/home/SignCTA";
-
-const ldJson = {
-  "@context": "https://schema.org",
-  "@type": "Electrician",
-  name: "Balance Electrical",
-  image: "https://www.balanceelectrical.co.nz/og-image.jpg",
-  url: "https://www.balanceelectrical.co.nz",
-  telephone: "+64279162077",
-  email: "enquiries@balanceelectrical.co.nz",
-  address: {
-    "@type": "PostalAddress",
-    addressLocality: "Taupo",
-    addressRegion: "Waikato",
-    addressCountry: "NZ",
-  },
-  geo: {
-    "@type": "GeoCoordinates",
-    latitude: -38.6857,
-    longitude: 176.0702,
-  },
-  openingHoursSpecification: {
-    "@type": "OpeningHoursSpecification",
-    dayOfWeek: ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"],
-    opens: "07:30",
-    closes: "17:30",
-  },
-  priceRange: "$$",
-  areaServed: [
-    "Taupo",
-    "Kinloch",
-    "Acacia Bay",
-    "Wairakei",
-    "Ātiamuri",
-    "Taupō District",
-    "Central North Island",
-  ],
-  hasCredential: {
-    "@type": "EducationalOccupationalCredential",
-    credentialCategory: "Registered Electrician — EWRB",
-  },
-};
+import { HomeFaq } from "@/components/home/HomeFaq";
+import { Testimonials, reviewSchema } from "@/components/Reviews";
+import { getGoogleReviews } from "@/lib/google-reviews";
+import { HOME_FAQS, faqPage, jsonLd } from "@/lib/seo";
 
 export const Route = createFileRoute("/")({
-  head: () => ({
+  loader: () => getGoogleReviews(),
+  head: ({ loaderData }) => ({
     meta: [
       { title: "Electrician Taupō | Solar, EV Chargers & New Builds | Balance Electrical" },
       {
         name: "description",
         content:
-          "Victoria Grant is a registered electrician based in Taupō. New builds, renovations, solar installation, air-conditioning, EV chargers and commercial electrical work across the Taupō district.",
+          "Victoria Grant is a registered electrician based in Taupō. Lighting design, new builds, renovations, heat pumps and ducted heating and cooling, solar, EV chargers and commercial electrical work across the Taupō district.",
       },
       { name: "robots", content: "index, follow, max-image-preview:large" },
       {
@@ -72,12 +36,14 @@ export const Route = createFileRoute("/")({
       {
         property: "og:description",
         content:
-          "Thoughtfully planned. Expertly installed. Electrical work, lighting design, air-conditioning and solar for homes and businesses across Taupō.",
+          "Thoughtfully planned. Expertly installed. Electrical work, lighting design, integrated heating and cooling and solar for homes and businesses across Taupō.",
       },
       { property: "og:image", content: photos.twilight },
     ],
     links: [{ rel: "canonical", href: "https://www.balanceelectrical.co.nz" }],
-    scripts: [{ type: "application/ld+json", children: JSON.stringify(ldJson) }],
+    scripts: [
+      jsonLd([faqPage(HOME_FAQS), ...[reviewSchema(loaderData)].filter((x) => x !== null)]),
+    ],
   }),
   component: Home,
 });
@@ -87,6 +53,7 @@ export const Route = createFileRoute("/")({
   stone by day → the scroll story brings the night → lit rooms → morning again.
 */
 function Home() {
+  const google = Route.useLoaderData();
   return (
     <SiteLayout>
       <Hero />
@@ -98,6 +65,8 @@ function Home() {
       <div className="led-h" />
       <Victoria />
       <AreasMarquee />
+      <Testimonials google={google} className="pt-24 md:pt-32" />
+      <HomeFaq />
       <SignCTA />
     </SiteLayout>
   );

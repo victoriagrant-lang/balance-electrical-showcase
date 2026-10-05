@@ -14,17 +14,14 @@ function shot(slug: string, name: string, aspect: string): Shot {
 }
 
 const WORK: Shot[][] = [
+  [shot("fold-house", "06-stair", "aspect-[4/5]"), shot("courtyard-house", "06", "aspect-[3/2]")],
   [
-    shot("oakleaf-residence", "04-kitchen-and-dining", "aspect-[4/5]"),
-    shot("pukeko", "01-front-at-dusk", "aspect-square"),
+    shot("beechtree-studio", "03-stairwell-pendants", "aspect-[3/4]"),
+    shot("cedar-cube-house", "02", "aspect-[3/2]"),
   ],
   [
-    shot("beechtree-building-headquarters", "03-stairwell-pendants", "aspect-[3/4]"),
-    shot("the-lakehouse", "01-island", "aspect-[4/5]"),
-  ],
-  [
-    shot("sparrowhawk", "02-deck-at-sunset", "aspect-[4/5]"),
-    shot("kinloch-project", "04-front-door", "aspect-[3/4]"),
+    shot("courtyard-house", "02-living-room", "aspect-[3/2]"),
+    shot("fold-house", "07", "aspect-[4/5] object-right"),
   ],
 ];
 

@@ -8,6 +8,7 @@ import { CONTACT } from "@/lib/contact";
 import { cn } from "@/lib/utils";
 import { gsap, isFinePointer, prefersReducedMotion } from "@/lib/gsap";
 import { EwrbLogo } from "@/components/EwrbLogo";
+import { AREAS } from "@/lib/areas";
 
 const nav = [
   { to: "/", label: "Home" },
@@ -18,15 +19,16 @@ const nav = [
   { to: "/contact", label: "Contact" },
 ] as const;
 
-// Footer service list → the matching circuit on Areas of Expertise.
+// Footer service list → each service's own page, in the same order as the home page chapters.
 const SERVICE_LINKS: [string, string][] = [
-  ["Lighting design", "01"],
-  ["New builds", "06"],
-  ["Renovations", "01"],
-  ["Commercial", "02"],
-  ["Solar & battery", "07"],
-  ["Air-Conditioning", "03"],
-  ["EV charging", "04"],
+  ["New builds", "new-build-electrician-taupo"],
+  ["Lighting design", "lighting-design-taupo"],
+  ["Commercial electrical", "commercial-electrician-taupo"],
+  ["Air conditioning", "air-conditioning-heating-taupo"],
+  ["Renovations & upgrades", "renovation-electrician-taupo"],
+  ["Solar & battery", "solar-installation-taupo"],
+  ["Smart home & automation", "smart-home-automation-taupo"],
+  ["EV charging", "ev-charger-installation-taupo"],
 ];
 
 export function SiteLayout({ children }: { children: ReactNode }) {
@@ -39,65 +41,17 @@ export function SiteLayout({ children }: { children: ReactNode }) {
   );
 }
 
+/*
+  One fixed bar, styled like the dark frame around the Balance sign. It never hides,
+  resizes or changes colour while scrolling — so it reads as part of the page, not a
+  flicker, whatever section passes beneath it.
+*/
 function SiteHeader() {
-  const [scrolled, setScrolled] = useState(false);
-  const [hidden, setHidden] = useState(false);
-  const [night, setNight] = useState(false);
-
-  // Compact on scroll; tuck away while reading down, return on scroll up.
-  useEffect(() => {
-    let last = window.scrollY;
-    let frame = 0;
-    const onScroll = () => {
-      cancelAnimationFrame(frame);
-      frame = requestAnimationFrame(() => {
-        const y = window.scrollY;
-        setScrolled(y > 24);
-        setHidden(y > 320 && y > last + 2);
-        if (y < last - 2) setHidden(false);
-        last = y;
-      });
-    };
-    onScroll();
-    window.addEventListener("scroll", onScroll, { passive: true });
-    return () => {
-      cancelAnimationFrame(frame);
-      window.removeEventListener("scroll", onScroll);
-    };
-  }, []);
-
-  // Switch to ivory when a night section passes beneath the bar.
-  useEffect(() => {
-    const sections = document.querySelectorAll("[data-night]");
-    if (!sections.length) return;
-    const active = new Set<Element>();
-    const io = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((e) => (e.isIntersecting ? active.add(e.target) : active.delete(e.target)));
-        setNight(active.size > 0);
-      },
-      { rootMargin: "0px 0px -93% 0px" },
-    );
-    sections.forEach((s) => io.observe(s));
-    return () => io.disconnect();
-  }, []);
-
   return (
-    <header
-      className={cn(
-        "fixed inset-x-0 top-0 z-50 transition-[transform,background-color,color,border-color] duration-700 [transition-timing-function:var(--ease-out-expo)]",
-        hidden && "-translate-y-full",
-        night ? "text-ivory" : "text-ink",
-        scrolled
-          ? night
-            ? "border-b border-ivory/10 bg-night/60 backdrop-blur-xl"
-            : "border-b border-ink/10 bg-stone/70 backdrop-blur-xl"
-          : "border-b border-transparent",
-      )}
-    >
+    <header className="fixed inset-x-0 top-0 z-50 border-b border-ivory/10 bg-frame/88 text-ivory backdrop-blur-md [transform:translateZ(0)]">
       <div className="mx-auto flex h-[72px] max-w-[1440px] items-center justify-between px-5 md:px-10">
         <Link to="/" className="group -m-2 p-2" aria-label="Balance Electrical — home">
-          <Logo hoverBalance className="w-[132px] md:w-[152px]" />
+          <Logo hoverBalance className="w-[132px] text-stone-pale md:w-[152px]" />
         </Link>
 
         <nav className="hidden items-center gap-10 lg:flex" aria-label="Primary">
@@ -105,7 +59,7 @@ function SiteHeader() {
             <Link
               key={n.to}
               to={n.to}
-              className="beam-link eyebrow text-[10.5px] opacity-75 transition-opacity duration-300 hover:opacity-100"
+              className="beam-link eyebrow text-[10.5px] opacity-70 transition-opacity duration-300 hover:opacity-100"
               activeProps={{ className: "!opacity-100" }}
               activeOptions={{ exact: true }}
             >
@@ -118,16 +72,14 @@ function SiteHeader() {
           <Button
             asChild
             variant="lux"
-            className={cn(
-              "hidden h-11 px-6 text-[10.5px] sm:inline-flex",
-              night && "bg-stone-pale text-frame",
-            )}
+            className="hidden h-11 bg-stone-pale px-6 text-[10.5px] text-frame hover:bg-ivory sm:inline-flex"
           >
             <Link to="/contact">Let's talk</Link>
           </Button>
           <MobileNav />
         </div>
       </div>
+      <div aria-hidden className="led-h absolute inset-x-0 bottom-0 opacity-40" />
     </header>
   );
 }
@@ -244,8 +196,8 @@ function SiteFooter() {
                 {SERVICE_LINKS.map(([label, area]) => (
                   <li key={label}>
                     <Link
-                      to="/areas-of-expertise"
-                      hash={`area-${area}`}
+                      to="/services/$slug"
+                      params={{ slug: area }}
                       className="beam-link text-ivory/80 hover:text-ivory"
                     >
                       {label}
@@ -256,9 +208,19 @@ function SiteFooter() {
             </div>
             <div className="col-span-2 md:col-span-1">
               <p className="eyebrow mb-5 text-muted-foreground">Working across</p>
-              <p className="text-sm leading-relaxed text-ivory/80">
-                Taupō · Kinloch · Acacia Bay · Wairakei · Turangi · Central North Island
-              </p>
+              <ul className="space-y-3 text-sm">
+                {AREAS.map((a) => (
+                  <li key={a.slug}>
+                    <Link
+                      to="/areas/$slug"
+                      params={{ slug: a.slug }}
+                      className="beam-link text-ivory/80 hover:text-ivory"
+                    >
+                      {a.name}
+                    </Link>
+                  </li>
+                ))}
+              </ul>
               <EwrbLogo tone="light" className="mt-8 h-12" />
             </div>
           </div>

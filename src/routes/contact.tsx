@@ -1,11 +1,12 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { useState, type FormEvent } from "react";
-import { ArrowRight, Phone } from "lucide-react";
+import { useRef, useState, type DragEvent, type FormEvent } from "react";
+import { ArrowRight, Paperclip, Phone, X } from "lucide-react";
 import { SiteLayout } from "@/components/SiteLayout";
 import { CONTACT } from "@/lib/contact";
-import { supabase } from "@/integrations/supabase/client";
+import { sendEnquiry, type SendFailure } from "@/lib/send-enquiry";
 import { photos } from "@/lib/photos";
 import { cn } from "@/lib/utils";
+import { formatBytes, prepareUpload, UPLOAD_ACCEPT, UPLOAD_LIMITS } from "@/lib/prepare-upload";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -24,13 +25,42 @@ const PROJECT_TYPES = [
   "New residential build",
   "Renovation or addition",
   "Lighting design",
+  "Smart home & automation",
+  "Air conditioning & heating",
   "Solar & battery storage",
-  "Air-Conditioning",
-  "EV charging",
   "Commercial fit-out",
+  "Maintenance & repairs",
+  "EV charging",
   "Pool & spa wiring",
   "Pre-purchase report",
   "Something else",
+];
+
+const STAGES = [
+  "Early ideas — no plans yet",
+  "Plans drawn — ready to price",
+  "Consented — build starting soon",
+  "Under construction — framing / pre-wire",
+  "Renovating an existing home",
+  "Existing home or business — upgrade or repair",
+];
+
+const BUDGETS = [
+  "Under $5,000",
+  "$5,000 – $15,000",
+  "$15,000 – $40,000",
+  "$40,000 – $100,000",
+  "$100,000+",
+  "Not sure yet",
+];
+
+const TIMEFRAMES = [
+  "As soon as possible",
+  "Within 1–3 months",
+  "3–6 months",
+  "6–12 months",
+  "More than 12 months",
+  "Just exploring",
 ];
 
 export const Route = createFileRoute("/contact")({
@@ -43,7 +73,7 @@ export const Route = createFileRoute("/contact")({
       {
         name: "description",
         content:
-          "Contact Victoria Grant at Balance Electrical to discuss electrical work, lighting, air-conditioning or solar for your home or business in the Taupō district.",
+          "Contact Victoria Grant at Balance Electrical to discuss electrical work, lighting, heating and air conditioning or solar for your home or business in the Taupō district.",
       },
       { name: "robots", content: "index, follow, max-image-preview:large" },
       { name: "geo.region", content: "NZ-WKO" },
@@ -70,6 +100,9 @@ function Contact() {
   const [sent, setSent] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(false);
+  const [errorReason, setErrorReason] = useState<SendFailure>("rejected");
+  // Share of the upload sent, 0–1 (null until it starts).
+  const [progress, setProgress] = useState<number | null>(null);
   const [firstName, setFirstName] = useState("");
   const [sentTo, setSentTo] = useState("");
   const [confirmed, setConfirmed] = useState(true);
@@ -77,46 +110,69 @@ function Contact() {
     service && PROJECT_TYPES.includes(service) ? service : PROJECT_TYPES[0],
   );
 
+  const [stage, setStage] = useState("");
+  const [budget, setBudget] = useState("");
+  const [timeframe, setTimeframe] = useState("");
+  const [files, setFiles] = useState<File[]>([]);
+  const [preparing, setPreparing] = useState(false);
+  const [fileError, setFileError] = useState("");
+
+  const addFiles = async (incoming: File[]) => {
+    if (!incoming.length) return;
+    setFileError("");
+    setPreparing(true);
+    const prepared = await Promise.all(incoming.map(prepareUpload));
+    setPreparing(false);
+    const next = [...files, ...prepared];
+    const tooBig = next.filter((f) => f.size > UPLOAD_LIMITS.fileBytes);
+    const total = next.reduce((n, f) => n + f.size, 0);
+    if (next.length > UPLOAD_LIMITS.files) {
+      setFileError(`Up to ${UPLOAD_LIMITS.files} files, please.`);
+    } else if (tooBig.length) {
+      setFileError(`${tooBig.map((f) => f.name).join(", ")} is over 10 MB.`);
+    } else if (total > UPLOAD_LIMITS.totalBytes) {
+      setFileError("Those files add up to more than 20 MB — try fewer, or email the rest.");
+    } else {
+      setFiles(next);
+    }
+  };
+
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setLoading(true);
     setError(false);
+    setProgress(null);
 
     const formData = new FormData(e.currentTarget);
     const get = (k: string) => ((formData.get(k) as string) || "").trim();
     const full_name = get("name");
-    const phone = get("phone");
     const email = get("email");
-    const suburb = get("location");
-    const service_type = serviceType;
-    const message = get("message");
-    const website = get("website");
 
     setFirstName(full_name.split(" ")[0]);
     setSentTo(email);
 
-    try {
-      const { data, error: invokeError } = await supabase.functions.invoke<{
-        success: boolean;
-        confirmation?: boolean;
-      }>("send-balance-enquiry", {
-        body: { full_name, phone, email, suburb, service_type, message, website },
-      });
+    const body = new FormData();
+    body.set("full_name", full_name);
+    body.set("email", email);
+    body.set("phone", get("phone"));
+    body.set("suburb", get("location"));
+    body.set("service_type", serviceType);
+    body.set("stage", stage);
+    body.set("budget", budget);
+    body.set("timeframe", timeframe);
+    body.set("message", get("message"));
+    body.set("website", get("website"));
+    files.forEach((f) => body.append("files", f, f.name));
 
-      if (invokeError) {
-        console.error("Edge function error:", invokeError);
-        setError(true);
-        setLoading(false);
-        return;
-      }
-
-      setConfirmed(data?.confirmation !== false);
+    const result = await sendEnquiry(body, files.length ? setProgress : undefined);
+    if (result.ok) {
+      setConfirmed(result.confirmation);
       setSent(true);
-    } catch (err) {
-      console.error("Submission error:", err);
+    } else {
+      console.error("Enquiry not sent:", result.reason, result.message ?? "");
+      setErrorReason(result.reason);
       setError(true);
     }
-
     setLoading(false);
   };
 
@@ -157,19 +213,37 @@ function Contact() {
               }}
             />
             <div className="relative" aria-live="polite">
-              {loading ? (
+              {loading && (
                 <Status
                   title="Sending your enquiry…"
-                  body="Please wait while we send your details."
+                  body={
+                    !files.length
+                      ? "Please wait while we send your details."
+                      : progress === null || progress < 1
+                        ? `Uploading your ${files.length > 1 ? "files" : "file"}… ${Math.round((progress ?? 0) * 100)}%`
+                        : "Upload complete. Sending your details…"
+                  }
+                  progress={files.length ? (progress ?? 0) : undefined}
                   pulse
                 />
-              ) : error ? (
+              )}
+              {error && !loading && (
                 <div className="py-14 text-center">
                   <p className="display-caps text-xl leading-snug tracking-[0.08em]!">
-                    Your enquiry wasn’t sent
+                    {errorReason === "stalled"
+                      ? "The connection dropped"
+                      : errorReason === "unreachable"
+                        ? "We couldn’t reach our enquiry service"
+                        : "Your enquiry wasn’t sent"}
                   </p>
+                  {errorReason === "stalled" && (
+                    <p className="mx-auto mt-4 max-w-md text-muted-foreground">
+                      Your enquiry may still have arrived. If you receive a confirmation email,
+                      there’s no need to send it again.
+                    </p>
+                  )}
                   <p className="mt-4 text-muted-foreground">
-                    Please try again, or call Victoria on{" "}
+                    Nothing you entered has been lost. Please try again, or call Victoria on{" "}
                     <a href={CONTACT.tel} className="text-ivory underline-offset-4 hover:underline">
                       {CONTACT.phoneLocal}
                     </a>
@@ -182,10 +256,11 @@ function Contact() {
                     onClick={() => setError(false)}
                     type="button"
                   >
-                    Try again
+                    Back to the form
                   </Button>
                 </div>
-              ) : sent ? (
+              )}
+              {sent ? (
                 <Status
                   title={`Thank you${firstName ? `, ${firstName}` : ""}.`}
                   body="We’ve received your enquiry. Victoria will be in touch within a few days to discuss your project."
@@ -197,12 +272,11 @@ function Contact() {
                   lit
                 />
               ) : (
-                <>
-                  <p className="eyebrow text-[10px] text-muted-foreground">
-                    Tell us about your project
-                  </p>
+                <div className={cn((loading || error) && "hidden")}>
+                  <p className="eyebrow text-[10px] text-muted-foreground">Project brief</p>
                   <p className="mt-3 text-sm leading-relaxed text-muted-foreground">
-                    Fields marked * are required. A brief outline is enough to get started.
+                    Fields marked * are required. The more you share — stage, budget, timing, photos
+                    or plans — the faster Victoria can give you a realistic idea of cost.
                   </p>
                   {/* Honeypot: hidden from people, filled in by bots, ignored by the server. */}
                   <div aria-hidden className="absolute -left-[9999px] h-px w-px overflow-hidden">
@@ -236,29 +310,38 @@ function Contact() {
                       placeholder="Town or suburb"
                     />
                   </div>
-                  <div className="mt-8 space-y-2">
-                    <Label htmlFor="type" className={labelCls}>
-                      How can we help?
-                    </Label>
-                    <Select value={serviceType} onValueChange={setServiceType}>
-                      <SelectTrigger id="type" className={cn(field, "[&>svg]:opacity-60")}>
-                        <SelectValue />
-                      </SelectTrigger>
-                      <SelectContent
-                        data-lenis-prevent
-                        className="rounded-none border-ink/15 bg-stone-lit text-ink"
-                      >
-                        {PROJECT_TYPES.map((t) => (
-                          <SelectItem
-                            key={t}
-                            value={t}
-                            className="rounded-none py-2.5 focus:bg-stone-pale"
-                          >
-                            {t}
-                          </SelectItem>
-                        ))}
-                      </SelectContent>
-                    </Select>
+                  <div className="mt-8 grid gap-x-8 gap-y-8 sm:grid-cols-2">
+                    <Choice
+                      id="type"
+                      label="How can we help?"
+                      value={serviceType}
+                      onChange={setServiceType}
+                      options={PROJECT_TYPES}
+                    />
+                    <Choice
+                      id="stage"
+                      label="Where is the project up to?"
+                      value={stage}
+                      onChange={setStage}
+                      options={STAGES}
+                      placeholder="Plans, framing, renovating…"
+                    />
+                    <Choice
+                      id="budget"
+                      label="Budget for the electrical work"
+                      value={budget}
+                      onChange={setBudget}
+                      options={BUDGETS}
+                      placeholder="A rough range is fine"
+                    />
+                    <Choice
+                      id="timeframe"
+                      label="Timeframe"
+                      value={timeframe}
+                      onChange={setTimeframe}
+                      options={TIMEFRAMES}
+                      placeholder="When are you hoping to start?"
+                    />
                   </div>
                   <div className="mt-8 space-y-2">
                     <Label htmlFor="message" className={labelCls}>
@@ -273,10 +356,23 @@ function Contact() {
                       className={cn(field, "min-h-32 resize-none py-3")}
                     />
                   </div>
-                  <Button type="submit" variant="lux" size="xl" className="mt-10 w-full sm:w-auto">
+                  <FileDrop
+                    files={files}
+                    preparing={preparing}
+                    error={fileError}
+                    onAdd={addFiles}
+                    onRemove={(i) => setFiles(files.filter((_, j) => j !== i))}
+                  />
+                  <Button
+                    type="submit"
+                    variant="lux"
+                    size="xl"
+                    className="mt-10 w-full sm:w-auto"
+                    disabled={preparing}
+                  >
                     Send enquiry <ArrowRight />
                   </Button>
-                </>
+                </div>
               )}
             </div>
           </form>
@@ -337,12 +433,15 @@ function Status({
   note,
   pulse,
   lit,
+  progress,
 }: {
   title: string;
   body: string;
   note?: string;
   pulse?: boolean;
   lit?: boolean;
+  /** Upload progress, 0–1, shown as an LED line under the message */
+  progress?: number;
 }) {
   return (
     <div className="py-16 text-center">
@@ -358,6 +457,21 @@ function Status({
         {title}
       </p>
       <p className="mx-auto mt-4 max-w-md text-muted-foreground">{body}</p>
+      {progress !== undefined && (
+        <div
+          role="progressbar"
+          aria-label="Upload progress"
+          aria-valuemin={0}
+          aria-valuemax={100}
+          aria-valuenow={Math.round(progress * 100)}
+          className="mx-auto mt-6 h-px max-w-xs bg-ivory/10"
+        >
+          <div
+            className="h-full origin-left bg-glow-soft shadow-[0_0_10px_rgb(242_200_139/0.6)] transition-transform duration-300"
+            style={{ transform: `scaleX(${progress})` }}
+          />
+        </div>
+      )}
       {note && <p className="mx-auto mt-3 max-w-md text-sm text-ivory/60">{note}</p>}
       {lit && (
         <a
@@ -401,6 +515,145 @@ function Field({
         autoComplete={autoComplete}
         className={field}
       />
+    </div>
+  );
+}
+
+function Choice({
+  id,
+  label,
+  value,
+  onChange,
+  options,
+  placeholder,
+}: {
+  id: string;
+  label: string;
+  value: string;
+  onChange: (v: string) => void;
+  options: string[];
+  placeholder?: string;
+}) {
+  return (
+    <div className="space-y-2">
+      <Label htmlFor={id} className={labelCls}>
+        {label}
+      </Label>
+      <Select value={value} onValueChange={onChange}>
+        <SelectTrigger
+          id={id}
+          className={cn(field, "[&>svg]:opacity-60 data-[placeholder]:text-ivory/30")}
+        >
+          <SelectValue placeholder={placeholder} />
+        </SelectTrigger>
+        <SelectContent
+          data-lenis-prevent
+          className="rounded-none border-ink/15 bg-stone-lit text-ink"
+        >
+          {options.map((t) => (
+            <SelectItem key={t} value={t} className="rounded-none py-2.5 focus:bg-stone-pale">
+              {t}
+            </SelectItem>
+          ))}
+        </SelectContent>
+      </Select>
+    </div>
+  );
+}
+
+/** Photos of the site, or plans: dropped in or picked, then listed with a remove button. */
+function FileDrop({
+  files,
+  preparing,
+  error,
+  onAdd,
+  onRemove,
+}: {
+  files: File[];
+  preparing: boolean;
+  error: string;
+  onAdd: (files: File[]) => void;
+  onRemove: (index: number) => void;
+}) {
+  const input = useRef<HTMLInputElement>(null);
+  const [over, setOver] = useState(false);
+  const onDrop = (e: DragEvent) => {
+    e.preventDefault();
+    setOver(false);
+    onAdd(Array.from(e.dataTransfer.files));
+  };
+  return (
+    <div className="mt-8 space-y-3">
+      <p className={labelCls}>Photos or plans</p>
+      <div
+        onDragOver={(e) => {
+          e.preventDefault();
+          setOver(true);
+        }}
+        onDragLeave={() => setOver(false)}
+        onDrop={onDrop}
+        className={cn(
+          "flex flex-col items-start gap-3 border border-dashed px-5 py-5 transition-[border-color,box-shadow] duration-500 sm:flex-row sm:items-center sm:justify-between",
+          over ? "border-glow/70 shadow-[0_0_30px_-12px_rgb(242_200_139/0.8)]" : "border-ivory/20",
+        )}
+      >
+        <p className="text-sm leading-relaxed text-muted-foreground">
+          Drag in site photos or plans, or{" "}
+          <button
+            type="button"
+            onClick={() => input.current?.click()}
+            className="text-ivory underline underline-offset-4 hover:text-glow-soft"
+          >
+            browse
+          </button>
+          .
+          <span className="block text-xs text-ivory/40">
+            JPG, PNG, HEIC or PDF · up to {UPLOAD_LIMITS.files} files · photos are resized for you
+          </span>
+        </p>
+        <Paperclip className="hidden size-5 shrink-0 text-ivory/40 sm:block" strokeWidth={1.25} />
+        <input
+          ref={input}
+          type="file"
+          multiple
+          accept={UPLOAD_ACCEPT}
+          className="sr-only"
+          aria-label="Add photos or plans"
+          onChange={(e) => {
+            onAdd(Array.from(e.target.files ?? []));
+            e.target.value = "";
+          }}
+        />
+      </div>
+      {preparing && <p className="text-xs text-ivory/60">Preparing photos…</p>}
+      {error && (
+        <p role="alert" className="text-xs text-glow-soft">
+          {error}
+        </p>
+      )}
+      {files.length > 0 && (
+        <ul className="space-y-2">
+          {files.map((f, i) => (
+            <li
+              key={`${f.name}-${i}`}
+              className="flex items-center justify-between gap-4 border-b border-ivory/10 pb-2 text-sm"
+            >
+              <span className="min-w-0 truncate text-ivory/85">{f.name}</span>
+              <span className="flex shrink-0 items-center gap-3 text-xs text-ivory/45">
+                {formatBytes(f.size)}
+                <button
+                  type="button"
+                  onClick={() => onRemove(i)}
+                  aria-label={`Remove ${f.name}`}
+                  className="text-ivory/60 hover:text-ivory"
+                >
+                  <X className="size-4" />
+                </button>
+              </span>
+            </li>
+          ))}
+        </ul>
+      )}
     </div>
   );
 }
