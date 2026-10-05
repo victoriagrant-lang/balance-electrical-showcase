@@ -6,6 +6,7 @@ import { CONTACT } from "@/lib/contact";
 import { Button } from "@/components/ui/button";
 import { LightWords, Reveal, SplitReveal } from "@/components/motion/Reveal";
 import portrait from "@/assets/victoria-portrait.webp";
+import mitchPortrait from "@/assets/mitch-portrait.webp";
 import { gsap, prefersReducedMotion, useGSAP } from "@/lib/gsap";
 import { onIntroDone } from "@/lib/intro";
 import { EwrbLogo } from "@/components/EwrbLogo";
@@ -13,6 +14,7 @@ import { PORTFOLIO } from "@/lib/portfolio";
 import { GoogleReviewsBadge, Testimonials, reviewSchema } from "@/components/Reviews";
 import { getGoogleReviews } from "@/lib/google-reviews";
 import { jsonLd, SITE } from "@/lib/seo";
+import { cn } from "@/lib/utils";
 
 export const Route = createFileRoute("/about")({
   loader: () => getGoogleReviews(),
@@ -40,6 +42,34 @@ export const Route = createFileRoute("/about")({
   }),
   component: About,
 });
+
+const DIRECTORS = [
+  {
+    name: "Victoria Grant",
+    role: "Director — Balance Electrical · Design Lead",
+    photo: { src: portrait, w: 1254, h: 1254 },
+    alt: "Victoria Grant, Director of Balance Electrical",
+    bio: [
+      "Victoria is a qualified electrician, Director of Balance Electrical and the design lead behind the finer details of each project.",
+      "She brings a strong technical understanding together with a meticulous eye for lighting, finishes and integration, making sure every element is carefully considered from the first stages of planning through to final fit-off.",
+      "Victoria is heavily involved in lighting design, joinery integration and the details that shape the finished space, working closely with clients, builders and designers to make sure the electrical work complements the architecture rather than competing with it.",
+      "Driven by a high standard of workmanship and finish, she is always looking for ways to refine the outcome and make each project feel more resolved.",
+      "Her approach is grounded in thoughtful planning, clear coordination and a commitment to getting the details right.",
+    ],
+  },
+  {
+    name: "Mitchell Pearce",
+    role: "Director — Balance Air Conditioning · Electrician",
+    photo: { src: mitchPortrait, w: 1122, h: 1402 },
+    alt: "Mitchell Pearce, Director of Balance Air Conditioning",
+    bio: [
+      "Mitch is a qualified electrician and Director of Balance Air Conditioning, bringing a broad technical understanding across both electrical and climate systems.",
+      "He is a genuine all-rounder on site and is often involved well beyond the air-conditioning scope, helping with electrical planning, problem solving, coordination and making sure the different systems within a project work together properly.",
+      "Mitch has a practical, hands-on approach and a strong focus on finding solutions that are reliable, efficient and well integrated into the finished space. From high-wall units through to fully ducted systems built into ceilings and joinery, he works closely with clients, builders and the wider Balance team to get the best result.",
+      "His strength is in seeing the whole project, understanding how each service connects, and helping make sure everything is delivered cleanly, efficiently and to a high standard.",
+    ],
+  },
+];
 
 const VALUES = [
   {
@@ -125,6 +155,8 @@ function About() {
           </div>
         </div>
       </section>
+
+      <Directors />
 
       <Testimonials google={google} className="pt-28 md:pt-40" />
 
@@ -270,6 +302,139 @@ function AboutHero() {
           </div>
         </div>
       </div>
+    </section>
+  );
+}
+
+/** The directors, each portrait hung like the hero's, its picture light switching on in view. */
+function Directors() {
+  const root = useRef<HTMLElement>(null);
+
+  useGSAP(
+    () => {
+      const el = root.current;
+      if (!el || prefersReducedMotion()) return;
+      gsap.utils.toArray<HTMLElement>("[data-director]", el).forEach((row) => {
+        const lights = row.querySelectorAll("[data-picture-light]");
+        const frame = row.querySelector("[data-frame]");
+        gsap.set(lights, { opacity: 0 });
+        gsap.set(frame, { autoAlpha: 0, y: 40 });
+        gsap
+          .timeline({ scrollTrigger: { trigger: row, start: "top 75%", once: true } })
+          .to(frame, { autoAlpha: 1, y: 0, duration: 1.4, ease: "expo.out" })
+          .to(lights, { keyframes: { opacity: [0, 1, 0.3, 1] }, duration: 0.6, ease: "none" }, 0.7);
+      });
+    },
+    { scope: root },
+  );
+
+  return (
+    <section
+      ref={root}
+      aria-labelledby="directors-title"
+      className="mx-auto max-w-[1440px] px-5 pb-8 md:px-10"
+    >
+      <div className="border-t border-ink/15 pt-24 md:pt-32">
+        <p className="eyebrow text-ink-soft">The team</p>
+        <SplitReveal
+          as="h2"
+          id="directors-title"
+          className="display-caps mt-5 text-[clamp(2.2rem,5vw,4.6rem)] leading-[1] tracking-[0.1em]!"
+        >
+          The directors.
+        </SplitReveal>
+      </div>
+
+      {DIRECTORS.map((d, i) => {
+        const flip = i % 2 === 1;
+        const [lead, ...rest] = d.bio;
+        const [director, title] = d.role.split(" · ");
+        return (
+          <article
+            key={d.name}
+            data-director
+            className="grid items-start gap-12 pt-20 md:grid-cols-12 md:gap-16 md:pt-28"
+          >
+            <div
+              className={cn(
+                "relative mx-auto w-full max-w-md md:col-span-5 md:max-w-none",
+                flip && "md:order-2 md:col-start-8",
+              )}
+            >
+              {/* picture light */}
+              <div
+                data-picture-light
+                aria-hidden
+                className="pointer-events-none absolute inset-x-0 -top-10 z-10 flex justify-center"
+              >
+                <span className="h-2 w-1/3 rounded-full bg-frame shadow-[0_6px_22px_rgb(255_231_194/0.9)]" />
+              </div>
+              <div
+                data-picture-light
+                aria-hidden
+                className="pointer-events-none absolute -inset-x-16 -top-10 bottom-[40%]"
+                style={{
+                  background:
+                    "radial-gradient(50% 70% at 50% 0%, rgb(255 244 226 / 0.9), rgb(255 232 200 / 0.25) 50%, transparent 80%)",
+                  mixBlendMode: "soft-light",
+                }}
+              />
+              <div
+                data-frame
+                className="relative border-[8px] border-frame bg-frame shadow-[0_50px_100px_-45px_rgb(0_0_0/0.7)] md:border-[12px]"
+              >
+                <img
+                  src={d.photo.src}
+                  width={d.photo.w}
+                  height={d.photo.h}
+                  alt={d.alt}
+                  loading="lazy"
+                  decoding="async"
+                  className="aspect-[4/5] w-full object-cover"
+                />
+                <div
+                  data-picture-light
+                  aria-hidden
+                  className="absolute inset-0"
+                  style={{
+                    background:
+                      "radial-gradient(70% 60% at 50% 0%, rgb(255 236 206 / 0.4), transparent 75%)",
+                    mixBlendMode: "soft-light",
+                  }}
+                />
+              </div>
+            </div>
+
+            <div className={cn("md:col-span-6 md:pt-6", flip ? "md:order-1" : "md:col-start-7")}>
+              <p className="eyebrow text-ink-soft">
+                {director}
+                {title && (
+                  <>
+                    <span className="mx-2 opacity-50">·</span>
+                    {title}
+                  </>
+                )}
+              </p>
+              <h3 className="display-caps mt-5 text-[clamp(1.9rem,3.2vw,3rem)] leading-[1.05] tracking-[0.1em]!">
+                {d.name}
+              </h3>
+              <div className="led-h mt-7 max-w-[10rem] opacity-80" aria-hidden />
+              <Reveal>
+                <p className="mt-8 font-display text-[clamp(1.3rem,1.8vw,1.65rem)] leading-snug text-ink">
+                  {lead}
+                </p>
+              </Reveal>
+              <Reveal stagger={0.08} className="mt-6 space-y-5">
+                {rest.map((para) => (
+                  <p key={para} className="text-[1.05rem] leading-relaxed text-ink-soft">
+                    {para}
+                  </p>
+                ))}
+              </Reveal>
+            </div>
+          </article>
+        );
+      })}
     </section>
   );
 }
