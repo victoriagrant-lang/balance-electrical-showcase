@@ -5,14 +5,14 @@ import { SiteLayout } from "@/components/SiteLayout";
 import { CONTACT } from "@/lib/contact";
 import { Button } from "@/components/ui/button";
 import { LightWords, Reveal, SplitReveal } from "@/components/motion/Reveal";
-import { photos } from "@/lib/photos";
+import portrait from "@/assets/victoria-portrait.webp";
 import { gsap, prefersReducedMotion, useGSAP } from "@/lib/gsap";
 import { onIntroDone } from "@/lib/intro";
 import { EwrbLogo } from "@/components/EwrbLogo";
 import { PORTFOLIO } from "@/lib/portfolio";
 import { GoogleReviewsBadge, Testimonials, reviewSchema } from "@/components/Reviews";
 import { getGoogleReviews } from "@/lib/google-reviews";
-import { jsonLd } from "@/lib/seo";
+import { jsonLd, SITE } from "@/lib/seo";
 
 export const Route = createFileRoute("/about")({
   loader: () => getGoogleReviews(),
@@ -33,7 +33,7 @@ export const Route = createFileRoute("/about")({
         content:
           "Meet Victoria Grant — the owner and registered electrician behind Balance Electrical in Taupō.",
       },
-      { property: "og:image", content: photos.victoria },
+      { property: "og:image", content: `${SITE}${portrait}` },
     ],
     links: [{ rel: "canonical", href: "https://www.balanceelectrical.co.nz/about" }],
     scripts: [reviewSchema(loaderData)].filter((x) => x !== null).map((x) => jsonLd([x])),
@@ -253,7 +253,7 @@ function AboutHero() {
             className="relative border-[8px] border-frame bg-frame shadow-[0_50px_100px_-45px_rgb(0_0_0/0.7)] md:border-[12px]"
           >
             <img
-              src={photos.victoria}
+              src={portrait}
               alt="Victoria Grant — owner and registered electrician"
               className="aspect-[4/5] w-full object-cover"
             />
