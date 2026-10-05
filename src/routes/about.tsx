@@ -100,8 +100,6 @@ function About() {
   const google = Route.useLoaderData();
   return (
     <SiteLayout>
-      <AboutHero />
-
       <Directors google={google} />
 
       <Testimonials google={google} className="pt-28 md:pt-40" />
@@ -150,31 +148,6 @@ function About() {
         </div>
       </section>
     </SiteLayout>
-  );
-}
-
-/** The page's opening. Victoria's portrait hangs with Mitch's under "The directors". */
-function AboutHero() {
-  return (
-    <section className="relative mx-auto max-w-[1440px] px-5 pb-10 pt-36 md:px-10 md:pt-44">
-      <p className="eyebrow text-ink-soft">About Victoria</p>
-      <SplitReveal
-        as="h1"
-        immediate
-        delay={0.3}
-        className="display-caps mt-6 text-[clamp(2.6rem,6.3vw,6.4rem)] leading-[0.95] tracking-[0.08em]!"
-      >
-        Meet Victoria.
-      </SplitReveal>
-      <Reveal delay={0.6}>
-        <p className="eyebrow mt-10 text-ink-soft">
-          Owner-operator · Registered electrician · Taupō
-        </p>
-        <p className="mt-6 max-w-xl text-[1.05rem] leading-relaxed text-ink-soft">
-          <BrandText text="The person behind Balance Electrical — and your point of contact for electrical work, lighting, heating and cooling and solar across Taupō and the surrounding district." />
-        </p>
-      </Reveal>
-    </section>
   );
 }
 
