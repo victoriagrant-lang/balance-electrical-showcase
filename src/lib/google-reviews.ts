@@ -59,8 +59,11 @@ async function placeId(key: string) {
   const data = (await res.json()) as {
     places?: { id: string; displayName?: { text?: string } }[];
   };
-  // Only accept a result that is actually Balance — never show another business's reviews.
-  foundPlaceId = data.places?.find((p) => /balance/i.test(p.displayName?.text ?? ""))?.id;
+  // Only accept a result that is actually Balance Electrical — never show another business's
+  // reviews (including other "Balance" businesses).
+  foundPlaceId = data.places?.find((p) =>
+    /balance electrical/i.test(p.displayName?.text ?? ""),
+  )?.id;
   return foundPlaceId;
 }
 

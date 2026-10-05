@@ -6,7 +6,19 @@ import { Button } from "@/components/ui/button";
 import { Lightbox } from "@/components/Lightbox";
 import { Reveal, SplitReveal } from "@/components/motion/Reveal";
 import { PORTFOLIO, getProject, type PortfolioProject } from "@/lib/portfolio";
-import { SITE, breadcrumbs, businessRef } from "@/lib/seo";
+import { SERVICES } from "@/lib/services";
+import { SITE, breadcrumbs, businessRef, jsonLd, serviceId } from "@/lib/seo";
+
+/** Up to `max` characters, cut at a word, for meta descriptions. */
+function clip(text: string, max = 155) {
+  if (text.length <= max) return text;
+  return `${text.slice(0, text.lastIndexOf(" ", max - 1)).replace(/[,;:—–-]$/, "")}…`;
+}
+
+/** The service pages whose work this project shows (from each service's project list). */
+function servicesFor(slug: string) {
+  return SERVICES.filter((s) => s.projects.includes(slug));
+}
 
 export const Route = createFileRoute("/portfolio_/$slug")({
   loader: ({ params }) => {
@@ -23,49 +35,47 @@ export const Route = createFileRoute("/portfolio_/$slug")({
     return {
       meta: [
         { title },
-        { name: "description", content: project.summary },
+        { name: "description", content: clip(project.summary) },
         { name: "robots", content: "index, follow, max-image-preview:large" },
         { property: "og:title", content: `${project.title} | Balance Electrical` },
-        { property: "og:description", content: project.summary },
+        { property: "og:description", content: clip(project.summary) },
         { property: "og:type", content: "article" },
         { property: "og:url", content: url },
         { property: "og:image", content: `${SITE}${cover.lg}` },
       ],
       links: [{ rel: "canonical", href: url }],
       scripts: [
-        {
-          type: "application/ld+json",
-          children: JSON.stringify({
-            "@context": "https://schema.org",
-            "@graph": [
-              {
-                "@type": "CreativeWork",
-                "@id": `${url}#project`,
-                name: project.title,
-                headline: `${project.title} — ${project.tags.join(", ")}`,
-                description: project.summary,
-                text: (project.story ?? [project.summary]).join("\n\n"),
-                url,
-                image: project.photos.slice(0, 8).map((p) => ({
-                  "@type": "ImageObject",
-                  contentUrl: `${SITE}${p.lg}`,
-                  caption: `${p.title} — ${p.caption}`,
-                  width: p.w,
-                  height: p.h,
-                })),
-                keywords: [...project.tags, ...project.details].join(", "),
-                locationCreated: { "@type": "Place", name: `${project.location}, New Zealand` },
-                creator: businessRef,
-                ...(project.accolade ? { award: project.accolade } : {}),
-              },
-              breadcrumbs([
-                ["Home", "/"],
-                ["Portfolio", "/portfolio"],
-                [project.title, `/portfolio/${project.slug}`],
-              ]),
-            ],
-          }),
-        },
+        jsonLd([
+          {
+            // The write-up of a project Balance worked on. Any award belongs to the house
+            // and its builder, so it stays in the visible copy and out of this markup.
+            "@type": "CreativeWork",
+            "@id": `${url}#project`,
+            name: project.title,
+            headline: `${project.title} — ${project.tags.join(", ")}`,
+            description: project.summary,
+            text: (project.story ?? [project.summary]).join("\n\n"),
+            url,
+            inLanguage: "en-NZ",
+            image: project.photos.slice(0, 8).map((p) => ({
+              "@type": "ImageObject",
+              contentUrl: `${SITE}${p.lg}`,
+              caption: `${p.title} — ${p.caption}`,
+              width: p.w,
+              height: p.h,
+            })),
+            keywords: [...project.tags, ...project.details].join(", "),
+            locationCreated: { "@type": "Place", name: `${project.location}, New Zealand` },
+            contributor: businessRef,
+            publisher: businessRef,
+            mentions: servicesFor(project.slug).map((s) => ({ "@id": serviceId(s.slug) })),
+          },
+          breadcrumbs([
+            ["Home", "/"],
+            ["Portfolio", "/portfolio"],
+            [project.title, `/portfolio/${project.slug}`],
+          ]),
+        ]),
       ],
     };
   },
@@ -78,6 +88,7 @@ function ProjectStory() {
   const [open, setOpen] = useState<number | null>(null);
   const index = PORTFOLIO.findIndex((p) => p.slug === project.slug);
   const next = PORTFOLIO[(index + 1) % PORTFOLIO.length];
+  const services = servicesFor(project.slug);
   const [cover, ...rest] = project.photos;
   const [lede, ...paragraphs] = project.story ?? [project.summary];
   const shots = project.photos.map((p) => ({
@@ -178,6 +189,20 @@ function ProjectStory() {
                 </li>
               ))}
             </ul>
+            {services.length > 0 && (
+              <>
+                <p className="eyebrow mt-8 text-[10px] text-ink-soft">Services on this project</p>
+                <ul className="mt-4 space-y-2">
+                  {services.map((s) => (
+                    <li key={s.slug} className="text-[0.95rem] leading-relaxed">
+                      <Link to="/services/$slug" params={{ slug: s.slug }} className="beam-link">
+                        {s.h1}
+                      </Link>
+                    </li>
+                  ))}
+                </ul>
+              </>
+            )}
             <Button
               asChild
               variant="lux"

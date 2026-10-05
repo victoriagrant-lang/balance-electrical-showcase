@@ -6,7 +6,7 @@ import { gsap, prefersReducedMotion, useGSAP } from "@/lib/gsap";
 import { PORTFOLIO, getPhoto } from "@/lib/portfolio";
 
 const PROOF = [
-  { value: "2025", label: "Gold Award home — Master Builders House of the Year" },
+  { value: "2025", label: "Electrician on a Gold Award home — Master Builders House of the Year" },
   { value: "EWRB", label: "Registered electrician, every job certified" },
   { value: String(PORTFOLIO.length), label: "Projects in the portfolio" },
   { value: "1", label: "Point of contact, first call to final fit-off" },

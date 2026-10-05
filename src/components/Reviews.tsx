@@ -32,7 +32,8 @@ export function GoogleReviewsBadge({ google }: { google?: GoogleReviews }) {
       rel="noopener noreferrer"
       className="group inline-flex items-center gap-4 border border-ink/20 px-5 py-4 transition-[border-color,box-shadow] duration-500 hover:border-ink/50 hover:shadow-[0_20px_50px_-30px_rgb(28_26_24/0.6)]"
     >
-      <Stars value={rated ? google.rating! : 5} />
+      {/* Stars only for a real rating: never show five stars that Google didn't give. */}
+      {rated ? <Stars value={google.rating!} /> : <Star className="size-3.5" strokeWidth={1.5} />}
       <span className="eyebrow text-[10px] leading-relaxed">
         {rated ? `${google.rating!.toFixed(1)} on Google` : "Reviews on Google"}
         <br />
@@ -141,26 +142,4 @@ export function Testimonials({
       </Reveal>
     </section>
   );
-}
-
-/** schema.org rating data from live Google reviews, merged into the business entity. */
-export function reviewSchema(google?: GoogleReviews) {
-  if (!google?.rating || !google.count) return null;
-  return {
-    "@type": ["Electrician", "LocalBusiness"],
-    "@id": "https://www.balanceelectrical.co.nz/#business",
-    aggregateRating: {
-      "@type": "AggregateRating",
-      ratingValue: google.rating,
-      reviewCount: google.count,
-      bestRating: 5,
-    },
-    review: google.reviews.map((r) => ({
-      "@type": "Review",
-      reviewBody: r.text,
-      author: { "@type": "Person", name: r.author },
-      reviewRating: { "@type": "Rating", ratingValue: r.rating, bestRating: 5 },
-      ...(r.publishTime ? { datePublished: r.publishTime.slice(0, 10) } : {}),
-    })),
-  };
 }

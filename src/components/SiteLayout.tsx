@@ -1,6 +1,6 @@
 import { Link } from "@tanstack/react-router";
 import { useEffect, useRef, useState, type ReactNode } from "react";
-import { ArrowUpRight } from "lucide-react";
+import { ArrowUpRight, Phone } from "lucide-react";
 import { Logo } from "@/components/brand/Logo";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetClose, SheetContent, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
@@ -19,7 +19,8 @@ const nav = [
   { to: "/contact", label: "Contact" },
 ] as const;
 
-// Footer service list → each service's own page, in the same order as the home page chapters.
+// Footer service list → each service's own page, in the same order as the home page chapters,
+// then maintenance (which has no home chapter).
 const SERVICE_LINKS: [string, string][] = [
   ["New builds", "new-build-electrician-taupo"],
   ["Lighting design", "lighting-design-taupo"],
@@ -29,6 +30,7 @@ const SERVICE_LINKS: [string, string][] = [
   ["Solar & battery", "solar-installation-taupo"],
   ["Smart home & automation", "smart-home-automation-taupo"],
   ["EV charging", "ev-charger-installation-taupo"],
+  ["Maintenance & repairs", "maintenance-electrician-taupo"],
 ];
 
 export function SiteLayout({ children }: { children: ReactNode }) {
@@ -50,7 +52,11 @@ function SiteHeader() {
   return (
     <header className="fixed inset-x-0 top-0 z-50 border-b border-ivory/10 bg-frame/88 text-ivory backdrop-blur-md [transform:translateZ(0)]">
       <div className="mx-auto flex h-[72px] max-w-[1440px] items-center justify-between px-5 md:px-10">
-        <Link to="/" className="group -m-2 p-2" aria-label="Balance Electrical — home">
+        <Link
+          to="/"
+          className="group -m-2 p-2"
+          aria-label="Balance Electrical, electrician in Taupō — home"
+        >
           <Logo hoverBalance className="w-[132px] text-stone-pale md:w-[152px]" />
         </Link>
 
@@ -69,6 +75,14 @@ function SiteHeader() {
         </nav>
 
         <div className="flex items-center gap-3">
+          {/* On phones, where "Let's talk" is hidden, one tap calls Victoria. */}
+          <a
+            href={CONTACT.tel}
+            aria-label={`Call Victoria on ${CONTACT.phoneLocal}`}
+            className="flex size-11 items-center justify-center opacity-80 transition-opacity hover:opacity-100 sm:hidden"
+          >
+            <Phone className="size-[18px]" strokeWidth={1.25} />
+          </a>
           <Button
             asChild
             variant="lux"
@@ -229,7 +243,10 @@ function SiteFooter() {
         <GiantLogo />
 
         <div className="flex flex-col items-start justify-between gap-3 border-t border-ivory/10 pt-6 text-xs text-muted-foreground md:flex-row md:items-center">
-          <p>© {new Date().getFullYear()} Balance Electrical Ltd. All rights reserved.</p>
+          <p>
+            © {new Date().getFullYear()} Balance Electrical Ltd · Electrician in Taupō, New Zealand
+            · Mon–Fri 7:30am–5:30pm
+          </p>
           <p className="eyebrow text-[10px]">Licensed Electrical Worker · EWRB Registered</p>
         </div>
       </div>

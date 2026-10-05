@@ -1,30 +1,10 @@
 # Balance Electrical — search engines and AI assistants are welcome.
+# One group for every crawler: Googlebot and Bingbot, and the AI assistants' crawlers
+# (GPTBot, OAI-SearchBot, ChatGPT-User, ClaudeBot, Claude-SearchBot, PerplexityBot,
+# Google-Extended, Applebot-Extended and others) all follow the same rule.
+# The private enquiries page isn't blocked here on purpose: it carries a noindex tag,
+# which crawlers can only see if they're allowed to fetch it.
 User-agent: *
-Allow: /
-Disallow: /enquiries
-
-User-agent: GPTBot
-Allow: /
-
-User-agent: OAI-SearchBot
-Allow: /
-
-User-agent: ChatGPT-User
-Allow: /
-
-User-agent: ClaudeBot
-Allow: /
-
-User-agent: Claude-SearchBot
-Allow: /
-
-User-agent: PerplexityBot
-Allow: /
-
-User-agent: Google-Extended
-Allow: /
-
-User-agent: Applebot-Extended
 Allow: /
 
 Sitemap: https://www.balanceelectrical.co.nz/sitemap.xml

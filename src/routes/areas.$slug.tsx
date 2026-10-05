@@ -8,7 +8,7 @@ import { ProjectCards } from "@/components/ProjectCards";
 import { AREAS, getArea } from "@/lib/areas";
 import { CONTACT } from "@/lib/contact";
 import { SERVICES } from "@/lib/services";
-import { SITE, breadcrumbs, businessRef, jsonLd } from "@/lib/seo";
+import { SITE, breadcrumbs, businessRef, jsonLd, placeNode, websiteRef } from "@/lib/seo";
 
 export const Route = createFileRoute("/areas/$slug")({
   loader: ({ params }) => {
@@ -40,16 +40,21 @@ export const Route = createFileRoute("/areas/$slug")({
             name: a.h1,
             description: a.metaDescription,
             url,
-            about: businessRef,
-            spatialCoverage: {
-              "@type": "Place",
-              name: `${a.name}, New Zealand`,
-              geo: { "@type": "GeoCoordinates", latitude: a.geo.lat, longitude: a.geo.lng },
-            },
+            inLanguage: "en-NZ",
+            isPartOf: websiteRef,
+            about: [businessRef, { "@id": placeNode(a)["@id"] }],
+          },
+          {
+            "@type": "Service",
+            "@id": `${url}#service`,
+            name: a.h1,
+            serviceType: "Electrician",
+            url,
+            provider: businessRef,
+            areaServed: placeNode(a),
           },
           breadcrumbs([
             ["Home", "/"],
-            ["Areas", "/areas-of-expertise"],
             [a.name, `/areas/${a.slug}`],
           ]),
         ]),
@@ -113,7 +118,7 @@ function AreaPage() {
                 className="group flex h-full flex-col justify-between gap-6 p-6 transition-colors hover:bg-stone-lit"
               >
                 <span className="display-caps text-lg tracking-[0.12em]">{s.name}</span>
-                <span className="text-sm leading-relaxed text-ink-soft">{s.metaDescription}</span>
+                <span className="text-sm leading-relaxed text-ink-soft">{s.summary}</span>
                 <ArrowUpRight className="size-4 transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5" />
               </Link>
             </li>

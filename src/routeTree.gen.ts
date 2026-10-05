@@ -19,6 +19,7 @@ import { Route as LlmsFullDottxtRouteImport } from './routes/llms-full[.]txt'
 import { Route as LlmsDottxtRouteImport } from './routes/llms[.]txt'
 import { Route as PortfolioRouteImport } from './routes/portfolio'
 import { Route as ProjectsRouteImport } from './routes/projects'
+import { Route as ReviewRouteImport } from './routes/review'
 import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
 import { Route as AreasIndexRouteImport } from './routes/areas.index'
 import { Route as AreasSlugRouteImport } from './routes/areas.$slug'
@@ -76,6 +77,11 @@ const ProjectsRoute = ProjectsRouteImport.update({
   path: '/projects',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ReviewRoute = ReviewRouteImport.update({
+  id: '/review',
+  path: '/review',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const SitemapDotxmlRoute = SitemapDotxmlRouteImport.update({
   id: '/sitemap.xml',
   path: '/sitemap.xml',
@@ -118,6 +124,7 @@ export interface FileRoutesByFullPath {
   '/llms.txt': typeof LlmsDottxtRoute
   '/portfolio': typeof PortfolioRoute
   '/projects': typeof ProjectsRoute
+  '/review': typeof ReviewRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/areas/$slug': typeof AreasSlugRoute
   '/portfolio/$slug': typeof PortfolioSlugRoute
@@ -136,6 +143,7 @@ export interface FileRoutesByTo {
   '/llms.txt': typeof LlmsDottxtRoute
   '/portfolio': typeof PortfolioRoute
   '/projects': typeof ProjectsRoute
+  '/review': typeof ReviewRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/areas/$slug': typeof AreasSlugRoute
   '/portfolio/$slug': typeof PortfolioSlugRoute
@@ -155,6 +163,7 @@ export interface FileRoutesById {
   '/llms.txt': typeof LlmsDottxtRoute
   '/portfolio': typeof PortfolioRoute
   '/projects': typeof ProjectsRoute
+  '/review': typeof ReviewRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/areas/$slug': typeof AreasSlugRoute
   '/portfolio_/$slug': typeof PortfolioSlugRoute
@@ -175,6 +184,7 @@ export interface FileRouteTypes {
     | '/llms.txt'
     | '/portfolio'
     | '/projects'
+    | '/review'
     | '/sitemap.xml'
     | '/areas/$slug'
     | '/portfolio/$slug'
@@ -193,6 +203,7 @@ export interface FileRouteTypes {
     | '/llms.txt'
     | '/portfolio'
     | '/projects'
+    | '/review'
     | '/sitemap.xml'
     | '/areas/$slug'
     | '/portfolio/$slug'
@@ -211,6 +222,7 @@ export interface FileRouteTypes {
     | '/llms.txt'
     | '/portfolio'
     | '/projects'
+    | '/review'
     | '/sitemap.xml'
     | '/areas/$slug'
     | '/portfolio_/$slug'
@@ -230,6 +242,7 @@ export interface RootRouteChildren {
   LlmsDottxtRoute: typeof LlmsDottxtRoute
   PortfolioRoute: typeof PortfolioRoute
   ProjectsRoute: typeof ProjectsRoute
+  ReviewRoute: typeof ReviewRoute
   SitemapDotxmlRoute: typeof SitemapDotxmlRoute
   AreasSlugRoute: typeof AreasSlugRoute
   PortfolioSlugRoute: typeof PortfolioSlugRoute
@@ -310,6 +323,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ProjectsRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/review': {
+      id: '/review'
+      path: '/review'
+      fullPath: '/review'
+      preLoaderRoute: typeof ReviewRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/sitemap.xml': {
       id: '/sitemap.xml'
       path: '/sitemap.xml'
@@ -366,6 +386,7 @@ const rootRouteChildren: RootRouteChildren = {
   LlmsDottxtRoute: LlmsDottxtRoute,
   PortfolioRoute: PortfolioRoute,
   ProjectsRoute: ProjectsRoute,
+  ReviewRoute: ReviewRoute,
   SitemapDotxmlRoute: SitemapDotxmlRoute,
   AreasSlugRoute: AreasSlugRoute,
   PortfolioSlugRoute: PortfolioSlugRoute,

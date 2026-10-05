@@ -17,7 +17,17 @@ import { CursorLight } from "@/components/motion/CursorLight";
 import { Preloader } from "@/components/motion/Preloader";
 import { LogoMark } from "@/components/brand/Logo";
 import { photos } from "@/lib/photos";
-import { siteGraph } from "@/lib/seo";
+import { serializeJsonLd, siteGraph } from "@/lib/seo";
+import type { GoogleReviews } from "@/lib/google-reviews";
+
+/** The live Google reviews, if the page being rendered loaded them (home and about do). */
+function loadedReviews(matches: { loaderData?: unknown }[]) {
+  return matches
+    .map((m) => m.loaderData)
+    .find(
+      (d): d is GoogleReviews => !!d && typeof d === "object" && "reviews" in d && "count" in d,
+    );
+}
 
 function NotFoundComponent() {
   return (
@@ -89,15 +99,15 @@ function ErrorComponent({ error, reset }: ErrorComponentProps) {
 const OG_IMAGE = photos.twilight;
 
 export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()({
-  head: () => ({
+  head: ({ matches }) => ({
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "Electrician Taupō | Solar, EV Chargers & New Builds | Balance Electrical" },
+      { title: "Balance Electrical | Electrician Taupō" },
       {
         name: "description",
         content:
-          "Victoria Grant is a registered electrician in Taupō. Lighting design, new builds, renovations, heat pumps and ducted heating integrated into joinery, solar, EV chargers, smart homes and commercial electrical across the Taupō district.",
+          "Registered electrician in Taupō: new builds, renovations, lighting design, heat pumps, solar, EV chargers, commercial work and repairs. Balance Electrical.",
       },
       { name: "author", content: "Balance Electrical" },
       { property: "og:site_name", content: "Balance Electrical" },
@@ -118,13 +128,20 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { rel: "stylesheet", href: appCss },
       { rel: "icon", href: "/favicon.svg", type: "image/svg+xml" },
       { rel: "preconnect", href: "https://fonts.googleapis.com" },
+      // The home hero image is served from Supabase storage.
+      { rel: "preconnect", href: "https://nrhfbcqmfsezlkxnzshq.supabase.co" },
       { rel: "preconnect", href: "https://fonts.gstatic.com", crossOrigin: "anonymous" },
       {
         rel: "stylesheet",
         href: "https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Josefin+Sans:wght@300;400;600&display=swap",
       },
     ],
-    scripts: [{ type: "application/ld+json", children: JSON.stringify(siteGraph()) }],
+    scripts: [
+      {
+        type: "application/ld+json",
+        children: serializeJsonLd(siteGraph(loadedReviews(matches))),
+      },
+    ],
   }),
   shellComponent: RootShell,
   component: RootComponent,

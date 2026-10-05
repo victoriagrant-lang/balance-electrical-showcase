@@ -7,6 +7,15 @@ const ROWS = [
   ["Tūrangi", "Ātiamuri", "Rainbow Point", "Nukuhau", "Central Plateau"],
 ];
 
+/** A place name in running text, linked to its area page. */
+function Place({ slug, children }: { slug: string; children: string }) {
+  return (
+    <Link to="/areas/$slug" params={{ slug }} className="beam-link text-ink">
+      {children}
+    </Link>
+  );
+}
+
 function Row({ words, lit }: { words: string[]; lit?: boolean }) {
   // Doubled so the strip never runs out while it slides.
   const all = [...words, ...words, ...words];
@@ -99,8 +108,10 @@ export function AreasMarquee() {
       </div>
       <div className="relative mx-auto mt-12 max-w-2xl px-5 text-center">
         <p className="leading-relaxed text-ink-soft">
-          We work with homeowners, builders and businesses across Taupō, Kinloch, Acacia Bay,
-          Wairakei, Kuratau, Tūrangi, Ātiamuri and the wider Central Plateau.
+          We work with homeowners, builders and businesses across <Place slug="taupo">Taupō</Place>,{" "}
+          <Place slug="kinloch">Kinloch</Place>, <Place slug="acacia-bay">Acacia Bay</Place>,{" "}
+          <Place slug="wairakei">Wairakei</Place>, Kuratau, <Place slug="turangi">Tūrangi</Place>,
+          Ātiamuri and the wider Central Plateau.
         </p>
         <Link to="/contact" className="beam-link mt-6 inline-block text-sm">
           Discuss your location and project

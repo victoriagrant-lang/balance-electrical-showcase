@@ -221,9 +221,9 @@ export function Circuits() {
               <Link
                 to="/services/$slug"
                 params={{ slug: s.page }}
-                className="beam-link eyebrow ml-6 mt-5 inline-flex items-center gap-2 text-[10px] text-ink-soft"
+                className="beam-link eyebrow mt-3 flex w-fit items-center gap-2 text-[10px] text-ink-soft"
               >
-                Learn more
+                {s.title} in Taupō
               </Link>
             </article>
           ))}

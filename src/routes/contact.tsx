@@ -3,6 +3,7 @@ import { useRef, useState, type DragEvent, type FormEvent } from "react";
 import { ArrowRight, Paperclip, Phone, X } from "lucide-react";
 import { SiteLayout } from "@/components/SiteLayout";
 import { CONTACT } from "@/lib/contact";
+import { SITE, businessRef, jsonLd, websiteRef } from "@/lib/seo";
 import { sendEnquiry, type SendFailure } from "@/lib/send-enquiry";
 import { photos } from "@/lib/photos";
 import { cn } from "@/lib/utils";
@@ -69,11 +70,11 @@ export const Route = createFileRoute("/contact")({
   }),
   head: () => ({
     meta: [
-      { title: "Contact Victoria | Electrician Taupō | Balance Electrical" },
+      { title: "Request a Quote | Contact Balance Electrical, Taupō" },
       {
         name: "description",
         content:
-          "Contact Victoria Grant at Balance Electrical to discuss electrical work, lighting, heating and air conditioning or solar for your home or business in the Taupō district.",
+          "Request a quote from Balance Electrical in Taupō. Send a brief with photos or plans, or call Victoria on 027 916 2077, Monday to Friday, 7:30am to 5:30pm.",
       },
       { name: "robots", content: "index, follow, max-image-preview:large" },
       { name: "geo.region", content: "NZ-WKO" },
@@ -84,9 +85,24 @@ export const Route = createFileRoute("/contact")({
         content:
           "Tell us about your property and your plans. Speak directly with Victoria about the electrical work your project needs.",
       },
+      { property: "og:url", content: `${SITE}/contact` },
       { property: "og:image", content: photos.fountainEntry },
     ],
-    links: [{ rel: "canonical", href: "https://www.balanceelectrical.co.nz/contact" }],
+    links: [{ rel: "canonical", href: `${SITE}/contact` }],
+    scripts: [
+      jsonLd([
+        {
+          "@type": "ContactPage",
+          "@id": `${SITE}/contact#page`,
+          url: `${SITE}/contact`,
+          name: "Contact Balance Electrical",
+          inLanguage: "en-NZ",
+          isPartOf: websiteRef,
+          about: businessRef,
+          mainEntity: businessRef,
+        },
+      ]),
+    ],
   }),
   component: Contact,
 });
@@ -179,7 +195,7 @@ function Contact() {
   return (
     <SiteLayout>
       <section className="relative mx-auto max-w-[1440px] px-5 pb-16 pt-36 md:px-10 md:pb-24 md:pt-48">
-        <p className="eyebrow text-ink-soft">Contact</p>
+        <p className="eyebrow text-ink-soft">Contact · Quotes</p>
         <SplitReveal
           as="h1"
           immediate
@@ -190,9 +206,9 @@ function Contact() {
         </SplitReveal>
         <Reveal delay={0.5}>
           <p className="mt-8 max-w-xl text-[1.05rem] leading-relaxed text-ink-soft">
-            Planning a project or need help with an existing property? Share a few details below, or
-            contact Victoria directly. She’ll be in touch within a few days to discuss what you need
-            and the next steps.
+            Planning a project, need a quote, or need help with an existing property? Share a few
+            details below, or contact Victoria directly. She’ll be in touch within a few days to
+            discuss what you need and the next steps.
           </p>
         </Reveal>
       </section>

@@ -11,19 +11,19 @@ import { Victoria } from "@/components/home/Victoria";
 import { AreasMarquee } from "@/components/home/AreasMarquee";
 import { SignCTA } from "@/components/home/SignCTA";
 import { HomeFaq } from "@/components/home/HomeFaq";
-import { Testimonials, reviewSchema } from "@/components/Reviews";
+import { Testimonials } from "@/components/Reviews";
 import { getGoogleReviews } from "@/lib/google-reviews";
-import { HOME_FAQS, faqPage, jsonLd } from "@/lib/seo";
+import { HOME_FAQS, SITE, faqPage, jsonLd } from "@/lib/seo";
 
 export const Route = createFileRoute("/")({
   loader: () => getGoogleReviews(),
-  head: ({ loaderData }) => ({
+  head: () => ({
     meta: [
-      { title: "Electrician Taupō | Solar, EV Chargers & New Builds | Balance Electrical" },
+      { title: "Electrician Taupō | Homes & Businesses | Balance Electrical" },
       {
         name: "description",
         content:
-          "Victoria Grant is a registered electrician based in Taupō. Lighting design, new builds, renovations, heat pumps and ducted heating and cooling, solar, EV chargers and commercial electrical work across the Taupō district.",
+          "Registered electrician in Taupō: new builds, renovations, lighting design, heat pumps, solar, EV chargers, commercial work and repairs. Balance Electrical.",
       },
       { name: "robots", content: "index, follow, max-image-preview:large" },
       {
@@ -38,12 +38,11 @@ export const Route = createFileRoute("/")({
         content:
           "Thoughtfully planned. Expertly installed. Electrical work, lighting design, integrated heating and cooling and solar for homes and businesses across Taupō.",
       },
+      { property: "og:url", content: `${SITE}/` },
       { property: "og:image", content: photos.twilight },
     ],
-    links: [{ rel: "canonical", href: "https://www.balanceelectrical.co.nz" }],
-    scripts: [
-      jsonLd([faqPage(HOME_FAQS), ...[reviewSchema(loaderData)].filter((x) => x !== null)]),
-    ],
+    links: [{ rel: "canonical", href: SITE }],
+    scripts: [jsonLd([faqPage(HOME_FAQS)])],
   }),
   component: Home,
 });
