@@ -34,7 +34,7 @@ export const Route = createFileRoute("/projects")({
   component: Gallery,
 });
 
-type Discipline = "Lighting" | "Electrical" | "Climate" | "Smart Home" | "Solar";
+type Discipline = "Lighting" | "Electrical" | "Air-Conditioning" | "Smart Home" | "Solar";
 
 type Pick = {
   slug: string;
@@ -70,7 +70,7 @@ const GALLERY: Pick[] = [
     slug: "walnut-house",
     name: "01-kitchen",
     label: "Joinery-integrated climate",
-    tags: ["Climate", "Electrical"],
+    tags: ["Air-Conditioning", "Electrical"],
   },
   { slug: "lake-house", name: "03-gallery", label: "Cedar ceiling cove", tags: ["Lighting"] },
   {
@@ -107,7 +107,7 @@ const GALLERY: Pick[] = [
     slug: "cedar-cube-house",
     name: "05-integrated-climate",
     label: "Linear ducted grilles",
-    tags: ["Climate", "Electrical"],
+    tags: ["Air-Conditioning", "Electrical"],
   },
   {
     slug: "black-gable-house",
@@ -183,7 +183,7 @@ const TILES: Tile[] = GALLERY.map((pick) => {
 });
 
 const AFTER_DARK = "After Dark";
-const FILTERS = ["All", "Lighting", "Electrical", "Climate", "Smart Home", "Solar", AFTER_DARK];
+const FILTERS = ["All", "Lighting", "Electrical", "Air-Conditioning", "Smart Home", "Solar", AFTER_DARK];
 
 const matches = (t: Tile, f: string) =>
   f === "All" ? true : f === AFTER_DARK ? t.dark : t.tags.includes(f as Discipline);

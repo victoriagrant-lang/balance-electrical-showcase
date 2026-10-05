@@ -434,7 +434,7 @@ export const PORTFOLIO: PortfolioProject[] = [
     slug: "lake-house",
     title: "Lake House",
     location: "Taupō district",
-    tags: ["Residential", "Lighting", "Electrical", "Climate"],
+    tags: ["Residential", "Lighting", "Electrical", "Air-Conditioning"],
     galleryTags: ["Residential"],
     summary:
       "The Lake House was approached as a fully coordinated lighting and electrical project, with the design developed around the home’s cedar ceilings, oak flooring, dark timber walls and expansive lake views.",
@@ -865,7 +865,7 @@ export const PORTFOLIO: PortfolioProject[] = [
     slug: "twin-pavilions",
     title: "Twin Pavilions",
     location: "Taupō district",
-    tags: ["Residential", "Electrical", "Solar", "Climate"],
+    tags: ["Residential", "Electrical", "Solar", "Air-Conditioning"],
     summary:
       "Twin Pavilions consists of two near-identical lakefront homes positioned side by side, with Balance delivering the complete electrical, ducted air-conditioning and solar installations across both residences.",
     story: [
@@ -1213,7 +1213,7 @@ export const PORTFOLIO: PortfolioProject[] = [
     slug: "walnut-house",
     title: "Walnut House",
     location: "Taupō district",
-    tags: ["Residential", "Lighting", "Electrical", "Climate"],
+    tags: ["Residential", "Lighting", "Electrical", "Air-Conditioning"],
     summary:
       "Walnut House was delivered as a fully integrated lighting, electrical and ducted air-conditioning project, with the building services carefully coordinated into the home’s extensive custom joinery.",
     story: [
@@ -1231,7 +1231,7 @@ export const PORTFOLIO: PortfolioProject[] = [
       "Full architectural lighting design",
       "Fully ducted air-conditioning system",
       "Air-conditioning grilles integrated into custom joinery",
-      "Climate services coordinated with cabinetry and interior detailing",
+      "Air-Conditioning services coordinated with cabinetry and interior detailing",
       "Concealed LED lighting beneath shelving",
       "Integrated task lighting to kitchen and utility joinery",
       "LED lighting along hallway cabinetry",
@@ -1517,20 +1517,20 @@ const PHOTO_TAGS: Record<string, string[]> = {
   "pool-courtyard/01": ["Residential"],
   "pool-courtyard/02-front-by-day": ["Residential"],
   "pool-courtyard/03-lap-pool": ["Pool"],
-  "pool-courtyard/04-entry-and-hall": ["Residential", "Climate"],
-  "pool-courtyard/05-bedroom": ["Residential", "Climate"],
+  "pool-courtyard/04-entry-and-hall": ["Residential", "Air-Conditioning"],
+  "pool-courtyard/05-bedroom": ["Residential", "Air-Conditioning"],
   "pool-courtyard/06-shower-niche": ["Residential"],
   "pool-courtyard/07-ensuite": ["Residential"],
-  "the-arches/02-kitchen": ["Residential", "Renovation", "Climate"],
+  "the-arches/02-kitchen": ["Residential", "Renovation", "Air-Conditioning"],
   "hillside-house/07-during-the-build": ["New build", "First fix"],
-  "lake-house/10": ["Residential", "Climate"],
-  "cedar-cube-house/01": ["Residential", "New build", "Climate"],
-  "cedar-cube-house/05-integrated-climate": ["Residential", "New build", "Climate"],
+  "lake-house/10": ["Residential", "Air-Conditioning"],
+  "cedar-cube-house/01": ["Residential", "New build", "Air-Conditioning"],
+  "cedar-cube-house/05-integrated-climate": ["Residential", "New build", "Air-Conditioning"],
   "cedar-cube-house/02": ["Residential", "New build", "Pool"],
-  "cedar-gables/12": ["Residential", "New build", "Climate"],
-  "cedar-gables/13": ["Residential", "New build", "Climate"],
-  "cedar-gables/18": ["Residential", "New build", "Climate"],
-  "walnut-house/04-bedroom": ["Residential", "Climate"],
+  "cedar-gables/12": ["Residential", "New build", "Air-Conditioning"],
+  "cedar-gables/13": ["Residential", "New build", "Air-Conditioning"],
+  "cedar-gables/18": ["Residential", "New build", "Air-Conditioning"],
+  "walnut-house/04-bedroom": ["Residential", "Air-Conditioning"],
 };
 
 export function photoTags(project: PortfolioProject, photo: PortfolioPhoto): string[] {

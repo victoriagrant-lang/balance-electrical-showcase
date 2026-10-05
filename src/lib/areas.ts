@@ -37,7 +37,7 @@ export const AREAS: Area[] = [
     slug: "kinloch",
     name: "Kinloch",
     h1: "Electrician in Kinloch",
-    metaTitle: "Electrician Kinloch | New Builds, Lighting & Climate | Balance Electrical",
+    metaTitle: "Electrician Kinloch | New Builds, Lighting & Air-Conditioning | Balance Electrical",
     metaDescription:
       "Electrical, lighting design, smart-home and climate systems for new homes and renovations in Kinloch, on the north-western shore of Lake Taupō.",
     intro: [

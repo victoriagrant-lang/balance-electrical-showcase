@@ -102,7 +102,7 @@ export function Victoria() {
           <Reveal className="mt-12">
             <Button asChild variant="luxOutline" size="xl">
               <Link to="/about">
-                Meet Victoria <ArrowRight />
+                Meet the Team <ArrowRight />
               </Link>
             </Button>
           </Reveal>

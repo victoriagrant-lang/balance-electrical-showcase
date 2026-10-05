@@ -105,7 +105,7 @@ function shell(opts: { preheader: string; hero: string; body: string; siteUrl: s
 
 <tr><td class="px" bgcolor="${C.night}" style="background:${C.night};padding:38px 44px 0;">
 <a href="${opts.siteUrl}" style="text-decoration:none;"><img src="cid:${LOGO_CID}" width="${LOGO_WIDTH}" height="${LOGO_HEIGHT}" alt="BALANCE" style="display:block;border:0;width:${LOGO_WIDTH}px;height:auto;color:${C.pale};font-family:${SERIF};font-size:22px;letter-spacing:0.4em;"></a>
-${eyebrow("Electrical · Lighting · Climate", C.dim, "margin-top:14px;")}
+${eyebrow("Electrical · Lighting · Air-Conditioning", C.dim, "margin-top:14px;")}
 </td></tr>
 <tr><td class="px" bgcolor="${C.night}" style="background:${C.night};padding:34px 44px 40px;">${opts.hero}</td></tr>
 <tr><td height="2" bgcolor="#6b5a45" style="height:2px;line-height:2px;font-size:0;background:#6b5a45;background-image:linear-gradient(90deg,rgba(242,200,139,0) 0%,${C.glowSoft} 50%,rgba(242,200,139,0) 100%);">&nbsp;</td></tr>
@@ -204,7 +204,7 @@ ${messageBlock(d)}
 <p style="font-family:${SANS};font-size:13px;line-height:1.7;color:${C.soft};margin:28px 0 22px;">Need to add something? Just reply to this email — photos and plans are welcome.</p>
 <div style="border-top:1px solid ${C.rule};padding-top:26px;">
 ${eyebrow("While you wait", C.soft, "margin-bottom:8px;")}
-<div style="font-family:${SERIF};font-size:21px;line-height:1.4;color:${C.ink};margin-bottom:16px;">See how lighting, electrical and climate come together in our recent projects.</div>
+<div style="font-family:${SERIF};font-size:21px;line-height:1.4;color:${C.ink};margin-bottom:16px;">See how lighting, electrical and air-conditioning come together in our recent projects.</div>
 ${button(`${d.siteUrl}/portfolio`, "Explore the portfolio", false)}
 </div>`,
   });

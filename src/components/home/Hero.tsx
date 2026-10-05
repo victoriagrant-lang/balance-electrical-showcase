@@ -74,7 +74,7 @@ export function Hero() {
           data-hero-fade
           className="flex flex-wrap items-center justify-between gap-3 text-ink-soft"
         >
-          <p className="eyebrow">Electrical · Lighting · Climate · Solar</p>
+          <p className="eyebrow">Electrical · Lighting · Air-Conditioning · Solar</p>
           <p className="eyebrow">Taupō and the surrounding district</p>
         </div>
 
@@ -85,7 +85,7 @@ export function Hero() {
             className="display-caps text-[clamp(1.55rem,4.3vw,4.4rem)] leading-[1.08] tracking-[0.03em] text-ink"
             style={{ letterSpacing: "0.03em" }}
           >
-            <span className="block">Electrical, lighting &amp; climate.</span>
+            <span className="block">Electrical, lighting &amp; air-conditioning.</span>
             <span className="block text-ink/55">Considered together.</span>
           </h1>
 
