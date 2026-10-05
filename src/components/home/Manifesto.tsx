@@ -12,8 +12,8 @@ const PROOF = [
   { value: "1", label: "Point of contact, first call to final fit-off" },
 ];
 
-const LEFT = getPhoto("courtyard-house", "04-kitchen-and-dining");
-const RIGHT = getPhoto("lake-house", "03-gallery");
+const LEFT = getPhoto("lake-house", "21");
+const RIGHT = getPhoto("walnut-house", "03-hall");
 
 /*
   Straight after the hero, the lights go down: a statement that switches on word by word
@@ -106,11 +106,11 @@ export function Manifesto() {
           <figure className="col-span-3 mt-16 overflow-hidden border-[6px] border-frame bg-frame">
             <img
               data-lamp
-              src={LEFT.sm}
+              src={LEFT.lg}
               alt={`${LEFT.title}, ${LEFT.project}`}
               loading="lazy"
               decoding="async"
-              className="aspect-[4/5] w-full object-cover"
+              className="aspect-[4/5] w-full object-cover object-[78%_50%]"
             />
           </figure>
           <figure className="col-span-2 overflow-hidden border-[6px] border-frame bg-frame">

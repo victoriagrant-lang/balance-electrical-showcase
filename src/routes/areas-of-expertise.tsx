@@ -21,7 +21,7 @@ export const Route = createFileRoute("/areas-of-expertise")({
       {
         name: "description",
         content:
-          "One team from planning and first fix through to final fit-off and commissioning. New builds, renovations, lighting design, smart homes, air conditioning, solar, commercial, EV charging and maintenance in Taupō.",
+          "One team from planning and first fix through to final fit-off and commissioning. New builds, lighting design, commercial, air conditioning, renovations, solar, smart homes, EV charging and maintenance in Taupō.",
       },
       { name: "robots", content: "index, follow, max-image-preview:large" },
       { name: "geo.region", content: "NZ-WKO" },
@@ -47,7 +47,8 @@ type Area = {
   num: string;
   heading: string;
   service: string;
-  img: { src: string; alt: string; credit: string; focus?: string };
+  /** Shown whole. `w`/`h` (pixels) size the frame before the image loads. */
+  img: { src: string; alt: string; credit: string; w: number; h: number };
   /** The opening line, set larger than the rest of the introduction. */
   lead: string;
   intro: string[];
@@ -61,19 +62,21 @@ type Area = {
   projects?: string[];
 };
 
-function shot(slug: string, name: string, focus?: string): Area["img"] {
+function shot(slug: string, name: string): Area["img"] {
   const p = getPhoto(slug, name);
-  return { src: p.lg, alt: `${p.title}, ${p.project}`, credit: p.project, focus };
+  return { src: p.lg, alt: `${p.title}, ${p.project}`, credit: p.project, w: p.w, h: p.h };
 }
 
+// `size` is the artwork file's pixel size; update it if the file in src/assets/services/ changes.
 function withArt(
   name: ServiceArt,
   alt: string,
   fallback: Area["img"],
   credit: string,
+  [w, h]: [number, number],
 ): Area["img"] {
   const src = serviceImage(name);
-  return src ? { src, alt, credit } : fallback;
+  return src ? { src, alt, credit, w, h } : fallback;
 }
 
 const sections: Area[] = [
@@ -82,7 +85,7 @@ const sections: Area[] = [
     pages: ["new-build-electrician-taupo"],
     heading: "New builds",
     service: "New residential build",
-    img: shot("cedar-gables", "03-pavilions-at-dusk", "40% 50%"),
+    img: shot("cedar-gables", "03-pavilions-at-dusk"),
     lead: "A well-designed electrical system should feel like part of the architecture, not something added at the end.",
     intro: [
       "We work alongside homeowners, builders, architects and designers from the early stages of a new build to coordinate lighting, power, climate, automation and future-ready infrastructure. From first fix through to final commissioning, every detail is considered around the way the home will look, feel and function.",
@@ -104,32 +107,6 @@ const sections: Area[] = [
   },
   {
     num: "02",
-    pages: ["renovation-electrician-taupo"],
-    heading: "Renovations & upgrades",
-    service: "Renovation or addition",
-    img: shot("the-arches", "01-lounge"),
-    lead: "Renovations are the opportunity to rethink how a home works — not just how it looks.",
-    intro: [
-      "We coordinate lighting, power, climate and electrical upgrades around the new layout, joinery and finishes, making sure the services feel integrated into the renovation rather than added on afterwards.",
-      "From a single-room update to a full-home transformation, we can work alongside your builder and designer from planning through to final fit-off.",
-    ],
-    bullets: [
-      "Full electrical upgrades for renovations and extensions",
-      "Rewiring and additional circuits",
-      "Switchboard upgrades and safety improvements",
-      "Architectural lighting design",
-      "Kitchen, bathroom and joinery-integrated lighting",
-      "Exterior, deck and landscape lighting",
-      "High-wall and ducted air-conditioning upgrades",
-      "Smart-home and automation additions",
-      "Power, data and EV-ready provisions",
-      "Final testing, fit-off and commissioning",
-    ],
-    tagline: "Reworked with purpose. Finished with detail.",
-    projects: ["the-arches", "walnut-house"],
-  },
-  {
-    num: "03",
     pages: ["lighting-design-taupo"],
     heading: "Lighting design",
     service: "Lighting design",
@@ -157,39 +134,35 @@ const sections: Area[] = [
     projects: ["fold-house", "courtyard-house", "lake-house", "beechtree-studio"],
   },
   {
-    num: "04",
-    pages: ["smart-home-automation-taupo"],
-    heading: "Smart home & automation",
-    service: "Smart home & automation",
-    img: withArt(
-      "smart-home",
-      "Smart-home control modules and circuit protection, neatly wired in a joinery-housed cabinet",
-      shot("black-ridge-house", "04-kitchen-to-living"),
-      "Automation control cabinet",
-    ),
-    lead: "Technology should make a home easier to live in — not more complicated.",
+    num: "03",
+    pages: ["commercial-electrician-taupo"],
+    heading: "Commercial electrical",
+    service: "Commercial fit-out",
+    img: shot("beechtree-studio", "01-front-at-dusk"),
+    lead: "Commercial electrical systems need to be reliable, practical and properly coordinated from the beginning.",
     intro: [
-      "We design and integrate smart-home systems that bring lighting, climate, selected power and automation together into one simple control platform. The system is planned around how the home is actually used, with scenes and controls that feel intuitive from day one.",
-      "Whether it’s a full new-build automation system or selected smart features added during a renovation, we coordinate the technology with the electrical, lighting and air-conditioning so everything works together cleanly.",
+      "We work with business owners, builders, developers and property managers on commercial new builds, fit-outs and upgrades — delivering power, lighting, distribution, climate and safety systems around the way the space needs to operate.",
+      "From offices and showrooms to workshops and commercial premises, we manage the electrical package from planning and first fix through to final testing and commissioning.",
     ],
     bullets: [
-      "Smart-home system design and integration",
-      "Lighting control and scene setting",
-      "Climate control integration",
-      "Automated schedules and routines",
-      "Centralised control of selected electrical systems",
-      "App and wall-control integration",
-      "Smart-home pre-wiring for new builds",
-      "Integration with lighting, air conditioning and selected blinds or devices",
-      "Future-ready electrical infrastructure",
-      "Coordination with builders, designers and joiners",
-      "System setup, testing and handover",
+      "Complete commercial electrical installations",
+      "Office, showroom and workplace fit-outs",
+      "Switchboards, distribution and sub-mains",
+      "Three-phase power and equipment supplies",
+      "Commercial lighting and lighting control",
+      "Emergency and exit lighting",
+      "Workshop and high-bay lighting",
+      "Data and communications cabling",
+      "Air-conditioning and mechanical electrical services",
+      "Electrical upgrades and alterations",
+      "Fault finding, testing and maintenance",
+      "Coordination with builders and other trades",
     ],
-    tagline: "Smarter control. Simpler living.",
-    projects: ["black-ridge-house", "cedar-gables"],
+    tagline: "Built for business. Delivered with detail.",
+    projects: ["beechtree-studio"],
   },
   {
-    num: "05",
+    num: "04",
     pages: ["air-conditioning-heating-taupo"],
     heading: "Air conditioning",
     service: "Air conditioning & heating",
@@ -213,6 +186,32 @@ const sections: Area[] = [
     ],
     tagline: "Comfort, built into the design.",
     projects: ["walnut-house", "cedar-cube-house", "black-gable-house", "twin-pavilions"],
+  },
+  {
+    num: "05",
+    pages: ["renovation-electrician-taupo"],
+    heading: "Renovations & upgrades",
+    service: "Renovation or addition",
+    img: shot("the-arches", "01-lounge"),
+    lead: "Renovations are the opportunity to rethink how a home works — not just how it looks.",
+    intro: [
+      "We coordinate lighting, power, climate and electrical upgrades around the new layout, joinery and finishes, making sure the services feel integrated into the renovation rather than added on afterwards.",
+      "From a single-room update to a full-home transformation, we can work alongside your builder and designer from planning through to final fit-off.",
+    ],
+    bullets: [
+      "Full electrical upgrades for renovations and extensions",
+      "Rewiring and additional circuits",
+      "Switchboard upgrades and safety improvements",
+      "Architectural lighting design",
+      "Kitchen, bathroom and joinery-integrated lighting",
+      "Exterior, deck and landscape lighting",
+      "High-wall and ducted air-conditioning upgrades",
+      "Smart-home and automation additions",
+      "Power, data and EV-ready provisions",
+      "Final testing, fit-off and commissioning",
+    ],
+    tagline: "Reworked with purpose. Finished with detail.",
+    projects: ["the-arches", "walnut-house"],
   },
   {
     num: "06",
@@ -241,34 +240,70 @@ const sections: Area[] = [
   },
   {
     num: "07",
-    pages: ["commercial-electrician-taupo"],
-    heading: "Commercial electrical",
-    service: "Commercial fit-out",
-    img: shot("beechtree-studio", "01-front-at-dusk"),
-    lead: "Commercial electrical systems need to be reliable, practical and properly coordinated from the beginning.",
+    pages: ["smart-home-automation-taupo"],
+    heading: "Smart home & automation",
+    service: "Smart home & automation",
+    img: withArt(
+      "smart-home",
+      "Smart-home control modules and circuit protection, neatly wired in a joinery-housed cabinet",
+      shot("black-ridge-house", "04-kitchen-to-living"),
+      "Automation control cabinet",
+      [1122, 1402],
+    ),
+    lead: "Technology should make a home easier to live in — not more complicated.",
     intro: [
-      "We work with business owners, builders, developers and property managers on commercial new builds, fit-outs and upgrades — delivering power, lighting, distribution, climate and safety systems around the way the space needs to operate.",
-      "From offices and showrooms to workshops and commercial premises, we manage the electrical package from planning and first fix through to final testing and commissioning.",
+      "We design and integrate smart-home systems that bring lighting, climate, selected power and automation together into one simple control platform. The system is planned around how the home is actually used, with scenes and controls that feel intuitive from day one.",
+      "Whether it’s a full new-build automation system or selected smart features added during a renovation, we coordinate the technology with the electrical, lighting and air-conditioning so everything works together cleanly.",
     ],
     bullets: [
-      "Complete commercial electrical installations",
-      "Office, showroom and workplace fit-outs",
-      "Switchboards, distribution and sub-mains",
-      "Three-phase power and equipment supplies",
-      "Commercial lighting and lighting control",
-      "Emergency and exit lighting",
-      "Workshop and high-bay lighting",
-      "Data and communications cabling",
-      "Air-conditioning and mechanical electrical services",
-      "Electrical upgrades and alterations",
-      "Fault finding, testing and maintenance",
-      "Coordination with builders and other trades",
+      "Smart-home system design and integration",
+      "Lighting control and scene setting",
+      "Climate control integration",
+      "Automated schedules and routines",
+      "Centralised control of selected electrical systems",
+      "App and wall-control integration",
+      "Smart-home pre-wiring for new builds",
+      "Integration with lighting, air conditioning and selected blinds or devices",
+      "Future-ready electrical infrastructure",
+      "Coordination with builders, designers and joiners",
+      "System setup, testing and handover",
     ],
-    tagline: "Built for business. Delivered with detail.",
-    projects: ["beechtree-studio"],
+    tagline: "Smarter control. Simpler living.",
+    projects: ["black-ridge-house", "cedar-gables"],
   },
   {
     num: "08",
+    pages: ["ev-charger-installation-taupo"],
+    heading: "EV charging",
+    service: "EV charging",
+    img: withArt(
+      "ev-charging",
+      "Wall-mounted EV charger beside a lit garage at dusk",
+      shot("black-gable-house", "02-driveway-at-dusk"),
+      "EV charging",
+      [1536, 1024],
+    ),
+    lead: "Charging at home or work should feel simple, reliable and properly integrated into the electrical system.",
+    intro: [
+      "We assess the existing supply, charger location and expected usage, then design and install an EV charging solution that suits the property now and leaves room for future demand.",
+      "Where required, we can coordinate load management, switchboard upgrades and solar integration so the charger works efficiently with the rest of the electrical system.",
+    ],
+    bullets: [
+      "Residential EV charger installation",
+      "Commercial and workplace charging points",
+      "Electrical supply and load assessment",
+      "Dedicated circuits and protection",
+      "Load management solutions",
+      "Switchboard upgrades where required",
+      "Solar and EV charging integration",
+      "Charger positioning and cable routing",
+      "Installation, testing and certification",
+      "Future-ready provisions for additional charging",
+    ],
+    tagline: "Charging, built into the way you live.",
+  },
+  {
+    num: "09",
     pages: [],
     heading: "Maintenance & repairs",
     service: "Maintenance & repairs",
@@ -290,36 +325,6 @@ const sections: Area[] = [
       "Minor alterations and upgrade work",
     ],
     tagline: "Reliable work. Properly resolved.",
-  },
-  {
-    num: "09",
-    pages: ["ev-charger-installation-taupo"],
-    heading: "EV charging",
-    service: "EV charging",
-    img: withArt(
-      "ev-charging",
-      "Wall-mounted EV charger beside a lit garage at dusk",
-      shot("black-gable-house", "02-driveway-at-dusk", "72% 50%"),
-      "EV charging",
-    ),
-    lead: "Charging at home or work should feel simple, reliable and properly integrated into the electrical system.",
-    intro: [
-      "We assess the existing supply, charger location and expected usage, then design and install an EV charging solution that suits the property now and leaves room for future demand.",
-      "Where required, we can coordinate load management, switchboard upgrades and solar integration so the charger works efficiently with the rest of the electrical system.",
-    ],
-    bullets: [
-      "Residential EV charger installation",
-      "Commercial and workplace charging points",
-      "Electrical supply and load assessment",
-      "Dedicated circuits and protection",
-      "Load management solutions",
-      "Switchboard upgrades where required",
-      "Solar and EV charging integration",
-      "Charger positioning and cable routing",
-      "Installation, testing and certification",
-      "Future-ready provisions for additional charging",
-    ],
-    tagline: "Charging, built into the way you live.",
   },
 ];
 
@@ -402,15 +407,28 @@ function AreasOfExpertise() {
                     flip && "lg:order-2",
                   )}
                 >
-                  <div className="relative aspect-[4/3] overflow-hidden border-[8px] border-frame bg-frame md:border-[10px] lg:aspect-[4/5] lg:max-h-[calc(100svh-160px)] lg:w-full">
+                  {/* The frame takes the photograph's own shape, so the whole image is seen;
+                      tall ones are capped to --cap high and sit against the page edge. The width
+                      is worked out from the photo's proportions, so the frame is the right size
+                      before the image arrives and the page doesn't jump as photos load. */}
+                  <div
+                    className={cn(
+                      "relative mx-auto overflow-hidden border-[length:var(--bw)] border-frame bg-frame [--bw:8px] [--cap:75svh] md:[--bw:10px] lg:[--cap:calc(100svh-180px)]",
+                      flip ? "lg:mr-0" : "lg:ml-0",
+                    )}
+                    style={{
+                      width: `min(100%, calc(var(--cap) * ${s.img.w / s.img.h} + 2 * var(--bw)))`,
+                    }}
+                  >
                     <img
                       src={s.img.src}
                       alt={s.img.alt}
+                      width={s.img.w}
+                      height={s.img.h}
                       loading={i < 2 ? "eager" : "lazy"}
                       decoding="async"
-                      style={{ objectPosition: s.img.focus }}
                       className={cn(
-                        "h-full w-full object-cover transition-[filter,transform] duration-[1400ms] [transition-timing-function:var(--ease-out-expo)]",
+                        "block h-auto w-full transition-[filter,transform] duration-[1400ms] [transition-timing-function:var(--ease-out-expo)]",
                         lit
                           ? "scale-100 [filter:brightness(1)_saturate(1)]"
                           : "scale-[1.04] [filter:brightness(0.45)_saturate(0.6)]",

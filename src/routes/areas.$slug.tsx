@@ -2,6 +2,7 @@ import { createFileRoute, Link, notFound } from "@tanstack/react-router";
 import { ArrowRight, ArrowUpRight, Phone } from "lucide-react";
 import { SiteLayout } from "@/components/SiteLayout";
 import { Button } from "@/components/ui/button";
+import { BrandText } from "@/components/brand/BrandName";
 import { Reveal, SplitReveal } from "@/components/motion/Reveal";
 import { ProjectCards } from "@/components/ProjectCards";
 import { AREAS, getArea } from "@/lib/areas";
@@ -77,9 +78,13 @@ function AreaPage() {
         </SplitReveal>
         <Reveal delay={0.45} className="mt-10 grid gap-10 md:grid-cols-12 md:items-end">
           <div className="space-y-5 text-[1.05rem] leading-relaxed text-ink-soft md:col-span-7">
-            <p className="text-[1.15rem] text-ink">{lede}</p>
+            <p className="text-[1.15rem] text-ink">
+              <BrandText text={lede} />
+            </p>
             {rest.map((p) => (
-              <p key={p.slice(0, 30)}>{p}</p>
+              <p key={p.slice(0, 30)}>
+                <BrandText text={p} />
+              </p>
             ))}
           </div>
           <div className="flex flex-wrap gap-3 md:col-span-5 md:justify-end">

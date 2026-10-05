@@ -7,7 +7,7 @@ export const UPLOAD_LIMITS = {
 export const UPLOAD_ACCEPT =
   "image/jpeg,image/png,image/webp,image/heic,image/heif,.heic,.heif,application/pdf";
 
-const MAX_EDGE = 2400;
+const MAX_EDGE = 2000;
 
 // Some browsers report HEIC photos with no type at all.
 function withType(file: File): File {
@@ -25,7 +25,7 @@ function withType(file: File): File {
 }
 
 /**
- * Phone photos are shrunk to 2400px JPEGs before upload: quicker to send, well
+ * Phone photos are shrunk to 2000px JPEGs before upload: quicker to send, well
  * within the limits, and re-encoding drops EXIF (including GPS). Anything the
  * browser can't decode (e.g. HEIC outside Safari) or a PDF is sent as-is.
  */
@@ -45,7 +45,7 @@ export async function prepareUpload(input: File): Promise<File> {
     canvas.getContext("2d")?.drawImage(bitmap, 0, 0, w, h);
     bitmap.close();
     const blob = await new Promise<Blob | null>((resolve) =>
-      canvas.toBlob(resolve, "image/jpeg", 0.82),
+      canvas.toBlob(resolve, "image/jpeg", 0.8),
     );
     if (!blob) return file;
     return new File([blob], `${file.name.replace(/\.[^.]+$/, "")}.jpg`, { type: "image/jpeg" });

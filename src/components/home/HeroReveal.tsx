@@ -4,14 +4,15 @@ import { photos } from "@/lib/photos";
 import { onIntroDone } from "@/lib/intro";
 
 /*
-  The hero surface: the warm stone of the Balance sign, lit by the pointer like a raking
-  light. Moving across it leaves a soft trail that parts the stone — embossed, lit edges
-  and all — to reveal the lit room beneath, then slowly settles back.
+  The hero surface: the warm stone of the Balance sign, with a soft spotlight that follows
+  the pointer. Inside the pool of light the lit room beneath shows through; its edge is
+  wide and feathered, fading back into warmly lit stone.
 
-  How it works: pointer movement paints soft blobs into a small offscreen canvas (the
-  "trail"), which fades a little every frame. A WebGL shader reads that trail as a height
-  field: where it's high the photograph shows through; its slope shades the stone lip
-  against the light. With no WebGL, or reduced motion, a still stone-washed photo stands in.
+  How it works: the light eases towards the pointer (or, with no pointer, wanders slowly;
+  it also sweeps the headline when the intro ends and sweeps down the hero on scroll).
+  A WebGL shader works out each pixel's distance from it: close in, the photograph; further
+  out, stone warmed by the light's halo. With no WebGL, or reduced motion, a still
+  stone-washed photo stands in.
 */
 
 const FALLBACK_IMAGE = getPhoto("courtyard-house", "02-living-room").lg;
@@ -26,13 +27,13 @@ const FRAG = `
 precision highp float;
 varying vec2 vUv;
 uniform sampler2D uPhoto;
-uniform sampler2D uTrail;
 uniform vec2 uRes;
 uniform float uImgAspect;
 uniform vec2 uLight;
 uniform vec2 uDrift;
 uniform float uTime;
 uniform float uFade;
+uniform float uRadius;
 
 float hash(vec2 p) { return fract(sin(dot(p, vec2(127.1, 311.7))) * 43758.5453); }
 float noise(vec2 p) {
@@ -53,30 +54,19 @@ vec2 cover(vec2 uv) {
   return (uv - 0.5) * s / 1.04 + 0.5 + uDrift;
 }
 
-float trail(vec2 uv) { return texture2D(uTrail, uv).a; }
-
 void main() {
   vec2 uv = vUv;
   float aspect = uRes.x / uRes.y;
 
-  // Organic edges: look the trail up through a slowly moving noise warp.
-  vec2 warp = vec2(fbm(uv * 3.5 + uTime * 0.035), fbm(uv * 3.5 + 7.3 - uTime * 0.03)) - 0.5;
-  vec2 tuv = uv + warp * 0.035;
-  vec2 e = vec2(1.6 / 220.0, 1.6 / 220.0 * aspect);
-  float h = trail(tuv);
-  float hx = trail(tuv + vec2(e.x, 0.0)) - trail(tuv - vec2(e.x, 0.0));
-  float hy = trail(tuv + vec2(0.0, e.y)) - trail(tuv - vec2(0.0, e.y));
+  // Distance from the light, in screen-height units so the pool stays round.
+  vec2 p = vec2(uv.x * aspect, uv.y);
+  float d = distance(p, vec2(uLight.x * aspect, uLight.y));
   float grain = fbm(uv * vec2(aspect, 1.0) * 9.0);
-  float reveal = smoothstep(0.2, 0.62, h + (grain - 0.5) * 0.22);
 
-  // Raking light from the pointer, a little above the surface.
-  vec3 p = vec3(uv.x * aspect, uv.y, 0.0);
-  vec3 L = normalize(vec3(uLight.x * aspect, uLight.y, 0.32) - p);
-  vec3 n = normalize(vec3(-hx * 6.0, -hy * 6.0, 1.0));
-  float diff = clamp(dot(n, L), 0.0, 1.0);
-  float d = distance(p.xy, vec2(uLight.x * aspect, uLight.y));
-  float pool = exp(-d * d * 5.5);
-  float slope = clamp(length(vec2(hx, hy)) * 7.0, 0.0, 1.0);
+  // A soft spotlight: the room shows fully in the middle and fades out over a wide,
+  // feathered edge. The halo reaches a little further than the reveal, warming the stone.
+  float reveal = 1.0 - smoothstep(uRadius * 0.2, uRadius, d);
+  float pool = exp(-(d * d) / (uRadius * uRadius) * 1.3);
 
   vec3 photo = texture2D(uPhoto, cover(uv)).rgb;
   float lum = dot(photo, vec3(0.299, 0.587, 0.114));
@@ -88,21 +78,15 @@ void main() {
   stone += (hash(uv * uRes + fract(uTime)) - 0.5) * 0.028 + (grain - 0.5) * 0.05;
   stone = mix(stone, stone * (0.7 + lum * 0.42), 0.16);
   vec3 warm = vec3(1.0, 0.86, 0.66);
-  vec3 stoneLit = stone * (0.93 + 0.14 * pool) + warm * 0.045 * pool;
-  stoneLit *= mix(1.0, 0.8 + 0.42 * diff, slope);
+  vec3 stoneLit = stone * (0.93 + 0.12 * pool) + warm * 0.07 * pool;
 
-  // The room: shaded where the stone lip overhangs it, warmed by the light.
-  vec3 room = photo * (1.0 + 0.14 * pool);
-  room *= mix(0.62, 1.0, smoothstep(0.25, 0.75, h));
+  // The room, a touch brighter where the light is strongest.
+  vec3 room = photo * (0.92 + 0.16 * pool);
 
-  float rim = smoothstep(0.0, 0.35, reveal) * (1.0 - smoothstep(0.55, 1.0, reveal));
-  vec3 col = mix(stoneLit, room, reveal) + vec3(1.0, 0.91, 0.76) * rim * 0.12 * (0.4 + pool);
-
+  vec3 col = mix(stoneLit, room, reveal);
   gl_FragColor = vec4(col, uFade);
 }
 `;
-
-type Splat = { x: number; y: number; r: number; a: number };
 
 export function HeroReveal({ host }: { host: RefObject<HTMLElement | null> }) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -149,8 +133,8 @@ export function HeroReveal({ host }: { host: RefObject<HTMLElement | null> }) {
     const uDrift = u("uDrift");
     const uTime = u("uTime");
     const uFade = u("uFade");
+    const uRadius = u("uRadius");
     gl.uniform1i(u("uPhoto"), 0);
-    gl.uniform1i(u("uTrail"), 1);
 
     const makeTexture = (unit: number) => {
       const t = gl.createTexture();
@@ -163,12 +147,8 @@ export function HeroReveal({ host }: { host: RefObject<HTMLElement | null> }) {
       return t;
     };
     const photoTex = makeTexture(0);
-    const trailTex = makeTexture(1);
     gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL, true);
 
-    // The trail: a small canvas, so painting and fading it each frame is nearly free.
-    const trail = document.createElement("canvas");
-    const tctx = trail.getContext("2d")!;
     let width = 1;
     let height = 1;
     const resize = () => {
@@ -178,34 +158,20 @@ export function HeroReveal({ host }: { host: RefObject<HTMLElement | null> }) {
       height = Math.max(1, Math.round(rect.height));
       canvas.width = Math.round(width * dpr);
       canvas.height = Math.round(height * dpr);
-      trail.width = 220;
-      trail.height = Math.max(1, Math.round((220 * height) / width));
       gl.viewport(0, 0, canvas.width, canvas.height);
       gl.uniform2f(uRes, width, height);
+      // The pool's radius as a share of the hero's height: wider on phones.
+      gl.uniform1f(uRadius, width < 768 ? 0.3 : 0.24);
     };
     resize();
     const ro = new ResizeObserver(resize);
     ro.observe(canvas);
 
-    const splats: Splat[] = [];
-    const paint = ({ x, y, r, a }: Splat) => {
-      const px = x * trail.width;
-      const py = (1 - y) * trail.height;
-      const rp = r * trail.width;
-      const g = tctx.createRadialGradient(px, py, 0, px, py, rp);
-      g.addColorStop(0, `rgba(255,255,255,${a})`);
-      g.addColorStop(0.55, `rgba(255,255,255,${a * 0.45})`);
-      g.addColorStop(1, "rgba(255,255,255,0)");
-      tctx.fillStyle = g;
-      tctx.fillRect(px - rp, py - rp, rp * 2, rp * 2);
-    };
-
     // Pointer: positions in 0..1 (y up), with the light easing towards them.
     const pointer = { x: 0.5, y: 0.55, has: false, last: 0 };
     const light = { x: 0.5, y: 0.6 };
-    let prev: { x: number; y: number } | null = null;
-    // Trace a pointer or finger position (client coordinates) into the trail.
-    const trace = (clientX: number, clientY: number, boost = 1) => {
+    // Point the light at a pointer or finger position (client coordinates).
+    const trace = (clientX: number, clientY: number) => {
       const rect = canvas.getBoundingClientRect();
       const x = (clientX - rect.left) / rect.width;
       const y = 1 - (clientY - rect.top) / rect.height;
@@ -214,41 +180,24 @@ export function HeroReveal({ host }: { host: RefObject<HTMLElement | null> }) {
       pointer.y = y;
       pointer.has = true;
       pointer.last = performance.now();
-      if (prev) {
-        const dx = (x - prev.x) * (width / height);
-        const dy = y - prev.y;
-        const dist = Math.hypot(dx, dy);
-        const steps = Math.min(24, Math.ceil(dist / 0.012));
-        const speed = Math.min(1, dist * 14);
-        for (let i = 1; i <= steps; i++) {
-          const t = i / steps;
-          splats.push({
-            x: prev.x + (x - prev.x) * t,
-            y: prev.y + (y - prev.y) * t,
-            r: (0.07 + speed * 0.06) * boost,
-            a: 0.16 + speed * 0.1,
-          });
-        }
-      }
-      prev = { x, y };
     };
     const onMove = (e: PointerEvent) => {
       if (e.pointerType === "mouse" || e.pointerType === "pen") trace(e.clientX, e.clientY);
     };
     const onLeave = () => {
-      prev = null;
+      pointer.last = 0; // let the light wander again
     };
-    // Touch: a finger dragged across the hero paints the trail, wider than a cursor.
+    // Touch: the light follows a finger dragged across the hero.
     const onTouch = (e: TouchEvent) => {
       const t = e.touches[0];
-      if (t) trace(t.clientX, t.clientY, 2.2);
+      if (t) trace(t.clientX, t.clientY);
     };
     section.addEventListener("pointermove", onMove, { passive: true });
     section.addEventListener("pointerleave", onLeave);
     section.addEventListener("touchmove", onTouch, { passive: true });
     section.addEventListener("touchend", onLeave);
 
-    // Scrolling: a beam of light sweeps an S through the hero as it leaves the screen,
+    // Scrolling: the light sweeps an S through the hero as it leaves the screen,
     // so phones (no cursor) and trackpad-scrollers both see the room uncovered.
     let sweep = 0;
     const sweepAt = (k: number) => ({
@@ -259,12 +208,6 @@ export function HeroReveal({ host }: { host: RefObject<HTMLElement | null> }) {
       const rect = section.getBoundingClientRect();
       const k = Math.min(1, Math.max(0, -rect.top / (rect.height * 0.7)));
       if (k <= sweep + 0.002) return;
-      const narrow = width < 768;
-      const steps = Math.min(30, Math.ceil((k - sweep) / 0.008));
-      for (let i = 1; i <= steps; i++) {
-        const at = sweepAt(sweep + ((k - sweep) * i) / steps);
-        splats.push({ x: at.x, y: at.y, r: narrow ? 0.26 : 0.13, a: 0.2 });
-      }
       const head = sweepAt(k);
       pointer.x = head.x;
       pointer.y = head.y;
@@ -290,52 +233,27 @@ export function HeroReveal({ host }: { host: RefObject<HTMLElement | null> }) {
       raf = requestAnimationFrame(frame);
       const t = (now - t0) / 1000;
 
-      // Settle: fade the whole trail a touch each frame.
-      tctx.globalCompositeOperation = "destination-out";
-      tctx.fillStyle = "rgba(0,0,0,0.018)";
-      tctx.fillRect(0, 0, trail.width, trail.height);
-      tctx.globalCompositeOperation = "lighter";
-
+      // Where the light is heading: the intro sweep, then the pointer, else a slow wander.
+      let target = pointer;
+      let ease = 0.12;
       if (introStart > 0) {
         const k = (now - introStart) / 2600;
         if (k <= 1) {
-          const ease = 1 - Math.pow(1 - k, 3);
-          splats.push({
-            x: 0.08 + ease * 0.7,
-            y: 0.5 + Math.sin(ease * 3.1) * 0.08,
-            r: 0.12,
-            a: 0.2,
-          });
+          const e = 1 - Math.pow(1 - k, 3);
+          target = { ...pointer, x: 0.08 + e * 0.7, y: 0.5 + Math.sin(e * 3.1) * 0.08 };
+          ease = 0.2;
         } else introStart = -1;
       }
-
-      // No pointer for a while (or a touch screen): a slow wandering light keeps it alive.
-      const idle = !pointer.has || now - pointer.last > 3500;
-      if (idle && introStart < 0) {
-        const gx = 0.5 + Math.sin(t * 0.21) * 0.32 + Math.sin(t * 0.07) * 0.08;
-        const gy = 0.5 + Math.sin(t * 0.17 + 1.3) * 0.22;
-        light.x += (gx - light.x) * 0.02;
-        light.y += (gy - light.y) * 0.02;
-        // Narrow (touch) screens get a broader, brighter wandering light.
-        const narrow = width < 768;
-        if (Math.floor(now / 70) % 2 === 0) {
-          splats.push({
-            x: light.x,
-            y: light.y,
-            r: narrow ? 0.24 : 0.11,
-            a: narrow ? 0.085 : 0.05,
-          });
-        }
-      } else {
-        light.x += (pointer.x - light.x) * 0.12;
-        light.y += (pointer.y - light.y) * 0.12;
+      if (introStart < 0 && (!pointer.has || now - pointer.last > 3500)) {
+        target = {
+          ...pointer,
+          x: 0.5 + Math.sin(t * 0.21) * 0.32 + Math.sin(t * 0.07) * 0.08,
+          y: 0.5 + Math.sin(t * 0.17 + 1.3) * 0.22,
+        };
+        ease = 0.02;
       }
-
-      while (splats.length) paint(splats.shift()!);
-
-      gl.activeTexture(gl.TEXTURE1);
-      gl.bindTexture(gl.TEXTURE_2D, trailTex);
-      gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, trail);
+      light.x += (target.x - light.x) * ease;
+      light.y += (target.y - light.y) * ease;
 
       if (ready) fade = Math.min(1, fade + 0.03);
       gl.uniform2f(uLight, light.x, light.y);

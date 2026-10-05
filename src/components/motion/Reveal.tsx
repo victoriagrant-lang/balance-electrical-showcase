@@ -1,5 +1,6 @@
 import { useRef, type ElementType, type ReactNode, type CSSProperties } from "react";
 import { cn } from "@/lib/utils";
+import { BalanceWordmark } from "@/components/brand/BrandName";
 import { gsap, SplitText, prefersReducedMotion, useGSAP } from "@/lib/gsap";
 
 type RevealProps = {
@@ -142,8 +143,16 @@ export function LightWords({ text, className, as: Tag = "p", glow = false, id }:
   return (
     <Tag ref={ref} id={id} className={cn(className)} aria-label={text}>
       {words.map((w, i) => (
-        <span key={i} aria-hidden data-word className="inline-block will-change-[opacity]">
-          {w}
+        <span
+          key={i}
+          aria-hidden
+          data-word
+          className={cn(
+            "inline-block will-change-[opacity]",
+            words[i + 1] === "Balance" && words[i + 2]?.startsWith("Electrical") && "pr-[0.4em]",
+          )}
+        >
+          {w === "Balance" && words[i + 1]?.startsWith("Electrical") ? <BalanceWordmark /> : w}
           {i < words.length - 1 ? " " : ""}
         </span>
       ))}
