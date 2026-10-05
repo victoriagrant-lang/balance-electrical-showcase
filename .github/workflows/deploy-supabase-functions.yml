@@ -1,0 +1,28 @@
+# Deploys the Supabase Edge Functions (enquiry form + private enquiries list) whenever
+# they change on main. Needs one repository secret: SUPABASE_ACCESS_TOKEN — a Supabase
+# personal access token (supabase.com → Account → Access Tokens).
+name: Deploy Supabase functions
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "supabase/functions/**"
+      - "supabase/config.toml"
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    env:
+      SUPABASE_ACCESS_TOKEN: ${{ secrets.SUPABASE_ACCESS_TOKEN }}
+      PROJECT_REF: nrhfbcqmfsezlkxnzshq
+    steps:
+      - uses: actions/checkout@v4
+      - uses: supabase/setup-cli@v1
+        with:
+          version: latest
+      - name: Deploy send-balance-enquiry
+        run: supabase functions deploy send-balance-enquiry --project-ref "$PROJECT_REF" --use-api
+      - name: Deploy enquiries-admin
+        run: supabase functions deploy enquiries-admin --project-ref "$PROJECT_REF" --use-api

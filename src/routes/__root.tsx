@@ -6,6 +6,7 @@ import {
   useRouter,
   HeadContent,
   Scripts,
+  type ErrorComponentProps,
 } from "@tanstack/react-router";
 import { useEffect, type ReactNode } from "react";
 
@@ -16,6 +17,7 @@ import { CursorLight } from "@/components/motion/CursorLight";
 import { Preloader } from "@/components/motion/Preloader";
 import { LogoMark } from "@/components/brand/Logo";
 import { photos } from "@/lib/photos";
+import { siteGraph } from "@/lib/seo";
 
 function NotFoundComponent() {
   return (
@@ -46,7 +48,7 @@ function NotFoundComponent() {
   );
 }
 
-function ErrorComponent({ error, reset }: { error: Error; reset: () => void }) {
+function ErrorComponent({ error, reset }: ErrorComponentProps) {
   console.error(error);
   const router = useRouter();
   useEffect(() => {
@@ -95,15 +97,17 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       {
         name: "description",
         content:
-          "Victoria Grant is a registered electrician based in Taupō. New builds, renovations, solar installation, air-conditioning, EV chargers and commercial electrical work across the Taupō district.",
+          "Victoria Grant is a registered electrician in Taupō. Lighting design, new builds, renovations, heat pumps and ducted heating integrated into joinery, solar, EV chargers, smart homes and commercial electrical across the Taupō district.",
       },
       { name: "author", content: "Balance Electrical" },
+      { property: "og:site_name", content: "Balance Electrical" },
+      { property: "og:locale", content: "en_NZ" },
       { name: "theme-color", content: "#a69486" },
       { property: "og:title", content: "Balance Electrical — Electrician Taupō" },
       {
         property: "og:description",
         content:
-          "Considered residential and commercial electrical work across Taupō and the Taupō district — lighting, new builds, solar and air-conditioning.",
+          "Considered residential and commercial electrical work across Taupō and the Taupō district — lighting design, new builds, climate systems, solar and smart homes.",
       },
       { property: "og:type", content: "website" },
       { property: "og:image", content: OG_IMAGE },
@@ -120,6 +124,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
         href: "https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Josefin+Sans:wght@300;400;600&display=swap",
       },
     ],
+    scripts: [{ type: "application/ld+json", children: JSON.stringify(siteGraph()) }],
   }),
   shellComponent: RootShell,
   component: RootComponent,
@@ -129,7 +134,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
 
 function RootShell({ children }: { children: ReactNode }) {
   return (
-    <html lang="en">
+    <html lang="en-NZ">
       <head>
         <HeadContent />
       </head>

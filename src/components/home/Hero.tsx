@@ -4,9 +4,9 @@ import { ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { gsap, SplitText, prefersReducedMotion, useGSAP } from "@/lib/gsap";
 import { onIntroDone } from "@/lib/intro";
-import { SpotlightFilm } from "./SpotlightFilm";
+import { HeroReveal } from "./HeroReveal";
 
-/* The pointer quietly uncovers the project image beneath the headline. */
+/* The pointer parts the stone to uncover the lit room beneath the headline. */
 export function Hero() {
   const root = useRef<HTMLElement>(null);
 
@@ -61,11 +61,10 @@ export function Hero() {
   return (
     <section
       ref={root}
-      data-night
       className="relative isolate flex min-h-[100svh] flex-col overflow-hidden bg-stone-pale text-ink"
       aria-labelledby="hero-title"
     >
-      <SpotlightFilm host={root} />
+      <HeroReveal host={root} />
 
       <div
         data-hero-inner
@@ -83,10 +82,11 @@ export function Hero() {
           <h1
             id="hero-title"
             data-hero-title
-            className="display-caps text-balance text-[clamp(1.7rem,5.6vw,5.5rem)] leading-[1.1] tracking-[0.03em] text-ink"
+            className="display-caps text-[clamp(1.55rem,4.3vw,4.4rem)] leading-[1.08] tracking-[0.03em] text-ink"
             style={{ letterSpacing: "0.03em" }}
           >
-            Planned, precise.
+            <span className="block">Electrical, lighting &amp; air-conditioning.</span>
+            <span className="block text-ink/55">Considered together.</span>
           </h1>
 
           <div className="mt-10 grid gap-10 md:mt-14 md:grid-cols-12 md:items-end">
@@ -99,9 +99,9 @@ export function Hero() {
             </div>
             <div data-hero-fade className="md:col-span-5 md:col-start-8">
               <p className="max-w-md text-[1.02rem] leading-relaxed text-ink-soft">
-                Electrical work and lighting design for homes and businesses across Taupō. From new
-                builds and renovations to commercial fit-outs, Balance Electrical brings careful
-                planning and attention to detail to every project.
+                From high-end new builds and renovations to lighting design, smart-home integration,
+                air conditioning and solar, we deliver considered systems that work seamlessly with
+                the architecture.
               </p>
               <div className="mt-8 flex flex-wrap gap-3">
                 <Button asChild variant="lux" size="xl">
@@ -126,10 +126,11 @@ export function Hero() {
             <span data-switch-knob className="h-3 w-full rounded-[2px] bg-ink/70" />
           </span>
           <span className="eyebrow text-[9px] leading-relaxed text-ink-soft">
-            <span className="hidden [@media(min-width:768px)_and_(hover:hover)_and_(pointer:fine)_and_(prefers-reduced-motion:no-preference)]:inline">
+            <span className="hidden [@media(hover:hover)_and_(pointer:fine)]:inline">
               Move your cursor to reveal
-              <br />
             </span>
+            <span className="[@media(hover:hover)_and_(pointer:fine)]:hidden">Drag to reveal</span>
+            <br />
             Scroll to explore
           </span>
           <span className="relative ml-2 hidden h-10 w-px overflow-hidden bg-ink/15 md:block">

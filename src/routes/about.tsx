@@ -10,9 +10,13 @@ import { gsap, prefersReducedMotion, useGSAP } from "@/lib/gsap";
 import { onIntroDone } from "@/lib/intro";
 import { EwrbLogo } from "@/components/EwrbLogo";
 import { PORTFOLIO } from "@/lib/portfolio";
+import { GoogleReviewsBadge, Testimonials, reviewSchema } from "@/components/Reviews";
+import { getGoogleReviews } from "@/lib/google-reviews";
+import { jsonLd } from "@/lib/seo";
 
 export const Route = createFileRoute("/about")({
-  head: () => ({
+  loader: () => getGoogleReviews(),
+  head: ({ loaderData }) => ({
     meta: [
       { title: "About Victoria Grant | Registered Electrician Taupō | Balance Electrical" },
       {
@@ -32,6 +36,7 @@ export const Route = createFileRoute("/about")({
       { property: "og:image", content: photos.victoria },
     ],
     links: [{ rel: "canonical", href: "https://www.balanceelectrical.co.nz/about" }],
+    scripts: [reviewSchema(loaderData)].filter((x) => x !== null).map((x) => jsonLd([x])),
   }),
   component: About,
 });
@@ -52,6 +57,7 @@ const VALUES = [
 ];
 
 function About() {
+  const google = Route.useLoaderData();
   return (
     <SiteLayout>
       <AboutHero />
@@ -82,10 +88,11 @@ function About() {
                 need, explain the options and coordinate the work with your wider project.
               </p>
               <p className="md:col-span-2">
-                Her experience includes homes in Kinloch, the Oakleaf Residence and Beechtree
-                Building’s two-storey headquarters, alongside solar installations, air-conditioning
-                and pool wiring. Across these projects, the focus is the same: electrical work
-                planned around the property and the people who use it.
+                Her work ranges from Cedar Gables — Balance’s own showhome in Kinloch — and the Gold
+                Award-winning Courtyard House to Beechtree Studio’s two-storey headquarters,
+                alongside solar, heat pumps and ducted climate systems, smart-home control and pool
+                wiring. Across every project the focus is the same: electrical work planned around
+                the property and the people who use it.
               </p>
             </Reveal>
             <Reveal className="mt-14 flex flex-wrap gap-4">
@@ -103,20 +110,23 @@ function About() {
                 </span>
               </a>
               <Link
-                to="/portfolio"
-                hash="oakleaf-residence"
+                to="/portfolio/$slug"
+                params={{ slug: "courtyard-house" }}
                 className="group inline-flex max-w-md items-center gap-4 border border-ink/20 px-5 py-4 transition-[border-color,box-shadow] duration-500 hover:border-ink/50 hover:shadow-[0_20px_50px_-30px_rgb(28_26_24/0.6)]"
               >
                 <Award className="size-8 shrink-0" strokeWidth={1.1} />
                 <span className="text-sm leading-snug">
-                  Electrician on the Oakleaf Residence — Gold Award, Master Builders House of the
-                  Year 2025, Bay of Plenty & Central Plateau
+                  Electrician on Courtyard House — Gold Award, Master Builders House of the Year
+                  2025, Bay of Plenty & Central Plateau
                 </span>
               </Link>
+              <GoogleReviewsBadge google={google} />
             </Reveal>
           </div>
         </div>
       </section>
+
+      <Testimonials google={google} className="pt-28 md:pt-40" />
 
       <Values />
 
@@ -200,24 +210,15 @@ function AboutHero() {
     >
       <div className="grid items-end gap-14 md:grid-cols-12">
         <div className="md:col-span-7">
-          <p className="eyebrow text-ink-soft">About Victoria</p>
+          <p className="eyebrow text-ink-soft">The Team</p>
           <SplitReveal
             as="h1"
             immediate
             delay={0.3}
             className="display-caps mt-6 text-[clamp(2.6rem,6.3vw,6.4rem)] leading-[0.95] tracking-[0.08em]!"
           >
-            Meet Victoria.
+            Meet the team.
           </SplitReveal>
-          <Reveal delay={0.6}>
-            <p className="eyebrow mt-10 text-ink-soft">
-              Owner-operator · Registered electrician · Taupō
-            </p>
-            <p className="mt-6 max-w-xl text-[1.05rem] leading-relaxed text-ink-soft">
-              The person behind Balance Electrical — and your point of contact for electrical work,
-              lighting and air-conditioning across Taupō and the surrounding district.
-            </p>
-          </Reveal>
         </div>
         <div className="relative md:col-span-5 md:col-start-8">
           {/* picture light */}
@@ -342,12 +343,7 @@ function Values() {
   );
 }
 
-const RECENT = [
-  "oakleaf-residence",
-  "beechtree-building-headquarters",
-  "sparrowhawk",
-  "the-sisters",
-];
+const RECENT = ["courtyard-house", "beechtree-studio", "cedar-gables", "twin-pavilions"];
 
 /** Four chapters from the portfolio, so the story ends on the work itself. */
 function RecentWork() {

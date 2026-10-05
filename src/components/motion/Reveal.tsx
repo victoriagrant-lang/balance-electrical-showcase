@@ -108,13 +108,14 @@ type LightWordsProps = {
   as?: ElementType;
   /** Night sections: lit words also pick up a warm glow */
   glow?: boolean;
+  id?: string;
 };
 
 /**
  * Scroll-scrubbed: each word switches on as you read down the paragraph,
  * like a dimmer being turned up across a line of downlights.
  */
-export function LightWords({ text, className, as: Tag = "p", glow = false }: LightWordsProps) {
+export function LightWords({ text, className, as: Tag = "p", glow = false, id }: LightWordsProps) {
   const ref = useRef<HTMLElement>(null);
 
   useGSAP(
@@ -139,7 +140,7 @@ export function LightWords({ text, className, as: Tag = "p", glow = false }: Lig
 
   const words = text.split(" ");
   return (
-    <Tag ref={ref} className={cn(className)} aria-label={text}>
+    <Tag ref={ref} id={id} className={cn(className)} aria-label={text}>
       {words.map((w, i) => (
         <span key={i} aria-hidden data-word className="inline-block will-change-[opacity]">
           {w}

@@ -1,15 +1,13 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { useEffect, useMemo, useState } from "react";
+import { useState, type CSSProperties } from "react";
 import { ArrowRight } from "lucide-react";
 import { SiteLayout } from "@/components/SiteLayout";
 import { Button } from "@/components/ui/button";
 import { Reveal, SplitReveal } from "@/components/motion/Reveal";
-import { TorchArea } from "@/components/motion/Torch";
 import { Lightbox, type Shot } from "@/components/Lightbox";
 import { photos } from "@/lib/photos";
-import { PORTFOLIO, photoTags } from "@/lib/portfolio";
+import { getPhoto, getProject } from "@/lib/portfolio";
 import { cn } from "@/lib/utils";
-import { loadRemotePortfolioProjects, mergeRemotePortfolio } from "@/lib/remotePortfolio";
 
 export const Route = createFileRoute("/projects")({
   head: () => ({
@@ -18,7 +16,7 @@ export const Route = createFileRoute("/projects")({
       {
         name: "description",
         content:
-          "Explore Balance Electrical’s gallery of lighting, electrical installations, solar and air-conditioning. Browse photographs by type of work or view projects after dark.",
+          "The work, up close: architectural lighting, integrated electrical, climate systems, smart-home technology and solar from Balance Electrical’s projects in Taupō. Explore by discipline or switch to After Dark.",
       },
       { name: "robots", content: "index, follow, max-image-preview:large" },
       { name: "geo.region", content: "NZ-WKO" },
@@ -36,81 +34,164 @@ export const Route = createFileRoute("/projects")({
   component: Gallery,
 });
 
-type Tile = Shot & { tags: string[]; smSrc: string; w?: number; h?: number; afterDark: boolean };
+type Discipline = "Lighting" | "Electrical" | "Air-Conditioning" | "Smart Home" | "Solar";
+
+type Pick = {
+  slug: string;
+  name: string;
+  /** The detail the photograph is about, shown above the project name. */
+  label: string;
+  tags: Discipline[];
+  /** Taken at dusk or after dark. */
+  dark?: boolean;
+};
 
 // The photographs shown on the gallery page, in display order.
-const GALLERY_SELECTION: [string, string][] = [
-  ["the-curve-house", "08"],
-  ["oakleaf-residence", "06"],
-  ["mapleleaf", "03"],
-  ["the-lakehouse", "20"],
-  ["the-lakehouse", "21"],
-  ["sparrowhawk", "11"],
-  ["sparrowhawk", "12"],
-  ["sparrowhawk", "13"],
+const GALLERY: Pick[] = [
+  {
+    slug: "fold-house",
+    name: "06-stair",
+    label: "Integrated stair lighting",
+    tags: ["Lighting", "Electrical"],
+  },
+  {
+    slug: "courtyard-house",
+    name: "06",
+    label: "Linear joinery lighting",
+    tags: ["Lighting", "Electrical"],
+  },
+  {
+    slug: "cedar-gables",
+    name: "13",
+    label: "Sculptural kitchen lighting",
+    tags: ["Lighting", "Electrical"],
+  },
+  {
+    slug: "walnut-house",
+    name: "01-kitchen",
+    label: "Joinery-integrated climate",
+    tags: ["Air-Conditioning", "Electrical"],
+  },
+  { slug: "lake-house", name: "03-gallery", label: "Cedar ceiling cove", tags: ["Lighting"] },
+  {
+    slug: "beechtree-studio",
+    name: "03-stairwell-pendants",
+    label: "Stairwell feature lighting",
+    tags: ["Lighting", "Electrical"],
+  },
+  {
+    slug: "the-arches",
+    name: "01-lounge",
+    label: "Illuminated display niches",
+    tags: ["Lighting", "Electrical"],
+  },
+  {
+    slug: "cedar-gables",
+    name: "08",
+    label: "Integrated wardrobe lighting",
+    tags: ["Lighting", "Electrical"],
+  },
+  {
+    slug: "pool-courtyard",
+    name: "06-shower-niche",
+    label: "Illuminated shower niche",
+    tags: ["Lighting", "Electrical"],
+  },
+  {
+    slug: "black-ridge-house",
+    name: "03-kitchen",
+    label: "Centralised lighting & climate control",
+    tags: ["Smart Home", "Electrical"],
+  },
+  {
+    slug: "cedar-cube-house",
+    name: "05-integrated-climate",
+    label: "Linear ducted grilles",
+    tags: ["Air-Conditioning", "Electrical"],
+  },
+  {
+    slug: "black-gable-house",
+    name: "01-front-at-dusk",
+    label: "Façade & garden lighting",
+    tags: ["Lighting", "Electrical"],
+    dark: true,
+  },
+  {
+    slug: "twin-pavilions",
+    name: "01-array",
+    label: "Rooftop solar array",
+    tags: ["Solar", "Electrical"],
+  },
+  {
+    slug: "black-ridge-house",
+    name: "04-kitchen-to-living",
+    label: "Smart lighting scenes",
+    tags: ["Smart Home", "Electrical"],
+  },
+  {
+    slug: "cedar-cube-house",
+    name: "02",
+    label: "Pool & courtyard lighting",
+    tags: ["Lighting", "Electrical"],
+    dark: true,
+  },
+  {
+    slug: "behind-the-walls",
+    name: "01-ceiling-runs",
+    label: "Planned ceiling runs",
+    tags: ["Electrical"],
+  },
+  {
+    slug: "hillside-house",
+    name: "03-entry-at-dusk",
+    label: "Entry & soffit lighting",
+    tags: ["Lighting"],
+    dark: true,
+  },
+  {
+    slug: "behind-the-walls",
+    name: "03-cable-drops",
+    label: "Grouped cable drops",
+    tags: ["Electrical"],
+  },
 ];
 
-function makeTiles(portfolio: typeof PORTFOLIO): Tile[] {
-  const bySlug = new Map(portfolio.map((project) => [project.slug, project]));
-  return GALLERY_SELECTION.flatMap(([slug, name]) => {
-    const project = bySlug.get(slug);
-    const photo = project?.photos.find((p) => p.name === name);
-    if (!project || !photo) return [];
-    return [
-      {
-        src: photo.lg,
-        smSrc: photo.sm,
-        w: photo.w,
-        h: photo.h,
-        title: photo.title,
-        place: project.title,
-        note: photo.caption,
-        tags: photoTags(project, photo),
-        afterDark: /dusk|sunset|night/.test(photo.name),
-      },
-    ];
-  });
-}
+type Tile = Shot & {
+  slug: string;
+  smSrc: string;
+  w: number;
+  h: number;
+  tags: Discipline[];
+  dark: boolean;
+};
 
-const AFTER_DARK = "After dark";
-const ORDER = [
-  "Residential",
-  "New build",
-  "Renovation",
-  "Commercial",
-  "Solar",
-  "Air-Conditioning",
-  "Pool",
-  "Pre-wiring",
-];
+const TILES: Tile[] = GALLERY.map((pick) => {
+  const project = getProject(pick.slug);
+  const photo = getPhoto(pick.slug, pick.name);
+  return {
+    slug: pick.slug,
+    src: photo.lg,
+    smSrc: photo.sm,
+    w: photo.w,
+    h: photo.h,
+    title: pick.label,
+    place: project?.title ?? photo.project,
+    note: photo.caption,
+    tags: pick.tags,
+    dark: Boolean(pick.dark),
+  };
+});
+
+const AFTER_DARK = "After Dark";
+const FILTERS = ["All", "Lighting", "Electrical", "Air-Conditioning", "Smart Home", "Solar", AFTER_DARK];
+
+const matches = (t: Tile, f: string) =>
+  f === "All" ? true : f === AFTER_DARK ? t.dark : t.tags.includes(f as Discipline);
+
 function Gallery() {
-  const [portfolio, setPortfolio] = useState(PORTFOLIO);
   const [filter, setFilter] = useState("All");
   const [open, setOpen] = useState<number | null>(null);
-  useEffect(() => {
-    let active = true;
-    loadRemotePortfolioProjects().then((remote) => {
-      if (active && remote.length) setPortfolio((current) => mergeRemotePortfolio(current, remote));
-    });
-    return () => {
-      active = false;
-    };
-  }, []);
-
-  const tiles = useMemo(() => makeTiles(portfolio), [portfolio]);
-  const filters = useMemo(
-    () => ["All", AFTER_DARK, ...ORDER.filter((f) => tiles.some((t) => t.tags.includes(f)))],
-    [tiles],
-  );
-  const shown = tiles.filter((t) =>
-    filter === "All" ? true : filter === AFTER_DARK ? t.afterDark : t.tags.includes(filter),
-  );
-  const count = (f: string) =>
-    f === "All"
-      ? tiles.length
-      : f === AFTER_DARK
-        ? tiles.filter((t) => t.afterDark).length
-        : tiles.filter((t) => t.tags.includes(f)).length;
+  const shown = TILES.filter((t) => matches(t, filter));
 
   return (
     <SiteLayout>
@@ -122,14 +203,20 @@ function Gallery() {
           delay={0.2}
           className="display-caps mt-6 max-w-5xl text-[clamp(2.6rem,7.4vw,7.2rem)] leading-[0.98] tracking-[0.08em]!"
         >
-          See the detail.
+          The work, up close.
         </SplitReveal>
         <Reveal delay={0.5} className="mt-8 grid gap-10 md:grid-cols-12 md:items-end">
-          <p className="max-w-2xl text-[1.05rem] leading-relaxed text-ink-soft md:col-span-7">
-            Explore lighting, fittings and electrical installations from our residential and
-            commercial projects. Filter by the type of work, or choose After dark to see exterior
-            lighting. Select a photograph for a closer look.
-          </p>
+          <div className="max-w-2xl space-y-5 text-[1.05rem] leading-relaxed text-ink-soft md:col-span-7">
+            <p>
+              A closer look at the details behind our projects — architectural lighting, integrated
+              electrical, climate systems, smart-home technology and the workmanship that sits
+              behind the finish.
+            </p>
+            <p>
+              Explore by discipline, or switch to After Dark to see how the lighting transforms each
+              project at night.
+            </p>
+          </div>
           <div className="md:col-span-5 md:justify-self-end">
             <Button asChild variant="luxOutline" size="xl">
               <Link to="/portfolio">
@@ -142,13 +229,13 @@ function Gallery() {
 
       <section
         data-night
-        className="theme-night relative bg-night py-16 md:py-24"
+        className="theme-night relative bg-night py-14 md:py-24"
         aria-label="Project gallery"
       >
         <div className="led-h absolute inset-x-0 top-0 opacity-70" />
         <div className="mx-auto max-w-[1440px] px-5 md:px-10">
-          <div role="toolbar" aria-label="Filter by type of work" className="flex flex-wrap gap-2">
-            {filters.map((f) => (
+          <div role="toolbar" aria-label="Filter by discipline" className="flex flex-wrap gap-2">
+            {FILTERS.map((f) => (
               <button
                 key={f}
                 type="button"
@@ -162,43 +249,61 @@ function Gallery() {
                 )}
               >
                 {f}
-                <span className="opacity-60">{count(f)}</span>
+                <span className="opacity-60">{TILES.filter((t) => matches(t, f)).length}</span>
               </button>
             ))}
           </div>
 
-          {/* Remount per filter so touch devices observe the new set of photos. */}
-          <TorchArea key={filter} className="mt-10 md:mt-14">
-            <div className="columns-1 gap-5 sm:columns-2 lg:columns-3 [&>*]:mb-5">
-              {shown.map((t, i) => (
-                <button
-                  key={t.src}
-                  type="button"
-                  data-shot
-                  data-cursor="View"
-                  onClick={() => setOpen(i)}
-                  className="group relative block w-full break-inside-avoid overflow-hidden text-left"
-                >
-                  <img
-                    src={t.smSrc}
-                    width={t.w}
-                    height={t.h}
-                    alt={`${t.title}, ${t.place}`}
-                    loading="lazy"
-                    decoding="async"
-                    className={cn(
-                      "h-auto w-full object-cover transition-[filter,transform] duration-[1200ms] [transition-timing-function:var(--ease-out-expo)] group-hover:scale-[1.03] max-md:[filter:brightness(0.45)] max-md:group-data-[lit]:[filter:brightness(1)]",
-                      !t.w && t.aspect,
-                    )}
-                  />
-                  <span className="pointer-events-none absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/85 via-black/40 to-transparent p-5 md:translate-y-2 md:opacity-0 md:transition-all md:duration-700 md:group-hover:translate-y-0 md:group-hover:opacity-100 md:group-focus-visible:translate-y-0 md:group-focus-visible:opacity-100">
-                    <span className="eyebrow block text-[10px] text-glow-soft/90">{t.place}</span>
-                    <span className="mt-1 block font-display text-2xl text-ivory">{t.title}</span>
+          {/*
+            Justified rows on larger screens: every photograph keeps its own proportions and
+            the row widths are shared out by aspect ratio, so the order reads left to right.
+            The trailing spacer stops a short last row from stretching.
+          */}
+          <div
+            key={filter}
+            className="mt-10 flex flex-col gap-4 md:mt-14 md:flex-row md:flex-wrap md:after:grow-[999] md:after:content-['']"
+          >
+            {shown.map((t, i) => (
+              <button
+                key={t.src}
+                type="button"
+                data-cursor="View"
+                onClick={() => setOpen(i)}
+                style={
+                  { "--r": t.w / t.h, animationDelay: `${Math.min(i, 8) * 60}ms` } as CSSProperties
+                }
+                className="group relative block animate-[fadeInUp_0.9s_var(--ease-out-expo)_both] overflow-hidden bg-frame text-left md:shrink md:grow-[calc(var(--r)*100)] md:basis-[calc(var(--r)*clamp(200px,19vw,300px))]"
+              >
+                <span className="block aspect-[4/3] md:aspect-auto md:pb-[calc(100%/var(--r))]" />
+                <img
+                  src={t.smSrc}
+                  srcSet={`${t.smSrc} 800w, ${t.src} 1800w`}
+                  sizes="(min-width: 768px) 40vw, 100vw"
+                  width={t.w}
+                  height={t.h}
+                  alt={`${t.title}, ${t.place}`}
+                  loading={i < 3 ? "eager" : "lazy"}
+                  decoding="async"
+                  className="absolute inset-0 h-full w-full object-cover transition-[filter,transform] duration-[1200ms] [filter:brightness(0.86)] [transition-timing-function:var(--ease-out-expo)] group-hover:scale-[1.03] group-hover:[filter:brightness(1.04)] group-focus-visible:[filter:brightness(1.04)]"
+                />
+                <span
+                  aria-hidden
+                  className="pointer-events-none absolute inset-0 opacity-0 transition-opacity duration-700 group-hover:opacity-100"
+                  style={{
+                    background:
+                      "radial-gradient(60% 50% at 50% 0%, rgb(255 236 206 / 0.22), transparent 70%)",
+                    mixBlendMode: "screen",
+                  }}
+                />
+                <span className="pointer-events-none absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/80 via-black/35 to-transparent p-5 pt-16 md:p-6 md:pt-20">
+                  <span className="eyebrow block text-[9.5px] text-glow-soft/90">{t.title}</span>
+                  <span className="mt-1.5 block font-display text-[1.6rem] leading-tight text-ivory">
+                    {t.place}
                   </span>
-                </button>
-              ))}
-            </div>
-          </TorchArea>
+                </span>
+              </button>
+            ))}
+          </div>
         </div>
       </section>
 
