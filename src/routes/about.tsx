@@ -219,7 +219,7 @@ function Directors({ google }: { google: ReturnType<typeof Route.useLoaderData> 
       <div className="border-t border-ink/15 pt-24 md:pt-32">
         <p className="eyebrow text-ink-soft">The team</p>
         <SplitReveal
-          as="h2"
+          as="h1"
           id="directors-title"
           className="display-caps mt-5 text-[clamp(2.2rem,5vw,4.6rem)] leading-[1] tracking-[0.1em]!"
         >

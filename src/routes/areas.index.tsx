@@ -1,14 +1,9 @@
-import { createFileRoute, useRouter } from "@tanstack/react-router";
-import { useEffect } from "react";
+import { createFileRoute, redirect } from "@tanstack/react-router";
 
+// There is no list page for /areas: every place is linked from /areas-of-expertise and the
+// footer. A permanent redirect sent by the server, so the bare URL is never an empty page.
 export const Route = createFileRoute("/areas/")({
-  component: AreasRedirect,
+  beforeLoad: () => {
+    throw redirect({ to: "/areas-of-expertise", statusCode: 301 });
+  },
 });
-
-function AreasRedirect() {
-  const router = useRouter();
-  useEffect(() => {
-    router.navigate({ to: "/areas-of-expertise", replace: true });
-  }, [router]);
-  return null;
-}

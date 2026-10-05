@@ -304,7 +304,7 @@ const sections: Area[] = [
   },
   {
     num: "09",
-    pages: [],
+    pages: ["maintenance-electrician-taupo"],
     heading: "Maintenance & repairs",
     service: "Maintenance & repairs",
     img: shot("beechtree-studio", "09-switchboard"),

@@ -14,6 +14,7 @@ import { Route as AboutRouteImport } from './routes/about'
 import { Route as AreasOfExpertiseRouteImport } from './routes/areas-of-expertise'
 import { Route as ContactRouteImport } from './routes/contact'
 import { Route as EnquiriesRouteImport } from './routes/enquiries'
+import { Route as GalleryRouteImport } from './routes/gallery'
 import { Route as LlmsFullDottxtRouteImport } from './routes/llms-full[.]txt'
 import { Route as LlmsDottxtRouteImport } from './routes/llms[.]txt'
 import { Route as PortfolioRouteImport } from './routes/portfolio'
@@ -48,6 +49,11 @@ const ContactRoute = ContactRouteImport.update({
 const EnquiriesRoute = EnquiriesRouteImport.update({
   id: '/enquiries',
   path: '/enquiries',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const GalleryRoute = GalleryRouteImport.update({
+  id: '/gallery',
+  path: '/gallery',
   getParentRoute: () => rootRouteImport,
 } as any)
 const LlmsFullDottxtRoute = LlmsFullDottxtRouteImport.update({
@@ -107,6 +113,7 @@ export interface FileRoutesByFullPath {
   '/areas-of-expertise': typeof AreasOfExpertiseRoute
   '/contact': typeof ContactRoute
   '/enquiries': typeof EnquiriesRoute
+  '/gallery': typeof GalleryRoute
   '/llms-full.txt': typeof LlmsFullDottxtRoute
   '/llms.txt': typeof LlmsDottxtRoute
   '/portfolio': typeof PortfolioRoute
@@ -124,6 +131,7 @@ export interface FileRoutesByTo {
   '/areas-of-expertise': typeof AreasOfExpertiseRoute
   '/contact': typeof ContactRoute
   '/enquiries': typeof EnquiriesRoute
+  '/gallery': typeof GalleryRoute
   '/llms-full.txt': typeof LlmsFullDottxtRoute
   '/llms.txt': typeof LlmsDottxtRoute
   '/portfolio': typeof PortfolioRoute
@@ -142,6 +150,7 @@ export interface FileRoutesById {
   '/areas-of-expertise': typeof AreasOfExpertiseRoute
   '/contact': typeof ContactRoute
   '/enquiries': typeof EnquiriesRoute
+  '/gallery': typeof GalleryRoute
   '/llms-full.txt': typeof LlmsFullDottxtRoute
   '/llms.txt': typeof LlmsDottxtRoute
   '/portfolio': typeof PortfolioRoute
@@ -161,6 +170,7 @@ export interface FileRouteTypes {
     | '/areas-of-expertise'
     | '/contact'
     | '/enquiries'
+    | '/gallery'
     | '/llms-full.txt'
     | '/llms.txt'
     | '/portfolio'
@@ -178,6 +188,7 @@ export interface FileRouteTypes {
     | '/areas-of-expertise'
     | '/contact'
     | '/enquiries'
+    | '/gallery'
     | '/llms-full.txt'
     | '/llms.txt'
     | '/portfolio'
@@ -195,6 +206,7 @@ export interface FileRouteTypes {
     | '/areas-of-expertise'
     | '/contact'
     | '/enquiries'
+    | '/gallery'
     | '/llms-full.txt'
     | '/llms.txt'
     | '/portfolio'
@@ -213,6 +225,7 @@ export interface RootRouteChildren {
   AreasOfExpertiseRoute: typeof AreasOfExpertiseRoute
   ContactRoute: typeof ContactRoute
   EnquiriesRoute: typeof EnquiriesRoute
+  GalleryRoute: typeof GalleryRoute
   LlmsFullDottxtRoute: typeof LlmsFullDottxtRoute
   LlmsDottxtRoute: typeof LlmsDottxtRoute
   PortfolioRoute: typeof PortfolioRoute
@@ -260,6 +273,13 @@ declare module '@tanstack/react-router' {
       path: '/enquiries'
       fullPath: '/enquiries'
       preLoaderRoute: typeof EnquiriesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/gallery': {
+      id: '/gallery'
+      path: '/gallery'
+      fullPath: '/gallery'
+      preLoaderRoute: typeof GalleryRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/llms-full.txt': {
@@ -341,6 +361,7 @@ const rootRouteChildren: RootRouteChildren = {
   AreasOfExpertiseRoute: AreasOfExpertiseRoute,
   ContactRoute: ContactRoute,
   EnquiriesRoute: EnquiriesRoute,
+  GalleryRoute: GalleryRoute,
   LlmsFullDottxtRoute: LlmsFullDottxtRoute,
   LlmsDottxtRoute: LlmsDottxtRoute,
   PortfolioRoute: PortfolioRoute,
