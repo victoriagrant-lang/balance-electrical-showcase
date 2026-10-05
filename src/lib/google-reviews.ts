@@ -1,13 +1,16 @@
 import { createServerFn } from "@tanstack/react-start";
+import { businessProfileConfigured, fetchBusinessProfileReviews } from "@/lib/google-business";
 
 /*
-  Live Google reviews for the Balance Electrical Business Profile, fetched on the server
-  from the Google Places API and cached for six hours, so new reviews appear on the site
-  automatically. Needs GOOGLE_PLACES_API_KEY in the hosting environment (Vercel →
-  Settings → Environment Variables). GOOGLE_PLACE_ID is optional — without it the
-  place is found once by name. With no key set, the site simply shows the Google links.
+  Live Google reviews for the Balance Electrical Business Profile, fetched on the server and
+  cached for six hours, so new reviews appear on the site automatically. Two sources:
 
-  Google returns the rating, the total count and up to five reviews (its "most relevant").
+  1. The Business Profile APIs (lib/google-business.ts): every review, plus the owner's
+     replies. Used when the GBP_* settings are in Vercel.
+  2. The Places API: the rating, the total count and up to five reviews (Google's "most
+     relevant"). Needs GOOGLE_PLACES_API_KEY; GOOGLE_PLACE_ID is optional.
+
+  With neither working, the site shows saved reviews from the profile (lib/reviews.ts).
   /api/reviews-status shows what the last lookup found, for checking the setup.
 */
 
@@ -19,6 +22,8 @@ export type GoogleReview = {
   text: string;
   relativeTime: string;
   publishTime?: string;
+  /** The owner's reply on Google, when there is one (Business Profile source only). */
+  reply?: string;
 };
 
 export type GoogleReviews = {
@@ -26,6 +31,8 @@ export type GoogleReviews = {
   count: number;
   url: string;
   reviews: GoogleReview[];
+  /** When Google was last asked (ISO date), for the "as of" note next to the rating. */
+  asOf?: string;
 };
 
 export const GOOGLE_PROFILE_URL = "https://g.page/r/CUTDVwlL1oZeEBM";
@@ -56,6 +63,8 @@ type LookupNotes = {
   checkedAt?: string;
 };
 let notes: LookupNotes = { placeIdFrom: null };
+let source: "business-profile" | "places" | null = null;
+let businessProfile: { location?: string; title?: string; error?: string } = {};
 
 type PlacesReview = {
   rating?: number;
@@ -160,15 +169,39 @@ async function fetchReviews(): Promise<GoogleReviews> {
 
 async function loadReviews(): Promise<GoogleReviews> {
   if (cache && Date.now() - cache.at < TTL_MS) return cache.data;
+  const asOf = new Date().toISOString();
+  notes.checkedAt = asOf;
+
+  // 1. Every review, from the owner's Business Profile, once it's set up.
+  if (businessProfileConfigured()) {
+    try {
+      const gbp = await fetchBusinessProfileReviews(isOurListing);
+      businessProfile = { location: gbp.location, title: gbp.title };
+      const data = {
+        rating: gbp.rating,
+        count: gbp.count,
+        url: gbp.url ?? GOOGLE_PROFILE_URL,
+        reviews: gbp.reviews,
+        asOf,
+      };
+      source = "business-profile";
+      cache = { at: Date.now(), data };
+      return data;
+    } catch (e) {
+      businessProfile = { error: (e as Error).message };
+      console.error("Business Profile reviews unavailable:", businessProfile.error);
+    }
+  }
+
+  // 2. Otherwise the Places API's five.
   try {
-    const data = await fetchReviews();
+    const data = { ...(await fetchReviews()), asOf };
     notes.error = undefined;
-    notes.checkedAt = new Date().toISOString();
+    source = process.env.GOOGLE_PLACES_API_KEY ? "places" : null;
     if (process.env.GOOGLE_PLACES_API_KEY) cache = { at: Date.now(), data };
     return data;
   } catch (e) {
     notes.error = (e as Error).message;
-    notes.checkedAt = new Date().toISOString();
     console.error("Google reviews unavailable:", notes.error);
     return cache?.data ?? EMPTY;
   }
@@ -189,17 +222,27 @@ export async function reviewsStatus({ refresh = false } = {}) {
     cache = null;
     foundPlaceId = undefined;
     notes = { placeIdFrom: null };
+    businessProfile = {};
+    source = null;
   }
   const data = await loadReviews();
   return {
-    keySet: Boolean(process.env.GOOGLE_PLACES_API_KEY),
-    placeIdSetInVercel: Boolean(process.env.GOOGLE_PLACE_ID),
-    ...notes,
+    ok: Boolean(data.rating) && source !== null,
+    source,
     rating: data.rating,
     count: data.count,
     reviewsWithText: data.reviews.length,
     reviewers: data.reviews.map((r) => r.author),
     cachedFor: cache ? `${Math.round((Date.now() - cache.at) / 60_000)} min` : null,
-    ok: Boolean(data.rating && !notes.error),
+    businessProfile: {
+      configured: businessProfileConfigured(),
+      locationSetInVercel: Boolean(process.env.GBP_LOCATION),
+      ...businessProfile,
+    },
+    places: {
+      keySet: Boolean(process.env.GOOGLE_PLACES_API_KEY),
+      placeIdSetInVercel: Boolean(process.env.GOOGLE_PLACE_ID),
+      ...notes,
+    },
   };
 }

@@ -67,6 +67,7 @@ type Card = {
   rating?: number;
   url?: string;
   photo?: string;
+  reply?: string;
 };
 
 /** Long reviews show their first few lines, with the rest a tap away (all of it is in the page). */
@@ -97,6 +98,17 @@ function ReviewCard({ c, hidden = false }: { c: Card; hidden?: boolean }) {
         >
           {open ? "Show less" : "Read more"}
         </button>
+      )}
+      {c.reply && (
+        <details className="group mt-5 border-l border-ink/25 pl-4">
+          <summary className="eyebrow cursor-pointer list-none text-[10px] text-ink-soft [&::-webkit-details-marker]:hidden">
+            Our reply{" "}
+            <span className="inline-block transition-transform group-open:rotate-45">+</span>
+          </summary>
+          <p className="mt-3 whitespace-pre-line text-sm leading-relaxed text-ink-soft">
+            {c.reply}
+          </p>
+        </details>
       )}
       <figcaption className="mt-auto flex items-center gap-4 pt-7 text-sm">
         {c.photo ? (
@@ -163,6 +175,7 @@ export function Testimonials({
       rating: r.rating,
       url: r.authorUrl ?? google?.url,
       photo: r.photo,
+      reply: r.reply,
     })),
     ...REVIEWS.map((r) => ({
       key: `d-${r.name}-${r.quote.slice(0, 16)}`,
@@ -177,6 +190,15 @@ export function Testimonials({
   const rated =
     google?.rating && google.count ? { rating: google.rating, count: google.count } : null;
   const profile = google?.url ?? GOOGLE_PROFILE_URL;
+  // Google asks for an "as of" date beside a rating shown off Google.
+  const asOf = google?.asOf
+    ? new Date(google.asOf).toLocaleDateString("en-NZ", {
+        day: "numeric",
+        month: "long",
+        year: "numeric",
+        timeZone: "Pacific/Auckland",
+      })
+    : "";
 
   return (
     <section
@@ -211,6 +233,11 @@ export function Testimonials({
                   {rated.count} review{rated.count === 1 ? "" : "s"} on Google
                   <ArrowUpRight className="size-3 opacity-60 transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5" />
                 </span>
+                {asOf && (
+                  <span className="eyebrow mt-1 block text-[9px] text-ink-soft/80">
+                    as of {asOf}
+                  </span>
+                )}
               </span>
             </a>
           )}
