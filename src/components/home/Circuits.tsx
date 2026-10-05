@@ -57,6 +57,13 @@ const SERVICES = [
     copy: "A chance to rethink how a home works, not just how it looks. Lighting, power and climate upgrades coordinated around the new layout, joinery and finishes.",
   },
   {
+    title: "Solar & battery",
+    page: "solar-installation-taupo",
+    service: "Solar & battery storage",
+    card: fromPhoto(getPhoto("twin-pavilions", "01-array")),
+    copy: "Make more of the energy your property can generate. We help with solar electrical installation, grid connection and battery storage options suited to your property and energy use.",
+  },
+  {
     title: "Smart home & automation",
     page: "smart-home-automation-taupo",
     service: "Smart home & automation",
@@ -77,13 +84,6 @@ const SERVICES = [
       fromPhoto(getPhoto("black-gable-house", "02-driveway-at-dusk"), "72% 50%"),
     ),
     copy: "Convenient charging at home. We install dedicated EV chargers, with load management options to suit your electrical supply and household needs.",
-  },
-  {
-    title: "Solar & battery",
-    page: "solar-installation-taupo",
-    service: "Solar & battery storage",
-    card: fromPhoto(getPhoto("twin-pavilions", "01-array")),
-    copy: "Make more of the energy your property can generate. We help with solar electrical installation, grid connection and battery storage options suited to your property and energy use.",
   },
 ];
 
