@@ -16,6 +16,7 @@ export const Route = createFileRoute("/sitemap.xml")({
           ["/portfolio", 0.9],
           ["/projects", 0.7],
           ["/contact", 0.8],
+          ["/terms-of-trade", 0.3],
           ...SERVICES.map((s): [string, number] => [`/services/${s.slug}`, 0.9]),
           ...AREAS.map((a): [string, number] => [`/areas/${a.slug}`, 0.8]),
           ...PORTFOLIO.map((p): [string, number] => [`/portfolio/${p.slug}`, 0.7]),
