@@ -201,7 +201,9 @@ export function siteGraph(google?: GoogleReviews) {
         "@type": ["Electrician", "LocalBusiness"],
         "@id": BUSINESS_ID,
         name: "Balance Electrical",
-        legalName: "Balance Electrical Ltd",
+        legalName: "Balance Electrical Limited",
+        identifier: { "@type": "PropertyValue", propertyID: "NZBN", value: "9429050562695" },
+        foundingDate: "2022-05-10",
         description: `${ENTITY_SUMMARY} ${TEAM_SUMMARY}`,
         slogan: "Electrical, lighting & air-conditioning. Considered together.",
         url: `${SITE}/`,
@@ -243,6 +245,11 @@ export function siteGraph(google?: GoogleReviews) {
         areaServed: AREA_SERVED,
         founder: victoriaRef,
         employee: victoriaRef,
+        memberOf: {
+          "@type": "Organization",
+          name: "NZ Trade Group",
+          url: "https://nztradegroup.co.nz/",
+        },
         knowsAbout: KNOWS_ABOUT,
         hasOfferCatalog: {
           "@type": "OfferCatalog",

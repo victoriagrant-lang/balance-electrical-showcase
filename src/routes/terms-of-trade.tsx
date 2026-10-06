@@ -5,7 +5,7 @@ import { SiteLayout } from "@/components/SiteLayout";
 import { useLenis } from "@/hooks/use-lenis";
 import { CONTACT } from "@/lib/contact";
 import { SITE, breadcrumbs, businessRef, jsonLd, websiteRef } from "@/lib/seo";
-import { TERMS, TERMS_PDF } from "@/lib/terms";
+import { EARLIER_TERMS_PDF, TERMS, TERMS_PDF } from "@/lib/terms";
 
 /*
   Balance Electrical's terms of trade. Quotes, invoices and payment reminders point here by
@@ -79,13 +79,23 @@ function TermsOfTrade() {
               {p}
             </p>
           ))}
-          <a
-            href={TERMS_PDF}
-            download
-            className="beam-link eyebrow mt-8 inline-flex items-center gap-2 text-[10px] print:hidden"
-          >
-            <FileDown className="size-3.5" strokeWidth={1.5} /> Download PDF
-          </a>
+          <div className="mt-8 flex flex-wrap gap-x-8 gap-y-4 print:hidden">
+            <a
+              href={TERMS_PDF}
+              download
+              className="beam-link eyebrow inline-flex items-center gap-2 text-[10px]"
+            >
+              <FileDown className="size-3.5 shrink-0" strokeWidth={1.5} /> Download PDF
+            </a>
+            <a
+              href={EARLIER_TERMS_PDF}
+              download
+              className="beam-link eyebrow inline-flex items-center gap-2 text-[10px] text-ink-soft"
+            >
+              <FileDown className="size-3.5 shrink-0" strokeWidth={1.5} /> Earlier terms (jobs
+              accepted before {TERMS.effective})
+            </a>
+          </div>
         </div>
 
         <div className="mt-16 grid gap-14 lg:grid-cols-12 print:mt-8 print:block">

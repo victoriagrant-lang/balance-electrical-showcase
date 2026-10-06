@@ -77,54 +77,49 @@ const html = `<!doctype html>
 <style>${fonts}</style>
 <style>
   :root { --font-sans: "Josefin Sans", sans-serif; }
-  @page { size: A4; margin: 18mm 18mm 20mm; }
+  @page { size: A4; margin: 13mm 13mm 15mm; }
   * { box-sizing: border-box; }
   html, body { margin: 0; background: #fff; color: ${INK_SOFT}; }
-  body { font: 400 9.4pt/1.5 "Josefin Sans", sans-serif; -webkit-print-color-adjust: exact; }
-  .logo { width: 62mm; color: ${CHARCOAL}; }
+  body { font: 400 7.5pt/1.33 "Josefin Sans", sans-serif; -webkit-print-color-adjust: exact; }
+  header { display: flex; justify-content: space-between; align-items: flex-start; gap: 10mm; }
+  .logo { width: 52mm; color: ${CHARCOAL}; padding-top: 1mm; }
   .logo svg { display: block; width: 100%; height: auto; overflow: visible; }
-  h1 { font: 500 30pt/1 "Cormorant Garamond", serif; color: ${CHARCOAL}; letter-spacing: 0.08em; text-transform: uppercase; margin: 12mm 0 0; }
-  .meta { margin: 4mm 0 0; font-size: 8pt; letter-spacing: 0.14em; text-transform: uppercase; color: ${CHARCOAL}; }
-  .meta + .meta { margin-top: 1.5mm; }
-  .rule { border: 0; border-top: 0.6pt solid ${CHARCOAL}; margin: 7mm 0 6mm; opacity: 0.35; }
-  .intro p { margin: 0 0 3mm; font-size: 10pt; }
-  .contents { margin: 6mm 0 2mm; }
-  .contents h3, .questions h3 { font: 600 7.5pt/1 "Josefin Sans", sans-serif; letter-spacing: 0.16em; text-transform: uppercase; color: ${CHARCOAL}; margin: 0 0 3mm; }
-  .contents ol { list-style: none; margin: 0; padding: 0; columns: 2; column-gap: 10mm; font-size: 9pt; }
-  .contents li { break-inside: avoid; margin: 0 0 1.2mm; }
-  section { margin-top: 7mm; }
-  h2 { font: 500 14.5pt/1.2 "Cormorant Garamond", serif; color: ${CHARCOAL}; margin: 0 0 3mm; break-after: avoid; }
-  h2 .n { font-variant-numeric: lining-nums; }
+  .title { text-align: right; }
+  h1 { font: 500 21pt/1 "Cormorant Garamond", serif; color: ${CHARCOAL}; letter-spacing: 0.08em; text-transform: uppercase; margin: 0; }
+  .meta { margin: 2mm 0 0; font-size: 6.4pt; letter-spacing: 0.13em; text-transform: uppercase; color: ${CHARCOAL}; }
+  .meta + .meta { margin-top: 0.8mm; }
+  .rule { border: 0; border-top: 0.6pt solid rgba(28,26,24,0.35); margin: 5mm 0 4mm; }
+  .intro p { margin: 0 0 3.5mm; font-size: 8.2pt; }
+  .cols { column-count: 2; column-gap: 7mm; }
+  section { margin: 0 0 2.3mm; }
+  h2 { font: 500 11pt/1.2 "Cormorant Garamond", serif; color: ${CHARCOAL}; margin: 0 0 1.4mm; break-after: avoid; }
   ol { margin: 0; padding: 0; list-style: none; }
-  section li { display: grid; grid-template-columns: 11mm 1fr; margin: 0 0 2.4mm; break-inside: avoid; }
-  section li .n { font-weight: 600; color: ${CHARCOAL}; font-variant-numeric: tabular-nums; }
+  section li { position: relative; padding-left: 8mm; margin: 0 0 0.9mm; orphans: 2; widows: 2; }
+  section li .n { position: absolute; left: 0; top: 0; font-weight: 600; color: ${CHARCOAL}; font-variant-numeric: tabular-nums; }
   section li p { margin: 0; }
-  .questions { margin-top: 9mm; padding-top: 5mm; border-top: 0.6pt solid rgba(28,26,24,0.35); break-inside: avoid; }
-  .questions p { margin: 0; }
 </style>
 </head>
 <body>
-  <div class="logo">${logo}</div>
-  <h1>Terms of Trade</h1>
-  <p class="meta">Balance Electrical Limited · NZBN 9429050562695</p>
-  <p class="meta">Version ${TERMS.version} · In effect from ${esc(TERMS.effective)}</p>
-  <p class="meta">${CONTACT.phoneLocal} · ${CONTACT.email}</p>
-  <p class="meta">${PAGE_URL}</p>
+  <header>
+    <div class="logo">${logo}</div>
+    <div class="title">
+      <h1>Terms of Trade</h1>
+      <p class="meta">Balance Electrical Limited · NZBN 9429050562695</p>
+      <p class="meta">Version ${TERMS.version} · In effect from ${esc(TERMS.effective)}</p>
+      <p class="meta">${CONTACT.phoneLocal} · ${CONTACT.email}</p>
+      <p class="meta">${PAGE_URL}</p>
+    </div>
+  </header>
   <hr class="rule">
   <div class="intro">${TERMS.intro.map((p) => `<p>${esc(p)}</p>`).join("")}</div>
-  <nav class="contents"><h3>Contents</h3><ol>${TERMS.sections
-    .map((s, i) => `<li>${i + 1}. ${esc(s.heading)}</li>`)
-    .join("")}</ol></nav>
-  ${sections}
-  <div class="questions">
-    <h3>Questions about these terms</h3>
-    <p>Call Victoria on ${CONTACT.phoneLocal} or email ${CONTACT.email}. Monday to Friday, 7:30am to 5:30pm. The current version is always at ${PAGE_URL}.</p>
+  <div class="cols">
+    ${sections}
   </div>
 </body>
 </html>`;
 
 // The footer is drawn separately on every page, so it gets its own copy of the fonts.
-const footer = `<style>${fonts}</style><div style="width:100%;padding:0 18mm;font:7pt/1 'Josefin Sans',Helvetica,Arial,sans-serif;color:${CHARCOAL};display:flex;justify-content:space-between;letter-spacing:0.06em">
+const footer = `<style>${fonts}</style><div style="width:100%;padding:0 13mm;font:6.5pt/1 'Josefin Sans',Helvetica,Arial,sans-serif;color:${CHARCOAL};display:flex;justify-content:space-between;letter-spacing:0.06em">
   <span>Balance Electrical Limited · Terms of Trade · Version ${TERMS.version} (${esc(TERMS.effective)})</span>
   <span>Page <span class="pageNumber"></span> of <span class="totalPages"></span></span>
 </div>`;
