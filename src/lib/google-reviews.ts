@@ -45,7 +45,8 @@ const PROFILE_CID = "6811367104212091716";
 
 const EMPTY: GoogleReviews = { rating: null, count: 0, url: GOOGLE_PROFILE_URL, reviews: [] };
 const TTL_MS = 6 * 60 * 60 * 1000;
-const SEARCH = "Balance Electrical Taupō";
+/** Tried in order until one finds the listing (the second in case the macron trips the search). */
+const SEARCHES = ["Balance Electrical Taupō", "Balance Electrical Taupo"];
 
 let cache: { at: number; data: GoogleReviews } | null = null;
 let foundPlaceId: string | undefined;
@@ -101,36 +102,51 @@ async function placeId(key: string) {
     return process.env.GOOGLE_PLACE_ID;
   }
   if (foundPlaceId) return foundPlaceId;
-  const res = await fetch("https://places.googleapis.com/v1/places:searchText", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      "X-Goog-Api-Key": key,
-      "X-Goog-FieldMask": "places.id,places.displayName,places.googleMapsUri",
-    },
-    body: JSON.stringify({ textQuery: SEARCH, regionCode: "NZ" }),
-  });
-  if (!res.ok) throw await failure("Places search", res);
-  const data = (await res.json()) as {
-    places?: { id: string; displayName?: { text?: string }; googleMapsUri?: string }[];
-  };
-  const places = data.places ?? [];
-  notes.searchResults = places.map((p) => p.displayName?.text ?? "(no name)");
-  // Only accept Balance Electrical's own listing — never another business's reviews. The
-  // listing the site links to first; failing that, one named "Balance Electrical".
-  const match =
-    places.find((p) => isOurListing(p.googleMapsUri)) ??
-    places.find((p) => /balance electrical/i.test(p.displayName?.text ?? ""));
-  foundPlaceId = match?.id;
-  notes.placeIdFrom = match ? "search" : null;
-  return foundPlaceId;
+  notes.searchResults = [];
+  for (const textQuery of SEARCHES) {
+    const res = await fetch("https://places.googleapis.com/v1/places:searchText", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "X-Goog-Api-Key": key,
+        "X-Goog-FieldMask": "places.id,places.displayName,places.googleMapsUri",
+      },
+      // Balance's listing is a service-area business (no public address), which Text Search
+      // leaves out unless asked to include them.
+      body: JSON.stringify({ textQuery, regionCode: "NZ", includePureServiceAreaBusinesses: true }),
+    });
+    if (!res.ok) throw await failure("Places search", res);
+    const data = (await res.json()) as {
+      places?: { id: string; displayName?: { text?: string }; googleMapsUri?: string }[];
+    };
+    const places = data.places ?? [];
+    notes.searchResults.push(
+      `${textQuery}: ${places.map((p) => p.displayName?.text ?? "(no name)").join(", ") || "no results"}`,
+    );
+    // Only accept Balance Electrical's own listing — never another business's reviews. The
+    // listing the site links to first; failing that, one named "Balance Electrical".
+    const match =
+      places.find((p) => isOurListing(p.googleMapsUri)) ??
+      places.find((p) => /balance electrical/i.test(p.displayName?.text ?? ""));
+    if (match) {
+      foundPlaceId = match.id;
+      notes.placeIdFrom = "search";
+      return foundPlaceId;
+    }
+  }
+  notes.placeIdFrom = null;
+  return undefined;
 }
 
 async function fetchReviews(): Promise<GoogleReviews> {
   const key = process.env.GOOGLE_PLACES_API_KEY;
   if (!key) return EMPTY;
   const id = await placeId(key);
-  if (!id) throw new Error(`No Google listing named "Balance Electrical" found for "${SEARCH}"`);
+  if (!id) {
+    throw new Error(
+      `No Google listing named "Balance Electrical" found (searched: ${SEARCHES.join(" / ")}). Set GOOGLE_PLACE_ID in Vercel to skip the search.`,
+    );
+  }
   const res = await fetch(`https://places.googleapis.com/v1/places/${id}?languageCode=en`, {
     headers: {
       "X-Goog-Api-Key": key,
