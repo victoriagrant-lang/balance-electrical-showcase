@@ -21,6 +21,7 @@ import { Route as PortfolioRouteImport } from './routes/portfolio'
 import { Route as ProjectsRouteImport } from './routes/projects'
 import { Route as ReviewRouteImport } from './routes/review'
 import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
+import { Route as TermsOfTradeRouteImport } from './routes/terms-of-trade'
 import { Route as ApiReviewsStatusRouteImport } from './routes/api.reviews-status'
 import { Route as AreasIndexRouteImport } from './routes/areas.index'
 import { Route as AreasSlugRouteImport } from './routes/areas.$slug'
@@ -88,6 +89,11 @@ const SitemapDotxmlRoute = SitemapDotxmlRouteImport.update({
   path: '/sitemap.xml',
   getParentRoute: () => rootRouteImport,
 } as any)
+const TermsOfTradeRoute = TermsOfTradeRouteImport.update({
+  id: '/terms-of-trade',
+  path: '/terms-of-trade',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ApiReviewsStatusRoute = ApiReviewsStatusRouteImport.update({
   id: '/api/reviews-status',
   path: '/api/reviews-status',
@@ -132,6 +138,7 @@ export interface FileRoutesByFullPath {
   '/projects': typeof ProjectsRoute
   '/review': typeof ReviewRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
+  '/terms-of-trade': typeof TermsOfTradeRoute
   '/api/reviews-status': typeof ApiReviewsStatusRoute
   '/areas/$slug': typeof AreasSlugRoute
   '/portfolio/$slug': typeof PortfolioSlugRoute
@@ -152,6 +159,7 @@ export interface FileRoutesByTo {
   '/projects': typeof ProjectsRoute
   '/review': typeof ReviewRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
+  '/terms-of-trade': typeof TermsOfTradeRoute
   '/api/reviews-status': typeof ApiReviewsStatusRoute
   '/areas/$slug': typeof AreasSlugRoute
   '/portfolio/$slug': typeof PortfolioSlugRoute
@@ -173,6 +181,7 @@ export interface FileRoutesById {
   '/projects': typeof ProjectsRoute
   '/review': typeof ReviewRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
+  '/terms-of-trade': typeof TermsOfTradeRoute
   '/api/reviews-status': typeof ApiReviewsStatusRoute
   '/areas/$slug': typeof AreasSlugRoute
   '/portfolio_/$slug': typeof PortfolioSlugRoute
@@ -195,6 +204,7 @@ export interface FileRouteTypes {
     | '/projects'
     | '/review'
     | '/sitemap.xml'
+    | '/terms-of-trade'
     | '/api/reviews-status'
     | '/areas/$slug'
     | '/portfolio/$slug'
@@ -215,6 +225,7 @@ export interface FileRouteTypes {
     | '/projects'
     | '/review'
     | '/sitemap.xml'
+    | '/terms-of-trade'
     | '/api/reviews-status'
     | '/areas/$slug'
     | '/portfolio/$slug'
@@ -235,6 +246,7 @@ export interface FileRouteTypes {
     | '/projects'
     | '/review'
     | '/sitemap.xml'
+    | '/terms-of-trade'
     | '/api/reviews-status'
     | '/areas/$slug'
     | '/portfolio_/$slug'
@@ -256,6 +268,7 @@ export interface RootRouteChildren {
   ProjectsRoute: typeof ProjectsRoute
   ReviewRoute: typeof ReviewRoute
   SitemapDotxmlRoute: typeof SitemapDotxmlRoute
+  TermsOfTradeRoute: typeof TermsOfTradeRoute
   ApiReviewsStatusRoute: typeof ApiReviewsStatusRoute
   AreasSlugRoute: typeof AreasSlugRoute
   PortfolioSlugRoute: typeof PortfolioSlugRoute
@@ -350,6 +363,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof SitemapDotxmlRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/terms-of-trade': {
+      id: '/terms-of-trade'
+      path: '/terms-of-trade'
+      fullPath: '/terms-of-trade'
+      preLoaderRoute: typeof TermsOfTradeRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/api/reviews-status': {
       id: '/api/reviews-status'
       path: '/api/reviews-status'
@@ -408,6 +428,7 @@ const rootRouteChildren: RootRouteChildren = {
   ProjectsRoute: ProjectsRoute,
   ReviewRoute: ReviewRoute,
   SitemapDotxmlRoute: SitemapDotxmlRoute,
+  TermsOfTradeRoute: TermsOfTradeRoute,
   ApiReviewsStatusRoute: ApiReviewsStatusRoute,
   AreasSlugRoute: AreasSlugRoute,
   PortfolioSlugRoute: PortfolioSlugRoute,

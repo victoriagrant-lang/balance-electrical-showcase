@@ -50,7 +50,7 @@ export function SiteLayout({ children }: { children: ReactNode }) {
 */
 function SiteHeader() {
   return (
-    <header className="fixed inset-x-0 top-0 z-50 border-b border-ivory/10 bg-frame/88 text-ivory backdrop-blur-md [transform:translateZ(0)]">
+    <header className="fixed inset-x-0 top-0 z-50 border-b border-ivory/10 bg-frame/88 text-ivory backdrop-blur-md [transform:translateZ(0)] print:hidden">
       <div className="mx-auto flex h-[72px] max-w-[1440px] items-center justify-between px-5 md:px-10">
         <Link
           to="/"
@@ -160,7 +160,10 @@ function MobileNav() {
 
 function SiteFooter() {
   return (
-    <footer data-night className="theme-night relative overflow-hidden bg-frame text-ivory">
+    <footer
+      data-night
+      className="theme-night relative overflow-hidden bg-frame text-ivory print:hidden"
+    >
       <div className="led-h opacity-70" />
       <div className="mx-auto max-w-[1440px] px-5 pb-10 pt-24 md:px-10 md:pt-32">
         <div className="grid gap-16 md:grid-cols-12">
@@ -247,7 +250,14 @@ function SiteFooter() {
             © {new Date().getFullYear()} Balance Electrical Ltd · Electrician in Taupō, New Zealand
             · Mon–Fri 7:30am–5:30pm
           </p>
-          <p className="eyebrow text-[10px]">Licensed Electrical Worker · EWRB Registered</p>
+          <p className="flex flex-wrap items-center gap-x-6 gap-y-2">
+            <Link to="/terms-of-trade" className="beam-link text-ivory/80 hover:text-ivory">
+              Terms of trade
+            </Link>
+            <span className="eyebrow text-[10px]">
+              Licensed Electrical Worker · EWRB Registered
+            </span>
+          </p>
         </div>
       </div>
     </footer>
