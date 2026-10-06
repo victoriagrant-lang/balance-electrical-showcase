@@ -16,6 +16,8 @@ export type Service = {
   h1: string;
   metaTitle: string;
   metaDescription: string;
+  /** One line about the service that holds true anywhere in the district (area pages). */
+  summary: string;
   /** The matching option on the contact form. */
   contactService: string;
   intro: string[];
@@ -35,9 +37,11 @@ export const SERVICES: Service[] = [
     slug: "lighting-design-taupo",
     name: "Lighting design",
     h1: "Lighting design in Taupō",
-    metaTitle: "Lighting Design Taupō | Architectural & Residential Lighting | Balance Electrical",
+    metaTitle: "Architectural Lighting Design Taupō | Balance Electrical",
     metaDescription:
-      "Architectural lighting design and installation in Taupō and Kinloch — concealed LED, linear and feature pendants, joinery and landscape lighting, planned with your architect and builder.",
+      "Architectural lighting design in Taupō and Kinloch: concealed LED, pendants, joinery and landscape lighting, planned with your architect and builder.",
+    summary:
+      "Concealed LED, feature pendants, joinery and landscape lighting, designed around the architecture.",
     contactService: "Lighting design",
     intro: [
       "Lighting is the layer people feel before they notice it. Balance designs and installs lighting schemes that work with the architecture — concealed LED in ceilings and joinery, linear and feature pendants scaled to the room, and exterior lighting that carries the home into the evening.",
@@ -78,12 +82,14 @@ export const SERVICES: Service[] = [
     slug: "new-build-electrician-taupo",
     name: "New builds",
     h1: "New build electrician in Taupō",
-    metaTitle: "New Build Electrician Taupō | Full Electrical Fit-Out | Balance Electrical",
+    metaTitle: "New Build Electrician Taupō | Balance Electrical",
     metaDescription:
-      "Complete electrical for new homes in Taupō, Kinloch and the district — design, first fix at framing, fit-off, lighting, solar, EV and climate systems, tested and certified.",
+      "Electrical for new homes and new construction in Taupō and Kinloch: design from plans, first fix at framing, fit-off, lighting, solar and EV, certified.",
+    summary:
+      "Complete electrical for new homes and commercial builds, from the plans to final certification.",
     contactService: "New residential build",
     intro: [
-      "Balance takes new homes from plans to power-on: pricing and design from the drawings, first-fix wiring at framing, final fit-off once linings and joinery are in, then testing and certification for code compliance.",
+      "Balance takes new construction — new homes and commercial new builds — from plans to power-on: pricing and design from the drawings, first-fix wiring at framing, final fit-off once linings and joinery are in, then testing and certification for code compliance.",
       "Because lighting, climate, solar, EV charging and smart-home control are planned together from the start, cabling and equipment can be hidden in the build — and the finished home works as one system.",
     ],
     includes: [
@@ -111,6 +117,10 @@ export const SERVICES: Service[] = [
         q: "Can solar, EV charging and heating be included from the start?",
         a: "Yes, and it's the best time to do it. Cabling, switchboard capacity and equipment positions can be planned in, rather than retrofitted later.",
       },
+      {
+        q: "Do you wire commercial new builds as well as houses?",
+        a: "Yes. Beechtree Studio, a two-storey headquarters with offices and a workshop, was a complete commercial new build — lighting design, switchboards and sub-mains, heat pumps and emergency lighting.",
+      },
     ],
     projects: ["hillside-house", "cedar-gables", "courtyard-house", "behind-the-walls"],
     image: img("cedar-gables", "03-pavilions-at-dusk"),
@@ -118,18 +128,21 @@ export const SERVICES: Service[] = [
   {
     slug: "renovation-electrician-taupo",
     name: "Renovations & upgrades",
-    h1: "Renovation electrician in Taupō",
-    metaTitle: "Renovation Electrician Taupō | Rewires & Switchboard Upgrades | Balance Electrical",
+    h1: "Electrical renovations & rewiring in Taupō",
+    metaTitle: "Electrical Renovations & Rewiring Taupō | Balance Electrical",
     metaDescription:
-      "Rewires, additional circuits, switchboard upgrades and new lighting for renovations and additions across Taupō — planned carefully around the home you already live in.",
+      "Electrical for renovations in Taupō: house rewiring, new circuits, switchboard upgrades and lighting, planned around the home you already live in.",
+    summary:
+      "House rewiring, new circuits, switchboard upgrades and lighting, threaded through an existing home.",
     contactService: "Renovation or addition",
     intro: [
-      "Renovations need electrical work that's threaded carefully through an existing home. Balance plans new circuits, rewires and switchboard upgrades around the way you live, keeping disruption low and finishes tidy.",
-      "It's also the moment to rethink lighting and climate: concealed LED in new joinery, a heat pump or ducted system, and the capacity for solar or EV charging later.",
+      "Renovations need electrical work that's threaded carefully through an existing home. Balance handles house electrical wiring and rewiring across Taupō — from a single room to the whole house — and plans new circuits, switchboard upgrades and lighting around the way you live, keeping disruption low and finishes tidy.",
+      "It's also the moment to rethink lighting and climate: concealed LED in new joinery, a heat pump or ducted system, and the capacity for solar or EV charging later. At The Arches, a complete renovation in Taupō, that meant a new lighting design, electrical works throughout and high-wall heat pumps.",
     ],
     includes: [
       "Full electrical upgrades for renovations and extensions",
-      "Rewiring and additional circuits",
+      "House wiring and rewiring, from a single room to the whole home",
+      "Additional circuits and power points",
       "Switchboard upgrades and safety improvements",
       "Architectural lighting design",
       "Kitchen, bathroom and joinery-integrated lighting",
@@ -145,6 +158,10 @@ export const SERVICES: Service[] = [
         a: "Yes — from a single room to the whole house. Work is planned in stages where possible so the home stays liveable.",
       },
       {
+        q: "Does an older house need a full rewire?",
+        a: "Not always. At the site visit Victoria checks the switchboard, safety switches and existing wiring, explains what's sound and what isn't, and gives you the options — from rewiring the rooms you're renovating to the whole house.",
+      },
+      {
         q: "Will I need a switchboard upgrade?",
         a: "Older switchboards often lack modern safety-switch (RCD) protection or space for new circuits. Victoria will check yours at the site visit and explain the options.",
       },
@@ -156,14 +173,15 @@ export const SERVICES: Service[] = [
     slug: "commercial-electrician-taupo",
     name: "Commercial",
     h1: "Commercial electrician in Taupō",
-    metaTitle:
-      "Commercial Electrician Taupō | Fit-Outs, Switchboards & Lighting | Balance Electrical",
+    metaTitle: "Commercial Electrical Services Taupō | Balance Electrical",
     metaDescription:
-      "Commercial electrical in Taupō — office, retail and workshop fit-outs, switchboards and sub-mains, three-phase power, lighting design, heat pumps and emergency lighting.",
+      "Commercial electrical services in Taupō: office, retail and workshop fit-outs, switchboards, sub-mains, three-phase power, lighting and emergency lighting.",
+    summary:
+      "Fit-outs, switchboards and sub-mains, three-phase power, lighting and emergency lighting.",
     contactService: "Commercial fit-out",
     intro: [
-      "Electrical installations planned around your business, your premises and the people working there. Balance delivers complete commercial packages — lighting design, power and distribution, climate systems and life-safety lighting — coordinated as one installation.",
-      "At Beechtree Studio's two-storey headquarters that meant architectural lighting for the client-facing spaces, high-bay lighting in the workshop, labelled sub-mains for every tenancy, heat pumps and compliant emergency lighting throughout.",
+      "Commercial electrical services planned around your business, your premises and the people working there. Balance works with business owners, builders, developers and property managers on new builds, fit-outs, upgrades and maintenance — lighting design, power and distribution, climate systems and life-safety lighting, coordinated as one installation.",
+      "At Beechtree Studio's two-storey headquarters that meant architectural lighting for the client-facing spaces, high-bay lighting in the workshop, switchboards and sub-mains serving the offices, workshop and shared areas, heat pumps and compliant emergency lighting throughout.",
     ],
     includes: [
       "Complete commercial electrical installations",
@@ -188,6 +206,10 @@ export const SERVICES: Service[] = [
         q: "Do you install and test emergency lighting?",
         a: "Yes. Exit and emergency lighting is supplied, installed and tested so circulation routes and exits are compliant.",
       },
+      {
+        q: "Do you look after existing commercial premises?",
+        a: "Yes. Alongside new fit-outs, Balance carries out fault finding, testing and compliance checks, alterations, upgrades and maintenance callouts for existing commercial buildings.",
+      },
     ],
     projects: ["beechtree-studio"],
     image: img("beechtree-studio", "01-front-at-dusk"),
@@ -196,12 +218,14 @@ export const SERVICES: Service[] = [
     slug: "solar-installation-taupo",
     name: "Solar & battery",
     h1: "Solar installation in Taupō",
-    metaTitle: "Solar Installation Taupō | Solar Panels & Battery Storage | Balance Electrical",
+    metaTitle: "Solar & Battery Installation Taupō | Balance Electrical",
     metaDescription:
-      "Solar panel and battery storage installation in Taupō — inverter wiring, switchboard upgrades and grid connection by a registered electrician, planned for Taupō winters.",
+      "Solar panel and battery installation in Taupō: inverter wiring, switchboard upgrades and grid connection by a registered electrician.",
+    summary:
+      "Solar panels and battery storage, wired, connected and certified by a registered electrician.",
     contactService: "Solar & battery storage",
     intro: [
-      "Solar is one of the smartest investments a Taupō homeowner can make — and getting it installed correctly from the start determines how well it performs for the next 25 years. As a registered electrician, Victoria handles the full electrical scope, from inverter wiring through to grid connection.",
+      "Solar is one of the smartest investments a Taupō homeowner can make — and getting it installed correctly from the start determines how well it performs for years to come. As a registered electrician, Victoria handles the full electrical scope, from inverter wiring through to grid connection.",
       "Arrays are set out carefully on the roof, wiring is kept tidy and protected, and the switchboard is prepared for battery storage and EV charging now or later.",
     ],
     includes: [
@@ -236,14 +260,16 @@ export const SERVICES: Service[] = [
     slug: "air-conditioning-heating-taupo",
     name: "Air conditioning & heating",
     h1: "Air conditioning & heating in Taupō",
-    metaTitle:
-      "Heat Pumps & Ducted Heating Taupō | Integrated Air Conditioning | Balance Electrical",
+    metaTitle: "Heat Pumps & Air Conditioning Taupō | Balance Electrical",
     metaDescription:
-      "Heat pumps, ducted central heating and cooling, and floor-mounted systems in Taupō — designed into your home with linear grilles and custom joinery so climate control stays out of sight.",
+      "Heat pumps and ducted heating and cooling in Taupō, designed into the home with linear grilles and custom joinery so climate control stays out of sight.",
+    summary:
+      "Heat pumps and ducted heating and cooling, with grilles and units built into the joinery.",
     contactService: "Air conditioning & heating",
     intro: [
       "Heating and cooling, designed into the home rather than hung on the wall. Balance supplies and installs high-wall and floor-mounted heat pumps, ducted central heating and cooling, and multi-zone systems from all major brands.",
       "Where it matters, the equipment disappears: ducted air is delivered through linear grilles set into ceilings and bulkheads, floor-mounted units are built into custom joinery, and grilles are coordinated with the joiner so they sit flush with the cabinetry. Controls can be brought together with lighting in a single smart-home system.",
+      "Air-conditioning work draws on Mitchell (Mitch) Pearce, Director of Balance Air Conditioning and a licensed electrician, who works across both the electrical and climate systems — from high-wall units through to fully ducted systems built into ceilings and joinery.",
     ],
     includes: [
       "Ducted whole-home air conditioning",
@@ -268,7 +294,7 @@ export const SERVICES: Service[] = [
       },
       {
         q: "Which brands do you install?",
-        a: "All major brands are supplied and installed, and Victoria will recommend a system to suit the house, the rooms and how you use them.",
+        a: "All major brands are supplied and installed, and we'll recommend a system to suit the house, the rooms and how you use them.",
       },
     ],
     projects: [
@@ -284,9 +310,11 @@ export const SERVICES: Service[] = [
     slug: "ev-charger-installation-taupo",
     name: "EV charging",
     h1: "EV charger installation in Taupō",
-    metaTitle: "EV Charger Installation Taupō | Home & Business Chargers | Balance Electrical",
+    metaTitle: "EV Charger Installation Taupō | Balance Electrical",
     metaDescription:
-      "Home and business EV charger installation in Taupō — Level 2 wall chargers, load management and solar-ready setups, installed neatly and certified by a registered electrician.",
+      "EV charger installation in Taupō for homes and businesses: wall chargers, load management and solar-ready setups, certified by a registered electrician.",
+    summary:
+      "Home and workplace EV chargers on their own protected circuit, solar-ready where it suits.",
     contactService: "EV charging",
     intro: [
       "A dedicated wall charger installed by a registered electrician means faster charging, safer wiring and an installation that's ready for whatever you drive next.",
@@ -324,9 +352,11 @@ export const SERVICES: Service[] = [
     slug: "smart-home-automation-taupo",
     name: "Smart home & automation",
     h1: "Smart home & automation in Taupō",
-    metaTitle: "Smart Home Electrician Taupō | Lighting & Climate Control | Balance Electrical",
+    metaTitle: "Smart Home & Automation Taupō | Balance Electrical",
     metaDescription:
-      "Smart-home integration in Taupō — lighting scenes, heating and cooling and selected power brought together in one simple control system, planned into new builds and renovations.",
+      "Smart-home control in Taupō: lighting scenes, heating and cooling and selected power in one simple system, planned into new builds and renovations.",
+    summary:
+      "Lighting scenes, heating and cooling and selected power brought together in one simple system.",
     contactService: "Smart home & automation",
     intro: [
       "Smart-home control brings lighting, heating and cooling and selected electrical functions together, so the home moves easily between everyday, entertaining and evening settings.",
@@ -365,12 +395,14 @@ export const SERVICES: Service[] = [
     slug: "maintenance-electrician-taupo",
     name: "Maintenance & repairs",
     h1: "Maintenance electrician in Taupō",
-    metaTitle: "Maintenance Electrician Taupō | Repairs & Fault Finding | Balance Electrical",
+    metaTitle: "Electrical Maintenance & Repairs Taupō | Balance Electrical",
     metaDescription:
-      "Electrical maintenance, fault finding and repairs in Taupō — tripping safety switches, switchboard issues, lighting and power faults, and home or business repairs by a registered electrician.",
+      "Electrical maintenance and home repairs in Taupō: fault finding, tripping safety switches, switchboard, lighting and power faults for homes and businesses.",
+    summary:
+      "Fault finding, repairs and ongoing maintenance for homes, rental properties and businesses.",
     contactService: "Maintenance & repairs",
     intro: [
-      "Faults, flickering lights and tripping safety switches are usually quick to pin down when you know where to look. Balance carries out electrical maintenance and repairs across Taupō — finding the fault, explaining it clearly and fixing it properly.",
+      "Faults, flickering lights and tripping safety switches are usually quick to pin down when you know where to look. Balance carries out electrical maintenance and home repairs across Taupō (Taupo) and the wider district — for homes, rental properties and commercial buildings — finding the fault, explaining it clearly and fixing it properly.",
       "Whether it's a switchboard that keeps tripping, a fitting that's stopped working, or a safety check on an older home, Victoria handles the diagnosis and the repair, and leaves the installation tested and safe.",
     ],
     includes: [
@@ -379,9 +411,10 @@ export const SERVICES: Service[] = [
       "Switchboard inspections and repairs",
       "Lighting and power point repairs and additions",
       "Tripping circuit and overload investigation",
-      "Smoke alarm checks and replacement",
-      "Landlord and pre-sale electrical checks",
+      "Landlord and rental property electrical maintenance",
       "Fixture, fitting and appliance wiring repairs",
+      "Commercial building maintenance and callouts",
+      "Testing and compliance checks",
       "General maintenance callouts",
     ],
     faqs: [
@@ -392,6 +425,14 @@ export const SERVICES: Service[] = [
       {
         q: "Do you take small repairs, or only larger projects?",
         a: "Both. A single fault or fitting is handled with the same care as a full installation — small maintenance jobs and callouts are a regular part of Balance's work across Taupō.",
+      },
+      {
+        q: "What should I do about a dangerous electrical fault?",
+        a: "If there's sparking, smoke, a burning smell or a power line down, keep well clear and call 111. To book a repair or ask about a fault, call Victoria on 027 916 2077, Monday to Friday, 7:30am to 5:30pm.",
+      },
+      {
+        q: "The power is out — should I call an electrician or the power company?",
+        a: "If your neighbours and the street lights are out too, it's a network outage: contact your lines company (the faults number is on your power bill) or check your power retailer's outage updates — Balance is an electrician, not a power company. If only your home, or part of it, has lost power, check the switchboard for a tripped safety switch or circuit breaker; if it won't reset or keeps tripping, call Victoria.",
       },
       {
         q: "Can you check an older home's electrical safety?",

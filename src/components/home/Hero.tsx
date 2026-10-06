@@ -16,7 +16,11 @@ export function Hero() {
       if (!el || prefersReducedMotion()) return;
       const q = gsap.utils.selector(el);
 
-      const title = SplitText.create(q("[data-hero-title]"), { type: "words,chars" });
+      // The whole heading is split (so it keeps its accessible name), except the small line.
+      const title = SplitText.create(q("#hero-title"), {
+        type: "words,chars",
+        ignore: "[data-hero-fade]",
+      });
       const fades = q("[data-hero-fade]");
 
       gsap.set(title.chars, { opacity: 0 });
@@ -78,14 +82,17 @@ export function Hero() {
           <p className="eyebrow">Taupō and the surrounding district</p>
         </div>
 
-        <div className="mt-16 md:mt-12">
+        <div className="mt-12 md:mt-8">
+          {/* The small line names the trade and the town, so the page's main heading does too. */}
           <h1
             id="hero-title"
-            data-hero-title
             className="display-caps text-[clamp(1.55rem,4.3vw,4.4rem)] leading-[1.08] tracking-[0.03em] text-ink"
             style={{ letterSpacing: "0.03em" }}
           >
-            <span className="block">Electrical, lighting &amp; air-conditioning.</span>
+            <span data-hero-fade className="eyebrow mb-5 block text-ink-soft">
+              Registered electrician in Taupō
+            </span>{" "}
+            <span className="block">Electrical, lighting &amp; air-conditioning.</span>{" "}
             <span className="block text-ink/55">Considered together.</span>
           </h1>
 
@@ -93,15 +100,22 @@ export function Hero() {
             <div data-hero-fade className="flex items-start gap-5 md:col-span-5">
               <span className="mt-3 h-px w-14 shrink-0 bg-ink/35" />
               <p className="max-w-sm text-base leading-relaxed text-ink-soft">
-                Thoughtfully planned and expertly installed by local electrician Victoria Grant,
+                Thoughtfully planned and expertly installed by Taupō electrician Victoria Grant,
                 with a personal approach from the first conversation to the finished installation.
               </p>
             </div>
             <div data-hero-fade className="md:col-span-5 md:col-start-8">
               <p className="max-w-md text-[1.02rem] leading-relaxed text-ink-soft">
-                From high-end new builds and renovations to lighting design, smart-home integration,
-                air conditioning and solar, we deliver considered systems that work seamlessly with
-                the architecture.
+                From high-end new builds and renovations to commercial fit-outs, lighting design,
+                smart-home integration, air conditioning, solar and{" "}
+                <Link
+                  to="/services/$slug"
+                  params={{ slug: "maintenance-electrician-taupo" }}
+                  className="beam-link text-ink underline decoration-ink/30 underline-offset-4"
+                >
+                  maintenance and repairs
+                </Link>
+                , we deliver considered systems that work seamlessly with the architecture.
               </p>
               <div className="mt-8 flex flex-wrap gap-3">
                 <Button asChild variant="lux" size="xl">

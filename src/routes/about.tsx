@@ -10,35 +10,71 @@ import mitchPortrait from "@/assets/mitch-portrait.webp";
 import { gsap, prefersReducedMotion, useGSAP } from "@/lib/gsap";
 import { EwrbLogo } from "@/components/EwrbLogo";
 import { PORTFOLIO } from "@/lib/portfolio";
-import { GoogleReviewsBadge, Testimonials, reviewSchema } from "@/components/Reviews";
+import { GoogleReviewsBadge, Testimonials } from "@/components/Reviews";
 import { getGoogleReviews } from "@/lib/google-reviews";
-import { jsonLd, SITE } from "@/lib/seo";
+import {
+  SITE,
+  breadcrumbs,
+  businessRef,
+  jsonLd,
+  mitchRef,
+  victoriaRef,
+  websiteRef,
+} from "@/lib/seo";
 import { cn } from "@/lib/utils";
 import { BrandText } from "@/components/brand/BrandName";
 
 export const Route = createFileRoute("/about")({
   loader: () => getGoogleReviews(),
-  head: ({ loaderData }) => ({
+  head: () => ({
     meta: [
-      { title: "About Victoria Grant | Registered Electrician Taupō | Balance Electrical" },
+      { title: "About Balance Electrical | Victoria Grant & Mitch Pearce" },
       {
         name: "description",
         content:
-          "Meet Victoria Grant, owner of Balance Electrical and a registered electrician in Taupō. Personal service for residential and commercial electrical projects.",
+          "Meet Victoria Grant, owner of Balance Electrical and registered electrician in Taupō, and Mitch Pearce, Director of Balance Air Conditioning.",
       },
       { name: "robots", content: "index, follow, max-image-preview:large" },
       { name: "geo.region", content: "NZ-WKO" },
       { name: "geo.placename", content: "Taupo" },
-      { property: "og:title", content: "About Victoria Grant | Balance Electrical" },
+      {
+        property: "og:title",
+        content: "Victoria Grant & Mitch Pearce | Balance Electrical, Taupō",
+      },
       {
         property: "og:description",
         content:
-          "Meet Victoria Grant — the owner and registered electrician behind Balance Electrical in Taupō.",
+          "Victoria Grant, owner of Balance Electrical and a registered electrician, and Mitch Pearce, electrician and Director of Balance Air Conditioning, in Taupō.",
       },
+      { property: "og:url", content: `${SITE}/about` },
       { property: "og:image", content: `${SITE}${portrait}` },
     ],
-    links: [{ rel: "canonical", href: "https://www.balanceelectrical.co.nz/about" }],
-    scripts: [reviewSchema(loaderData)].filter((x) => x !== null).map((x) => jsonLd([x])),
+    links: [{ rel: "canonical", href: `${SITE}/about` }],
+    scripts: [
+      jsonLd([
+        {
+          "@type": "AboutPage",
+          "@id": `${SITE}/about#page`,
+          url: `${SITE}/about`,
+          name: "About Balance Electrical",
+          inLanguage: "en-NZ",
+          isPartOf: websiteRef,
+          about: businessRef,
+          mainEntity: businessRef,
+          mentions: [victoriaRef, mitchRef],
+          primaryImageOfPage: {
+            "@type": "ImageObject",
+            contentUrl: `${SITE}${portrait}`,
+            width: 1254,
+            height: 1254,
+          },
+        },
+        breadcrumbs([
+          ["Home", "/"],
+          ["About", "/about"],
+        ]),
+      ]),
+    ],
   }),
   component: About,
 });
@@ -217,14 +253,15 @@ function Directors({ google }: { google: ReturnType<typeof Route.useLoaderData> 
       className="mx-auto max-w-[1440px] px-5 pb-8 md:px-10"
     >
       <div className="border-t border-ink/15 pt-24 md:pt-32">
-        <p className="eyebrow text-ink-soft">The team</p>
-        <SplitReveal
-          as="h2"
-          id="directors-title"
-          className="display-caps mt-5 text-[clamp(2.2rem,5vw,4.6rem)] leading-[1] tracking-[0.1em]!"
-        >
-          The directors.
-        </SplitReveal>
+        <h1 id="directors-title">
+          <span className="eyebrow block text-ink-soft">The team · Taupō</span>{" "}
+          <SplitReveal
+            as="span"
+            className="display-caps mt-5 block text-[clamp(2.2rem,5vw,4.6rem)] leading-[1] tracking-[0.1em]!"
+          >
+            The directors.
+          </SplitReveal>
+        </h1>
       </div>
 
       {DIRECTORS.map((d, i) => {
@@ -297,9 +334,9 @@ function Directors({ google }: { google: ReturnType<typeof Route.useLoaderData> 
                   </>
                 )}
               </p>
-              <h3 className="display-caps mt-5 text-[clamp(1.9rem,3.2vw,3rem)] leading-[1.05] tracking-[0.1em]!">
+              <h2 className="display-caps mt-5 text-[clamp(1.9rem,3.2vw,3rem)] leading-[1.05] tracking-[0.1em]!">
                 {d.name}
-              </h3>
+              </h2>
               <div className="led-h mt-7 max-w-[10rem] opacity-80" aria-hidden />
               <LightWords
                 className="mt-8 font-display text-[clamp(1.45rem,2.2vw,2rem)] leading-snug text-ink"
@@ -441,8 +478,8 @@ function RecentWork() {
         {projects.map((p) => (
           <Link
             key={p.slug}
-            to="/portfolio"
-            hash={p.slug}
+            to="/portfolio/$slug"
+            params={{ slug: p.slug }}
             data-cursor="Open"
             className="group block"
           >

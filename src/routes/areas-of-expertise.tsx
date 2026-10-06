@@ -8,37 +8,40 @@ import { photos } from "@/lib/photos";
 import { getPhoto, PORTFOLIO } from "@/lib/portfolio";
 import { serviceImage, type ServiceArt } from "@/lib/service-images";
 import { SERVICES } from "@/lib/services";
+import { SITE, collectionPage, jsonLd } from "@/lib/seo";
 import { cn } from "@/lib/utils";
 import { useLenis } from "@/hooks/use-lenis";
 
 export const Route = createFileRoute("/areas-of-expertise")({
   head: () => ({
     meta: [
-      {
-        title:
-          "Electrical Services Taupō | Solar, New Builds, Renovations, EV Chargers | Balance Electrical",
-      },
+      { title: "Electrical Services Taupō | Balance Electrical" },
       {
         name: "description",
         content:
-          "One team from planning and first fix through to final fit-off and commissioning. New builds, lighting design, commercial, air conditioning, renovations, solar, smart homes, EV charging and maintenance in Taupō.",
+          "All nine electrical services in Taupō, from planning and first fix to fit-off and maintenance: what each includes, with projects and a page for each.",
       },
       { name: "robots", content: "index, follow, max-image-preview:large" },
       { name: "geo.region", content: "NZ-WKO" },
       { name: "geo.placename", content: "Taupo" },
-      {
-        name: "keywords",
-        content:
-          "solar panel installation Taupo, solar electrician Taupo, battery storage Taupo, EV charger Taupo, registered electrician Taupo",
-      },
       { property: "og:title", content: "Areas of Expertise — Balance Electrical" },
       {
         property: "og:description",
         content: "Registered electrical services across Taupō and the surrounding district.",
       },
+      { property: "og:url", content: `${SITE}/areas-of-expertise` },
       { property: "og:image", content: photos.kitchen },
     ],
-    links: [{ rel: "canonical", href: "https://www.balanceelectrical.co.nz/areas-of-expertise" }],
+    links: [{ rel: "canonical", href: `${SITE}/areas-of-expertise` }],
+    scripts: [
+      jsonLd([
+        collectionPage(
+          "/areas-of-expertise",
+          "Electrical services in Taupō",
+          SERVICES.map((s) => [s.h1, `/services/${s.slug}`]),
+        ),
+      ]),
+    ],
   }),
   component: AreasOfExpertise,
 });
@@ -304,7 +307,7 @@ const sections: Area[] = [
   },
   {
     num: "09",
-    pages: [],
+    pages: ["maintenance-electrician-taupo"],
     heading: "Maintenance & repairs",
     service: "Maintenance & repairs",
     img: shot("beechtree-studio", "09-switchboard"),
@@ -358,18 +361,21 @@ function AreasOfExpertise() {
   return (
     <SiteLayout>
       <section className="mx-auto max-w-[1440px] px-5 pb-16 pt-36 md:px-10 md:pb-24 md:pt-48">
-        <p className="eyebrow text-ink-soft">What we do</p>
-        <SplitReveal
-          as="h1"
-          immediate
-          delay={0.2}
-          className="display-caps mt-6 max-w-5xl text-balance text-[clamp(2rem,5.6vw,5.5rem)] leading-[0.95] tracking-[0.08em]!"
-        >
-          Electrical expertise. From start to finish.
-        </SplitReveal>
+        <h1>
+          <span className="eyebrow block text-ink-soft">Electrical services in Taupō</span>{" "}
+          <SplitReveal
+            as="span"
+            immediate
+            delay={0.2}
+            className="display-caps mt-6 block max-w-5xl text-balance text-[clamp(2rem,5.6vw,5.5rem)] leading-[0.95] tracking-[0.08em]!"
+          >
+            Electrical expertise. From start to finish.
+          </SplitReveal>
+        </h1>
         <Reveal delay={0.5} className="mt-10 grid gap-8 md:grid-cols-12 md:items-end">
           <p className="max-w-md font-display text-[clamp(1.35rem,2vw,1.8rem)] leading-snug text-ink md:col-span-5">
-            One team from planning and first fix through to final fit-off and commissioning.
+            One team from planning and first fix through to final fit-off, commissioning and
+            maintenance, for homes and businesses across Taupō.
           </p>
           {/* One swipeable row on phones; wraps on larger screens. */}
           <div className="no-scrollbar -mx-5 flex gap-2 overflow-x-auto px-5 md:col-span-7 md:mx-0 md:flex-wrap md:justify-end md:overflow-visible md:px-0">

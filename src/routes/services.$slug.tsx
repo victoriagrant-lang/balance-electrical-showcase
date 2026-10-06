@@ -7,7 +7,7 @@ import { ProjectCards } from "@/components/ProjectCards";
 import { AREAS } from "@/lib/areas";
 import { CONTACT } from "@/lib/contact";
 import { SERVICES, getService } from "@/lib/services";
-import { SITE, breadcrumbs, businessRef, faqPage, jsonLd } from "@/lib/seo";
+import { AREA_SERVED, SITE, breadcrumbs, businessRef, faqPage, jsonLd, serviceId } from "@/lib/seo";
 
 export const Route = createFileRoute("/services/$slug")({
   loader: ({ params }) => {
@@ -36,14 +36,14 @@ export const Route = createFileRoute("/services/$slug")({
         jsonLd([
           {
             "@type": "Service",
-            "@id": `${url}#service`,
+            "@id": serviceId(s.slug),
             name: s.h1,
             serviceType: s.name,
             description: [...s.intro].join(" "),
             url,
             image,
             provider: businessRef,
-            areaServed: AREAS.map((a) => ({ "@type": "Place", name: `${a.name}, New Zealand` })),
+            areaServed: AREA_SERVED,
             hasOfferCatalog: {
               "@type": "OfferCatalog",
               name: `${s.name} — what's included`,
@@ -148,13 +148,13 @@ function ServicePage() {
                     params={{ slug: a.slug }}
                     className="beam-link text-[1.05rem]"
                   >
-                    {a.name}
+                    {a.linkLabel ?? a.name}
                   </Link>
                 </li>
               ))}
             </ul>
             <p className="mt-6 text-sm leading-relaxed text-ink-soft">
-              Owner-operated by Victoria Grant, registered electrician (EWRB).
+              Based in Taupō (Taupo) and owned by Victoria Grant, registered electrician (EWRB).
             </p>
           </div>
         </aside>

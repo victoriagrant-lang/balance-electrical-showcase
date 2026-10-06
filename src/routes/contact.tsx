@@ -2,7 +2,10 @@ import { createFileRoute } from "@tanstack/react-router";
 import { useRef, useState, type DragEvent, type FormEvent } from "react";
 import { ArrowRight, Paperclip, Phone, X } from "lucide-react";
 import { SiteLayout } from "@/components/SiteLayout";
+import { Testimonials } from "@/components/Reviews";
+import { getGoogleReviews } from "@/lib/google-reviews";
 import { CONTACT } from "@/lib/contact";
+import { SITE, businessRef, jsonLd, websiteRef } from "@/lib/seo";
 import { sendEnquiry, type SendFailure } from "@/lib/send-enquiry";
 import { photos } from "@/lib/photos";
 import { cn } from "@/lib/utils";
@@ -67,13 +70,14 @@ export const Route = createFileRoute("/contact")({
   validateSearch: (search: Record<string, unknown>): { service?: string } => ({
     service: typeof search.service === "string" ? search.service : undefined,
   }),
+  loader: () => getGoogleReviews(),
   head: () => ({
     meta: [
-      { title: "Contact Victoria | Electrician Taupō | Balance Electrical" },
+      { title: "Request a Quote | Contact Balance Electrical, Taupō" },
       {
         name: "description",
         content:
-          "Contact Victoria Grant at Balance Electrical to discuss electrical work, lighting, heating and air conditioning or solar for your home or business in the Taupō district.",
+          "Request a quote from Balance Electrical in Taupō. Send a brief with photos or plans, or call Victoria on 027 916 2077, Monday to Friday, 7:30am to 5:30pm.",
       },
       { name: "robots", content: "index, follow, max-image-preview:large" },
       { name: "geo.region", content: "NZ-WKO" },
@@ -84,9 +88,24 @@ export const Route = createFileRoute("/contact")({
         content:
           "Tell us about your property and your plans. Speak directly with Victoria about the electrical work your project needs.",
       },
+      { property: "og:url", content: `${SITE}/contact` },
       { property: "og:image", content: photos.fountainEntry },
     ],
-    links: [{ rel: "canonical", href: "https://www.balanceelectrical.co.nz/contact" }],
+    links: [{ rel: "canonical", href: `${SITE}/contact` }],
+    scripts: [
+      jsonLd([
+        {
+          "@type": "ContactPage",
+          "@id": `${SITE}/contact#page`,
+          url: `${SITE}/contact`,
+          name: "Contact Balance Electrical",
+          inLanguage: "en-NZ",
+          isPartOf: websiteRef,
+          about: businessRef,
+          mainEntity: businessRef,
+        },
+      ]),
+    ],
   }),
   component: Contact,
 });
@@ -97,6 +116,7 @@ const labelCls = "eyebrow text-[10px] font-normal text-muted-foreground";
 
 function Contact() {
   const { service } = Route.useSearch();
+  const google = Route.useLoaderData();
   const [sent, setSent] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(false);
@@ -179,20 +199,22 @@ function Contact() {
   return (
     <SiteLayout>
       <section className="relative mx-auto max-w-[1440px] px-5 pb-16 pt-36 md:px-10 md:pb-24 md:pt-48">
-        <p className="eyebrow text-ink-soft">Contact</p>
-        <SplitReveal
-          as="h1"
-          immediate
-          delay={0.2}
-          className="display-caps mt-6 max-w-5xl text-balance text-[clamp(2rem,5.6vw,5.5rem)] leading-[0.95] tracking-[0.08em]!"
-        >
-          Tell us what you have in mind.
-        </SplitReveal>
+        <h1>
+          <span className="eyebrow block text-ink-soft">Request an electrician quote in Taupō</span>{" "}
+          <SplitReveal
+            as="span"
+            immediate
+            delay={0.2}
+            className="display-caps max-w-5xl text-balance text-[clamp(2rem,5.6vw,5.5rem)] leading-[0.95] tracking-[0.08em]! mt-6 block"
+          >
+            Tell us what you have in mind.
+          </SplitReveal>
+        </h1>
         <Reveal delay={0.5}>
           <p className="mt-8 max-w-xl text-[1.05rem] leading-relaxed text-ink-soft">
-            Planning a project or need help with an existing property? Share a few details below, or
-            contact Victoria directly. She’ll be in touch within a few days to discuss what you need
-            and the next steps.
+            Planning a project, need a quote, or need help with an existing property? Share a few
+            details below, or contact Victoria directly. She’ll be in touch within a few days to
+            discuss what you need and the next steps.
           </p>
         </Reveal>
       </section>
@@ -423,6 +445,8 @@ function Contact() {
           </aside>
         </Reveal>
       </section>
+
+      <Testimonials google={google} initial={3} className="pb-28 md:pb-40" />
     </SiteLayout>
   );
 }

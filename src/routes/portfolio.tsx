@@ -8,20 +8,20 @@ import { Reveal, SplitReveal } from "@/components/motion/Reveal";
 import { useLenis } from "@/hooks/use-lenis";
 import { CONTACT } from "@/lib/contact";
 import { PORTFOLIO, type PortfolioPhoto, type PortfolioProject } from "@/lib/portfolio";
+import { SITE, collectionPage, jsonLd } from "@/lib/seo";
 import { cn } from "@/lib/utils";
 import { loadRemotePortfolioProjects, mergeRemotePortfolio } from "@/lib/remotePortfolio";
 
-const SITE = "https://www.balanceelectrical.co.nz";
 const pad = (n: number) => String(n).padStart(2, "0");
 
 export const Route = createFileRoute("/portfolio")({
   head: () => ({
     meta: [
-      { title: "Our Projects | Electrical & Lighting Taupō | Balance Electrical" },
+      { title: "Project Portfolio | Balance Electrical, Taupō" },
       {
         name: "description",
         content:
-          "Explore Balance Electrical’s residential, commercial and solar projects. See the electrical scope, lighting details and finished installations in each property.",
+          "Balance Electrical’s residential, commercial and solar projects in Taupō: the electrical scope, lighting details and finished installation of each home.",
       },
       { name: "robots", content: "index, follow, max-image-preview:large" },
       { name: "geo.region", content: "NZ-WKO" },
@@ -32,9 +32,19 @@ export const Route = createFileRoute("/portfolio")({
         content:
           "A closer look at our projects: the properties, the electrical work and the details of each installation.",
       },
+      { property: "og:url", content: `${SITE}/portfolio` },
       { property: "og:image", content: `${SITE}${PORTFOLIO[0].photos[0].lg}` },
     ],
     links: [{ rel: "canonical", href: `${SITE}/portfolio` }],
+    scripts: [
+      jsonLd([
+        collectionPage(
+          "/portfolio",
+          "Balance Electrical project portfolio",
+          PORTFOLIO.map((p) => [p.title, `/portfolio/${p.slug}`]),
+        ),
+      ]),
+    ],
   }),
   component: Portfolio,
 });

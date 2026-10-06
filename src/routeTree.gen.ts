@@ -14,11 +14,14 @@ import { Route as AboutRouteImport } from './routes/about'
 import { Route as AreasOfExpertiseRouteImport } from './routes/areas-of-expertise'
 import { Route as ContactRouteImport } from './routes/contact'
 import { Route as EnquiriesRouteImport } from './routes/enquiries'
+import { Route as GalleryRouteImport } from './routes/gallery'
 import { Route as LlmsFullDottxtRouteImport } from './routes/llms-full[.]txt'
 import { Route as LlmsDottxtRouteImport } from './routes/llms[.]txt'
 import { Route as PortfolioRouteImport } from './routes/portfolio'
 import { Route as ProjectsRouteImport } from './routes/projects'
+import { Route as ReviewRouteImport } from './routes/review'
 import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
+import { Route as ApiReviewsStatusRouteImport } from './routes/api.reviews-status'
 import { Route as AreasIndexRouteImport } from './routes/areas.index'
 import { Route as AreasSlugRouteImport } from './routes/areas.$slug'
 import { Route as PortfolioSlugRouteImport } from './routes/portfolio_.$slug'
@@ -50,6 +53,11 @@ const EnquiriesRoute = EnquiriesRouteImport.update({
   path: '/enquiries',
   getParentRoute: () => rootRouteImport,
 } as any)
+const GalleryRoute = GalleryRouteImport.update({
+  id: '/gallery',
+  path: '/gallery',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const LlmsFullDottxtRoute = LlmsFullDottxtRouteImport.update({
   id: '/llms-full.txt',
   path: '/llms-full.txt',
@@ -70,9 +78,19 @@ const ProjectsRoute = ProjectsRouteImport.update({
   path: '/projects',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ReviewRoute = ReviewRouteImport.update({
+  id: '/review',
+  path: '/review',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const SitemapDotxmlRoute = SitemapDotxmlRouteImport.update({
   id: '/sitemap.xml',
   path: '/sitemap.xml',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ApiReviewsStatusRoute = ApiReviewsStatusRouteImport.update({
+  id: '/api/reviews-status',
+  path: '/api/reviews-status',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AreasIndexRoute = AreasIndexRouteImport.update({
@@ -107,11 +125,14 @@ export interface FileRoutesByFullPath {
   '/areas-of-expertise': typeof AreasOfExpertiseRoute
   '/contact': typeof ContactRoute
   '/enquiries': typeof EnquiriesRoute
+  '/gallery': typeof GalleryRoute
   '/llms-full.txt': typeof LlmsFullDottxtRoute
   '/llms.txt': typeof LlmsDottxtRoute
   '/portfolio': typeof PortfolioRoute
   '/projects': typeof ProjectsRoute
+  '/review': typeof ReviewRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
+  '/api/reviews-status': typeof ApiReviewsStatusRoute
   '/areas/$slug': typeof AreasSlugRoute
   '/portfolio/$slug': typeof PortfolioSlugRoute
   '/services/$slug': typeof ServicesSlugRoute
@@ -124,11 +145,14 @@ export interface FileRoutesByTo {
   '/areas-of-expertise': typeof AreasOfExpertiseRoute
   '/contact': typeof ContactRoute
   '/enquiries': typeof EnquiriesRoute
+  '/gallery': typeof GalleryRoute
   '/llms-full.txt': typeof LlmsFullDottxtRoute
   '/llms.txt': typeof LlmsDottxtRoute
   '/portfolio': typeof PortfolioRoute
   '/projects': typeof ProjectsRoute
+  '/review': typeof ReviewRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
+  '/api/reviews-status': typeof ApiReviewsStatusRoute
   '/areas/$slug': typeof AreasSlugRoute
   '/portfolio/$slug': typeof PortfolioSlugRoute
   '/services/$slug': typeof ServicesSlugRoute
@@ -142,11 +166,14 @@ export interface FileRoutesById {
   '/areas-of-expertise': typeof AreasOfExpertiseRoute
   '/contact': typeof ContactRoute
   '/enquiries': typeof EnquiriesRoute
+  '/gallery': typeof GalleryRoute
   '/llms-full.txt': typeof LlmsFullDottxtRoute
   '/llms.txt': typeof LlmsDottxtRoute
   '/portfolio': typeof PortfolioRoute
   '/projects': typeof ProjectsRoute
+  '/review': typeof ReviewRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
+  '/api/reviews-status': typeof ApiReviewsStatusRoute
   '/areas/$slug': typeof AreasSlugRoute
   '/portfolio_/$slug': typeof PortfolioSlugRoute
   '/services/$slug': typeof ServicesSlugRoute
@@ -161,11 +188,14 @@ export interface FileRouteTypes {
     | '/areas-of-expertise'
     | '/contact'
     | '/enquiries'
+    | '/gallery'
     | '/llms-full.txt'
     | '/llms.txt'
     | '/portfolio'
     | '/projects'
+    | '/review'
     | '/sitemap.xml'
+    | '/api/reviews-status'
     | '/areas/$slug'
     | '/portfolio/$slug'
     | '/services/$slug'
@@ -178,11 +208,14 @@ export interface FileRouteTypes {
     | '/areas-of-expertise'
     | '/contact'
     | '/enquiries'
+    | '/gallery'
     | '/llms-full.txt'
     | '/llms.txt'
     | '/portfolio'
     | '/projects'
+    | '/review'
     | '/sitemap.xml'
+    | '/api/reviews-status'
     | '/areas/$slug'
     | '/portfolio/$slug'
     | '/services/$slug'
@@ -195,11 +228,14 @@ export interface FileRouteTypes {
     | '/areas-of-expertise'
     | '/contact'
     | '/enquiries'
+    | '/gallery'
     | '/llms-full.txt'
     | '/llms.txt'
     | '/portfolio'
     | '/projects'
+    | '/review'
     | '/sitemap.xml'
+    | '/api/reviews-status'
     | '/areas/$slug'
     | '/portfolio_/$slug'
     | '/services/$slug'
@@ -213,11 +249,14 @@ export interface RootRouteChildren {
   AreasOfExpertiseRoute: typeof AreasOfExpertiseRoute
   ContactRoute: typeof ContactRoute
   EnquiriesRoute: typeof EnquiriesRoute
+  GalleryRoute: typeof GalleryRoute
   LlmsFullDottxtRoute: typeof LlmsFullDottxtRoute
   LlmsDottxtRoute: typeof LlmsDottxtRoute
   PortfolioRoute: typeof PortfolioRoute
   ProjectsRoute: typeof ProjectsRoute
+  ReviewRoute: typeof ReviewRoute
   SitemapDotxmlRoute: typeof SitemapDotxmlRoute
+  ApiReviewsStatusRoute: typeof ApiReviewsStatusRoute
   AreasSlugRoute: typeof AreasSlugRoute
   PortfolioSlugRoute: typeof PortfolioSlugRoute
   ServicesSlugRoute: typeof ServicesSlugRoute
@@ -262,6 +301,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof EnquiriesRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/gallery': {
+      id: '/gallery'
+      path: '/gallery'
+      fullPath: '/gallery'
+      preLoaderRoute: typeof GalleryRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/llms-full.txt': {
       id: '/llms-full.txt'
       path: '/llms-full.txt'
@@ -290,11 +336,25 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ProjectsRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/review': {
+      id: '/review'
+      path: '/review'
+      fullPath: '/review'
+      preLoaderRoute: typeof ReviewRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/sitemap.xml': {
       id: '/sitemap.xml'
       path: '/sitemap.xml'
       fullPath: '/sitemap.xml'
       preLoaderRoute: typeof SitemapDotxmlRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/reviews-status': {
+      id: '/api/reviews-status'
+      path: '/api/reviews-status'
+      fullPath: '/api/reviews-status'
+      preLoaderRoute: typeof ApiReviewsStatusRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/areas/': {
@@ -341,11 +401,14 @@ const rootRouteChildren: RootRouteChildren = {
   AreasOfExpertiseRoute: AreasOfExpertiseRoute,
   ContactRoute: ContactRoute,
   EnquiriesRoute: EnquiriesRoute,
+  GalleryRoute: GalleryRoute,
   LlmsFullDottxtRoute: LlmsFullDottxtRoute,
   LlmsDottxtRoute: LlmsDottxtRoute,
   PortfolioRoute: PortfolioRoute,
   ProjectsRoute: ProjectsRoute,
+  ReviewRoute: ReviewRoute,
   SitemapDotxmlRoute: SitemapDotxmlRoute,
+  ApiReviewsStatusRoute: ApiReviewsStatusRoute,
   AreasSlugRoute: AreasSlugRoute,
   PortfolioSlugRoute: PortfolioSlugRoute,
   ServicesSlugRoute: ServicesSlugRoute,

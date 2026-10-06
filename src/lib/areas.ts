@@ -6,6 +6,8 @@
 export type Area = {
   slug: string;
   name: string;
+  /** Link text where it should differ from the name (Taupō's page is the township page). */
+  linkLabel?: string;
   h1: string;
   metaTitle: string;
   metaDescription: string;
@@ -21,15 +23,16 @@ export const AREAS: Area[] = [
   {
     slug: "taupo",
     name: "Taupō",
-    h1: "Electrician in Taupō",
-    metaTitle: "Electrician Taupō | Registered Electrician Victoria Grant | Balance Electrical",
+    linkLabel: "Taupō township",
+    h1: "Electrical work around Taupō township",
+    metaTitle: "Electrical Work Around Taupō Township | Balance Electrical",
     metaDescription:
-      "Registered electrician in Taupō for new builds, renovations, lighting design, heat pumps and ducted heating, solar, EV chargers and commercial work.",
+      "Electrical, lighting and heat-pump work in and around Taupō township (Taupo), from renovations and rewires to new builds, by electrician Victoria Grant.",
     intro: [
-      "Balance Electrical is based in Taupō and owner-operated by registered electrician Victoria Grant. From new homes and renovations to commercial fit-outs, every job is planned, wired and finished by the person you first spoke to.",
-      "Work across Taupō ranges from lighting design and complete new-build installations to heat pumps, ducted climate systems, solar, EV charging and switchboard upgrades for existing homes and businesses.",
+      "Balance Electrical is based in Taupō (Taupo) and owned by registered electrician Victoria Grant, who was raised here. Around the township and its suburbs, including Nukuhau and Rainbow Point, the work runs from renovations and rewires in existing homes to complete new-build installations, commercial fit-outs, and maintenance and repairs.",
+      "Two Taupō projects show the range: The Arches, a complete renovation with a new lighting design, electrical works throughout and high-wall heat pumps, and Pool Courtyard, a new home with full lighting design, electrical installation and ducted air conditioning.",
     ],
-    projects: ["courtyard-house", "beechtree-studio", "pool-courtyard", "the-arches", "lake-house"],
+    projects: ["the-arches", "pool-courtyard", "courtyard-house", "beechtree-studio", "lake-house"],
     local: true,
     geo: { lat: -38.6857, lng: 176.0702 },
   },
@@ -37,7 +40,7 @@ export const AREAS: Area[] = [
     slug: "kinloch",
     name: "Kinloch",
     h1: "Electrician in Kinloch",
-    metaTitle: "Electrician Kinloch | New Builds, Lighting & Air-Conditioning | Balance Electrical",
+    metaTitle: "Electrician in Kinloch | Balance Electrical",
     metaDescription:
       "Electrical, lighting design, smart-home and climate systems for new homes and renovations in Kinloch, on the north-western shore of Lake Taupō.",
     intro: [
@@ -52,11 +55,11 @@ export const AREAS: Area[] = [
     slug: "acacia-bay",
     name: "Acacia Bay",
     h1: "Electrician in Acacia Bay",
-    metaTitle: "Electrician Acacia Bay | Lighting, Renovations & New Builds | Balance Electrical",
+    metaTitle: "Electrician in Acacia Bay | Balance Electrical",
     metaDescription:
       "Registered electrician for Acacia Bay homes — lighting design, renovations and rewires, new builds, heat pumps and ducted heating, solar and EV chargers.",
     intro: [
-      "Acacia Bay sits on the western side of the lake, a short drive from Taupō township, and Balance works on homes here regularly — from renovations and rewires to complete new-build installations.",
+      "Acacia Bay sits on the western side of the lake, a short drive from Taupō township, and is part of the area Balance covers — from renovations and rewires to complete new-build installations.",
       "Lake-facing homes benefit from lighting that keeps the view clear after dark, and from heating and cooling designed into the joinery rather than mounted on the wall.",
     ],
     projects: ["lake-house", "twin-pavilions", "walnut-house"],
@@ -66,7 +69,7 @@ export const AREAS: Area[] = [
     slug: "wairakei",
     name: "Wairakei",
     h1: "Electrician in Wairakei",
-    metaTitle: "Electrician Wairakei | Residential & Commercial Electrical | Balance Electrical",
+    metaTitle: "Electrician in Wairakei | Balance Electrical",
     metaDescription:
       "Residential and commercial electrical in Wairakei, just north of Taupō — new builds, lighting, heat pumps, solar, EV charging and maintenance.",
     intro: [
@@ -80,12 +83,12 @@ export const AREAS: Area[] = [
     slug: "turangi",
     name: "Tūrangi",
     h1: "Electrician in Tūrangi",
-    metaTitle: "Electrician Tūrangi | Electrical, Heating & Solar | Balance Electrical",
+    metaTitle: "Electrician in Tūrangi | Balance Electrical",
     metaDescription:
       "Electrical services for Tūrangi at the southern end of Lake Taupō — new builds, renovations, heat pumps and ducted heating, solar and EV chargers.",
     intro: [
       "At the southern end of Lake Taupō, Tūrangi is part of the wider district Balance covers, for both new builds and work on existing homes and businesses.",
-      "Efficient heating is a priority through Central Plateau winters, so heat pumps, ducted systems and solar are common requests — alongside lighting, switchboard upgrades and maintenance.",
+      "Efficient heating matters through Central Plateau winters. Services here include heat pumps and ducted systems, solar, lighting, switchboard upgrades, and maintenance and repairs.",
     ],
     projects: ["hillside-house", "pool-courtyard", "behind-the-walls"],
     geo: { lat: -38.9886, lng: 175.8086 },

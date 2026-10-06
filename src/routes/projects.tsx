@@ -7,16 +7,17 @@ import { Reveal, SplitReveal } from "@/components/motion/Reveal";
 import { Lightbox, type Shot } from "@/components/Lightbox";
 import { photos } from "@/lib/photos";
 import { getPhoto, getProject } from "@/lib/portfolio";
+import { SITE } from "@/lib/seo";
 import { cn } from "@/lib/utils";
 
 export const Route = createFileRoute("/projects")({
   head: () => ({
     meta: [
-      { title: "Gallery | Electrician Taupō | Balance Electrical" },
+      { title: "Gallery | Electrical & Lighting Work | Balance Electrical" },
       {
         name: "description",
         content:
-          "The work, up close: architectural lighting, integrated electrical, climate systems, smart-home technology and solar from Balance Electrical’s projects in Taupō. Explore by discipline or switch to After Dark.",
+          "The work, up close: architectural lighting, integrated electrical, climate systems, smart-home control and solar from Balance Electrical’s Taupō projects.",
       },
       { name: "robots", content: "index, follow, max-image-preview:large" },
       { name: "geo.region", content: "NZ-WKO" },
@@ -27,9 +28,10 @@ export const Route = createFileRoute("/projects")({
         content:
           "See the details of our electrical and lighting work. Filter photographs by service, or explore the full project in our portfolio.",
       },
+      { property: "og:url", content: `${SITE}/projects` },
       { property: "og:image", content: photos.fountainEntry },
     ],
-    links: [{ rel: "canonical", href: "https://www.balanceelectrical.co.nz/projects" }],
+    links: [{ rel: "canonical", href: `${SITE}/projects` }],
   }),
   component: Gallery,
 });
@@ -183,7 +185,15 @@ const TILES: Tile[] = GALLERY.map((pick) => {
 });
 
 const AFTER_DARK = "After Dark";
-const FILTERS = ["All", "Lighting", "Electrical", "Air-Conditioning", "Smart Home", "Solar", AFTER_DARK];
+const FILTERS = [
+  "All",
+  "Lighting",
+  "Electrical",
+  "Air-Conditioning",
+  "Smart Home",
+  "Solar",
+  AFTER_DARK,
+];
 
 const matches = (t: Tile, f: string) =>
   f === "All" ? true : f === AFTER_DARK ? t.dark : t.tags.includes(f as Discipline);

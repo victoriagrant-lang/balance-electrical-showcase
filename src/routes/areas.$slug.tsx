@@ -8,7 +8,7 @@ import { ProjectCards } from "@/components/ProjectCards";
 import { AREAS, getArea } from "@/lib/areas";
 import { CONTACT } from "@/lib/contact";
 import { SERVICES } from "@/lib/services";
-import { SITE, breadcrumbs, businessRef, jsonLd } from "@/lib/seo";
+import { SITE, breadcrumbs, businessRef, jsonLd, placeNode, websiteRef } from "@/lib/seo";
 
 export const Route = createFileRoute("/areas/$slug")({
   loader: ({ params }) => {
@@ -40,16 +40,21 @@ export const Route = createFileRoute("/areas/$slug")({
             name: a.h1,
             description: a.metaDescription,
             url,
-            about: businessRef,
-            spatialCoverage: {
-              "@type": "Place",
-              name: `${a.name}, New Zealand`,
-              geo: { "@type": "GeoCoordinates", latitude: a.geo.lat, longitude: a.geo.lng },
-            },
+            inLanguage: "en-NZ",
+            isPartOf: websiteRef,
+            about: [businessRef, { "@id": placeNode(a)["@id"] }],
+          },
+          {
+            "@type": "Service",
+            "@id": `${url}#service`,
+            name: a.h1,
+            serviceType: "Electrician",
+            url,
+            provider: businessRef,
+            areaServed: placeNode(a),
           },
           breadcrumbs([
             ["Home", "/"],
-            ["Areas", "/areas-of-expertise"],
             [a.name, `/areas/${a.slug}`],
           ]),
         ]),
@@ -103,7 +108,7 @@ function AreaPage() {
       </section>
 
       <section className="mx-auto max-w-[1440px] px-5 pb-24 md:px-10 md:pb-32">
-        <h2 className="eyebrow text-ink-soft">Services in {a.name}</h2>
+        <h2 className="eyebrow text-ink-soft">Services in {a.linkLabel ?? a.name}</h2>
         <ul className="mt-8 grid gap-px border border-ink/15 bg-ink/15 sm:grid-cols-2 lg:grid-cols-4">
           {SERVICES.map((s) => (
             <li key={s.slug} className="bg-stone">
@@ -113,7 +118,7 @@ function AreaPage() {
                 className="group flex h-full flex-col justify-between gap-6 p-6 transition-colors hover:bg-stone-lit"
               >
                 <span className="display-caps text-lg tracking-[0.12em]">{s.name}</span>
-                <span className="text-sm leading-relaxed text-ink-soft">{s.metaDescription}</span>
+                <span className="text-sm leading-relaxed text-ink-soft">{s.summary}</span>
                 <ArrowUpRight className="size-4 transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5" />
               </Link>
             </li>
@@ -141,7 +146,7 @@ function AreaPage() {
                 params={{ slug: o.slug }}
                 className="beam-link font-display text-2xl"
               >
-                {o.name}
+                {o.linkLabel ?? o.name}
               </Link>
             </li>
           ))}
