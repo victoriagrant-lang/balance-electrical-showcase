@@ -1,6 +1,6 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useState, type CSSProperties } from "react";
-import { ArrowRight } from "lucide-react";
+import { ArrowRight, Moon } from "lucide-react";
 import { SiteLayout } from "@/components/SiteLayout";
 import { Button } from "@/components/ui/button";
 import { Reveal, SplitReveal } from "@/components/motion/Reveal";
@@ -223,8 +223,8 @@ function Gallery() {
               behind the finish.
             </p>
             <p>
-              Explore by discipline, or switch to After Dark to see how the lighting transforms each
-              project at night.
+              Filter by discipline, or choose After Dark for the projects photographed at dusk, when
+              the lighting comes into its own.
             </p>
           </div>
           <div className="md:col-span-5 md:justify-self-end">
@@ -258,6 +258,7 @@ function Gallery() {
                     : "border-ivory/20 text-ivory/75 hover:border-ivory/50 hover:text-ivory",
                 )}
               >
+                {f === AFTER_DARK && <Moon aria-hidden className="size-3" strokeWidth={1.5} />}
                 {f}
                 <span className="opacity-60">{TILES.filter((t) => matches(t, f)).length}</span>
               </button>
